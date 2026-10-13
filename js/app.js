@@ -340,7 +340,7 @@ function selectWeek(weekNum) {
             return `
                 <div id="quiz-card-${q.id}" class="p-4 border rounded-2xl bg-slate-50 border-slate-200 space-y-3 text-xs transition-colors">
                     <div class="flex justify-between items-start">
-                        <p class="font-bold text-slate-900 text-xs md:text-sm leading-relaxed">${q.question}</p>
+                        <p class="font-bold text-slate-900 text-xs md:text-sm leading-relaxed whitespace-pre-line">${escapeImportedText(q.question)}</p>
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ml-2 ${
                             isChoice ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-purple-50 text-purple-700 border-purple-200'
                         }">
@@ -745,7 +745,7 @@ function renderActiveStudentExam(exam, attempt) {
         container.innerHTML = exam.questions.map((q, index) => {
             const isChoice = (q.type || 'choice') === 'choice';
             return `<div id="exam-question-${q.id}" class="p-4 border border-slate-200 rounded-2xl bg-slate-50 space-y-3 text-xs">
-                <div class="flex justify-between gap-3"><div class="font-bold text-slate-900 text-sm">${index + 1}. ${q.question}</div><span class="text-[10px] text-violet-600 bg-violet-50 border border-violet-200 px-2 py-0.5 rounded-full h-fit">${isChoice ? 'Multiple Choice' : 'Essay'}</span></div>
+                <div class="flex justify-between gap-3"><div class="font-bold text-slate-900 text-sm leading-relaxed whitespace-pre-line">${index + 1}. ${escapeImportedText(q.question)}</div><span class="text-[10px] text-violet-600 bg-violet-50 border border-violet-200 px-2 py-0.5 rounded-full h-fit">${isChoice ? 'Multiple Choice' : 'Essay'}</span></div>
                 ${q.image ? `<img src="${q.image}" class="quiz-figure-img" alt="Exam question image">` : ''}
                 ${isChoice ? `<div class="space-y-1.5">${(q.options || []).map(opt => {
                     const value = opt.charAt(0).toUpperCase();

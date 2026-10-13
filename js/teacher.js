@@ -162,7 +162,8 @@ function parseQuizDocument(content) {
         } else if (readingExplanation) {
             current.explanation += `${current.explanation ? ' ' : ''}${line}`;
         } else if (!current.options.length) {
-            current.question += ` ${line}`;
+            const isSubQuestion = /^(?:\(\d+\)|（\d+）|\d+\))\s*/.test(line);
+            current.question += `${isSubQuestion ? '\n' : ' '}${line}`;
         }
     });
     finishQuestion();
@@ -894,7 +895,7 @@ function renderQuizEditor(quizzes) {
 
                 <div>
                     <label class="block text-[11px] text-slate-400 font-semibold mb-1">Question Description</label>
-                    <input type="text" value="${escapeHtmlAttribute(q.question)}" oninput="autoSaveTeacherEdits()" placeholder="Enter question description..." class="quiz-q-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-medium focus:border-blue-500 focus:outline-none">
+                    <textarea rows="4" oninput="autoSaveTeacherEdits()" placeholder="Enter the main question and put each sub-question on a new line..." class="quiz-q-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white font-medium leading-relaxed focus:border-blue-500 focus:outline-none resize-y">${escapeImportedText(q.question)}</textarea>
                 </div>
 
                 <div class="quiz-choice-section space-y-2 ${isChoice ? '' : 'hidden'}">
@@ -908,7 +909,7 @@ function renderQuizEditor(quizzes) {
 
                 <div>
                     <label class="block text-[11px] text-slate-400 font-semibold mb-1">${isChoice ? 'Explanation' : 'Standard Solution & Rubric'}</label>
-                    <input type="text" value="${escapeHtmlAttribute(q.explanation)}" oninput="autoSaveTeacherEdits()" placeholder="${isChoice ? 'Explanation details...' : 'Standard step-by-step solution points...'}" class="quiz-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:border-blue-500 focus:outline-none">
+                    <textarea rows="3" oninput="autoSaveTeacherEdits()" placeholder="${isChoice ? 'Explanation details...' : 'Standard step-by-step solution points...'}" class="quiz-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-300 leading-relaxed focus:border-blue-500 focus:outline-none resize-y">${escapeImportedText(q.explanation)}</textarea>
                 </div>
             </div>
         `;
@@ -974,7 +975,7 @@ function addQuizItem() {
 
         <div>
             <label class="block text-[11px] text-slate-400 font-semibold mb-1">Question Description</label>
-            <input type="text" oninput="autoSaveTeacherEdits()" placeholder="Enter question description..." class="quiz-q-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-medium focus:border-blue-500 focus:outline-none">
+            <textarea rows="4" oninput="autoSaveTeacherEdits()" placeholder="Enter the main question and put each sub-question on a new line..." class="quiz-q-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white font-medium leading-relaxed focus:border-blue-500 focus:outline-none resize-y"></textarea>
         </div>
 
         <div class="quiz-choice-section space-y-2">
@@ -988,7 +989,7 @@ function addQuizItem() {
 
         <div>
             <label class="block text-[11px] text-slate-400 font-semibold mb-1">Explanation / Standard Solution</label>
-            <input type="text" oninput="autoSaveTeacherEdits()" placeholder="Write standard solution steps..." class="quiz-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:border-blue-500 focus:outline-none">
+            <textarea rows="3" oninput="autoSaveTeacherEdits()" placeholder="Write standard solution steps..." class="quiz-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-300 leading-relaxed focus:border-blue-500 focus:outline-none resize-y"></textarea>
         </div>
     `;
     container.appendChild(div);
@@ -1029,12 +1030,12 @@ function renderExamEditor(exam) {
                     <input value="${escapeHtmlAttribute(q.image || '')}" oninput="autoSaveTeacherEdits()" placeholder="Optional image URL" class="exam-img-input sm:col-span-2 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:outline-none">
                     <input type="number" min="0" value="${Number(q.points) || (isChoice ? 1 : 10)}" oninput="autoSaveTeacherEdits()" placeholder="Points" class="exam-points-input bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-violet-300 focus:outline-none">
                 </div>
-                <input value="${escapeHtmlAttribute(q.question || '')}" oninput="autoSaveTeacherEdits()" placeholder="Question" class="exam-q-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white focus:outline-none">
+                <textarea rows="4" oninput="autoSaveTeacherEdits()" placeholder="Question — put each sub-question on a new line" class="exam-q-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white leading-relaxed focus:outline-none resize-y">${escapeImportedText(q.question || '')}</textarea>
                 <div class="exam-choice-fields space-y-2 ${isChoice ? '' : 'hidden'}">
                     <input value="${escapeHtmlAttribute((q.options || []).join('; '))}" oninput="autoSaveTeacherEdits()" placeholder="A. Option; B. Option; C. Option; D. Option" class="exam-opts-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:outline-none">
                     <input value="${escapeHtmlAttribute(q.answer || '')}" oninput="autoSaveTeacherEdits()" placeholder="Correct answer, e.g. A" class="exam-ans-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-emerald-300 font-bold focus:outline-none">
                 </div>
-                <input value="${escapeHtmlAttribute(q.explanation || '')}" oninput="autoSaveTeacherEdits()" placeholder="Detailed explanation / reference solution" class="exam-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-300 focus:outline-none">
+                <textarea rows="3" oninput="autoSaveTeacherEdits()" placeholder="Detailed explanation / reference solution" class="exam-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-300 leading-relaxed focus:outline-none resize-y">${escapeImportedText(q.explanation || '')}</textarea>
             </div>`;
     }).join('');
 }
