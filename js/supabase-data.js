@@ -165,18 +165,38 @@ async function saveLearningWeekToSupabase(courseId, weekData) {
     if (result.error) throw result.error;
     weekData._supabaseId = result.data;
 
-    const verification = await window.supabaseClient
-        .from('slides')
-        .select('slide_number, content_html')
-        .eq('week_id', result.data)
-        .order('slide_number');
-    if (verification.error) throw verification.error;
+    const [slideVerification, vocabularyVerification] = await Promise.all([
+        window.supabaseClient
+            .from('slides')
+            .select('slide_number, content_html')
+            .eq('week_id', result.data)
+            .order('slide_number'),
+        window.supabaseClient
+            .from('vocabulary')
+            .select('sort_order, term, definition')
+            .eq('week_id', result.data)
+            .order('sort_order')
+    ]);
+    if (slideVerification.error) throw slideVerification.error;
+    if (vocabularyVerification.error) throw vocabularyVerification.error;
     const expectedSlides = weekData.slides || [];
-    const savedSlides = verification.data || [];
+    const savedSlides = slideVerification.data || [];
     const isExactMatch = savedSlides.length === expectedSlides.length
         && savedSlides.every((slide, index) => slide.slide_number === index + 1 && slide.content_html === expectedSlides[index]);
     if (!isExactMatch) {
         throw new Error(`Slide verification failed: expected ${expectedSlides.length}, database returned ${savedSlides.length}.`);
+    }
+
+    const expectedVocabulary = weekData.vocabs || [];
+    const savedVocabulary = vocabularyVerification.data || [];
+    const vocabularyIsExactMatch = savedVocabulary.length === expectedVocabulary.length
+        && savedVocabulary.every((item, index) =>
+            item.sort_order === index + 1
+            && item.term === (expectedVocabulary[index].word || '')
+            && item.definition === (expectedVocabulary[index].def || '')
+        );
+    if (!vocabularyIsExactMatch) {
+        throw new Error(`Vocabulary verification failed: expected ${expectedVocabulary.length}, database returned ${savedVocabulary.length}.`);
     }
 }
 

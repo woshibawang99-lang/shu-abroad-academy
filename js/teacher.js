@@ -105,15 +105,42 @@ function parseVocabularyDocument(content) {
     }));
 
     const unusedLines = [];
-    content.lines.forEach(line => {
+    content.lines.forEach(rawLine => {
+        const line = String(rawLine || '').replace(/[↵\r]+$/g, '').replace(/\u00a0/g, ' ').trim();
         if (/^(core\s+)?(academic\s+)?vocabulary|词汇表|核心词汇/i.test(line)) return;
-        const match = line.match(/^(.{1,80}?)(?:\t|\s+[—–-]\s+|[:：])\s*(.+)$/);
-        if (match) addItem(match[1], match[2]);
-        else unusedLines.push(line);
+        const delimitedMatch = line.match(/^(.{1,100}?)(?:\t+|\s{2,}|\s+[—–-]\s+|[:：])\s*(.+)$/);
+        if (delimitedMatch) {
+            addItem(delimitedMatch[1], delimitedMatch[2]);
+            return;
+        }
+
+        // Word documents often turn a tab between an English term and its Chinese
+        // translation into a single ordinary space. Split at the first Han character
+        // instead of treating the next line as this term's definition.
+        const firstHanIndex = line.search(/[\u3400-\u9fff]/);
+        if (firstHanIndex > 0) {
+            const word = line.slice(0, firstHanIndex).trim();
+            const definition = line.slice(firstHanIndex).trim();
+            if (/[A-Za-z]/.test(word)) {
+                addItem(word, definition);
+                return;
+            }
+        }
+        if (line) unusedLines.push(line);
     });
 
-    if (!items.length) {
-        for (let i = 0; i + 1 < unusedLines.length; i += 2) addItem(unusedLines[i], unusedLines[i + 1]);
+    // Also support documents that put the English term and Chinese definition on
+    // separate lines. Only pair a Latin line with a Han line to avoid merging two
+    // unrelated vocabulary entries.
+    for (let i = 0; i + 1 < unusedLines.length;) {
+        const word = unusedLines[i];
+        const definition = unusedLines[i + 1];
+        if (/[A-Za-z]/.test(word) && !/[\u3400-\u9fff]/.test(word) && /[\u3400-\u9fff]/.test(definition)) {
+            addItem(word, definition);
+            i += 2;
+        } else {
+            i += 1;
+        }
     }
     return items;
 }
