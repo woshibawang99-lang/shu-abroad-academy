@@ -526,6 +526,158 @@ function loadWeekToEditor() {
     if (!weekData.exam) weekData.exam = { isOpen: false, durationMinutes: 60, questions: [], version: 1 };
     renderExamEditor(weekData.exam);
     renderExamSubmissions();
+    renderStudentProgressDashboard();
+}
+
+let teacherProgressLoadToken = 0;
+
+function getLatestSubmissionForStudent(submissions, studentId, assessmentId) {
+    if (!assessmentId) return null;
+    return submissions
+        .filter(item => item.student_id === studentId && item.assessment_id === assessmentId)
+        .sort((a, b) => new Date(b.submitted_at || b.started_at || b.created_at || 0) - new Date(a.submitted_at || a.started_at || a.created_at || 0))[0] || null;
+}
+
+function getProgressStatusMeta(submission, grade) {
+    if (!submission) return { label: 'Not started', color: 'text-slate-400', dot: 'bg-slate-600' };
+    if (submission.status === 'graded') {
+        const score = grade?.final_score ?? grade?.objective_score;
+        return { label: score == null ? 'Graded' : `Graded · ${score} pts`, color: 'text-emerald-300', dot: 'bg-emerald-400' };
+    }
+    if (submission.status === 'submitted') {
+        const score = grade?.objective_score;
+        return { label: score == null ? 'Submitted' : `Submitted · ${score} pts`, color: 'text-amber-300', dot: 'bg-amber-400' };
+    }
+    return { label: 'In progress', color: 'text-blue-300', dot: 'bg-blue-400' };
+}
+
+function renderProgressStatusCell(submission, grade) {
+    const meta = getProgressStatusMeta(submission, grade);
+    return `<span class="inline-flex items-center gap-2 ${meta.color}"><span class="w-2 h-2 rounded-full ${meta.dot}"></span>${meta.label}</span>`;
+}
+
+function formatProgressDate(value) {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '—';
+    return date.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+async function renderStudentProgressDashboard() {
+    const summary = document.getElementById('student-progress-summary');
+    const list = document.getElementById('student-progress-list');
+    if (!summary || !list) return;
+
+    if (!window.supabaseClient || currentUser?.role !== 'teacher') {
+        summary.innerHTML = '';
+        list.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-slate-500">Teacher login is required.</td></tr>';
+        return;
+    }
+
+    const courseId = document.getElementById('editor-course-select')?.value;
+    const weekData = getCurrentTeacherWeek();
+    if (!courseId || !weekData?._supabaseId) {
+        summary.innerHTML = '';
+        list.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-slate-500">Select an online course and week to view progress.</td></tr>';
+        return;
+    }
+
+    const loadToken = ++teacherProgressLoadToken;
+    summary.innerHTML = Array.from({ length: 4 }, () => '<div class="h-20 rounded-xl bg-slate-900 border border-slate-800 animate-pulse"></div>').join('');
+    list.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading student progress...</td></tr>';
+
+    try {
+        const [enrollmentResult, assessmentResult] = await Promise.all([
+            window.supabaseClient.from('course_enrollments').select('student_id').eq('course_id', courseId),
+            window.supabaseClient.from('assessments').select('id, kind').eq('week_id', weekData._supabaseId)
+        ]);
+        if (enrollmentResult.error) throw enrollmentResult.error;
+        if (assessmentResult.error) throw assessmentResult.error;
+        if (loadToken !== teacherProgressLoadToken) return;
+
+        const studentIds = [...new Set((enrollmentResult.data || []).map(item => item.student_id))];
+        const assessments = assessmentResult.data || [];
+        const assessmentIds = assessments.map(item => item.id);
+        const practiceId = assessments.find(item => item.kind === 'practice')?.id || null;
+        const examId = assessments.find(item => item.kind === 'exam')?.id || null;
+
+        const profilesResult = studentIds.length
+            ? await window.supabaseClient.from('profiles').select('id, full_name').in('id', studentIds)
+            : { data: [], error: null };
+        if (profilesResult.error) throw profilesResult.error;
+
+        const submissionResult = assessmentIds.length
+            ? await window.supabaseClient.from('assessment_submissions').select('*').in('assessment_id', assessmentIds)
+            : { data: [], error: null };
+        if (submissionResult.error) throw submissionResult.error;
+        const submissions = submissionResult.data || [];
+        const submissionIds = submissions.map(item => item.id);
+        const gradesResult = submissionIds.length
+            ? await window.supabaseClient.from('submission_grades').select('*').in('submission_id', submissionIds)
+            : { data: [], error: null };
+        if (gradesResult.error) throw gradesResult.error;
+        if (loadToken !== teacherProgressLoadToken) return;
+
+        const profiles = profilesResult.data || [];
+        const grades = gradesResult.data || [];
+        const rows = studentIds.map((studentId, index) => {
+            const practice = getLatestSubmissionForStudent(submissions, studentId, practiceId);
+            const exam = getLatestSubmissionForStudent(submissions, studentId, examId);
+            const practiceGrade = grades.find(item => item.submission_id === practice?.id);
+            const examGrade = grades.find(item => item.submission_id === exam?.id);
+            const latest = [practice, exam].filter(Boolean).sort((a, b) => new Date(b.submitted_at || b.started_at || b.created_at || 0) - new Date(a.submitted_at || a.started_at || a.created_at || 0))[0];
+            return {
+                studentId,
+                name: profiles.find(item => item.id === studentId)?.full_name || `Student ${index + 1}`,
+                practice,
+                exam,
+                practiceGrade,
+                examGrade,
+                latest
+            };
+        }).sort((a, b) => a.name.localeCompare(b.name));
+
+        const startedStudents = rows.filter(row => row.practice || row.exam).length;
+        const submittedStudents = rows.filter(row => ['submitted', 'graded'].includes(row.practice?.status) || ['submitted', 'graded'].includes(row.exam?.status)).length;
+        const pendingGrades = submissions.filter(item => item.status === 'submitted').length;
+        const summaryCards = [
+            ['Enrolled Students', rows.length, 'fa-users', 'text-cyan-300'],
+            ['Started', startedStudents, 'fa-pen-to-square', 'text-blue-300'],
+            ['Submitted', submittedStudents, 'fa-circle-check', 'text-emerald-300'],
+            ['Awaiting Grading', pendingGrades, 'fa-hourglass-half', 'text-amber-300']
+        ];
+        summary.innerHTML = summaryCards.map(([label, value, icon, color]) => `<div class="bg-slate-900 border border-slate-800 rounded-xl p-4"><div class="flex items-center justify-between"><span class="text-[11px] text-slate-400">${label}</span><i class="fa-solid ${icon} ${color}"></i></div><div class="text-2xl font-extrabold text-white mt-2">${value}</div></div>`).join('');
+
+        if (!rows.length) {
+            list.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-slate-500">No students are enrolled in this course.</td></tr>';
+            return;
+        }
+
+        list.innerHTML = rows.map(row => {
+            const canReviewExam = row.exam && ['submitted', 'graded'].includes(row.exam.status);
+            return `<tr class="hover:bg-slate-900/70 transition">
+                <td class="px-4 py-3"><div class="font-bold text-white">${escapeImportedText(row.name)}</div><div class="text-[10px] text-slate-500 mt-0.5">${row.studentId.slice(0, 8)}</div></td>
+                <td class="px-4 py-3">${renderProgressStatusCell(row.practice, row.practiceGrade)}</td>
+                <td class="px-4 py-3">${renderProgressStatusCell(row.exam, row.examGrade)}</td>
+                <td class="px-4 py-3 text-slate-400">${formatProgressDate(row.latest?.submitted_at || row.latest?.started_at || row.latest?.created_at)}</td>
+                <td class="px-4 py-3 text-right">${canReviewExam ? `<button onclick="focusStudentExamSubmission('${row.studentId}')" class="bg-violet-500/20 hover:bg-violet-500/30 text-violet-300 px-3 py-1.5 rounded-lg font-semibold">Review Exam</button>` : '<span class="text-slate-600">—</span>'}</td>
+            </tr>`;
+        }).join('');
+    } catch (error) {
+        console.error('Unable to load student progress:', error);
+        summary.innerHTML = '';
+        list.innerHTML = `<tr><td colspan="5" class="px-4 py-6 text-center text-rose-400">Unable to load progress: ${escapeImportedText(error.message)}</td></tr>`;
+    }
+}
+
+async function focusStudentExamSubmission(studentId) {
+    await renderExamSubmissions();
+    const target = document.querySelector(`[data-student-id="${studentId}"]`);
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('ring-2', 'ring-violet-400');
+        setTimeout(() => target.classList.remove('ring-2', 'ring-violet-400'), 2500);
+    }
 }
 
 function renderTeacherSlideTabs(totalSlides) {
@@ -921,7 +1073,7 @@ async function renderExamSubmissions() {
     }
     container.innerHTML = submissions.map(({ key, username, attempt }, submissionIndex) => {
         const essays = (exam.questions || []).filter(q => (q.type || 'choice') === 'essay');
-        return `<div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+        return `<div data-student-id="${record.submission.student_id}" class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 transition">
             <div class="flex justify-between items-center"><div><span class="font-bold text-white">${escapeImportedText(username)}</span><span class="text-[11px] text-slate-400 ml-2">Objective: ${attempt.autoScore || 0} / ${attempt.autoMax || 0}</span></div><span class="text-[11px] ${attempt.gradingStatus === 'graded' ? 'text-emerald-400' : 'text-amber-300'}">${attempt.gradingStatus === 'graded' ? 'Graded' : 'Awaiting grading'}</span></div>
             ${essays.map((q, essayIndex) => `<div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2">
                 <div class="text-xs font-semibold text-slate-200">${escapeImportedText(q.question)}</div>
