@@ -189,21 +189,23 @@ function queueAssessmentSave(weekData) {
 
 async function saveWeekAssessmentsToSupabase(weekData) {
     if (!window.supabaseClient || currentUser?.role !== 'teacher' || !weekData?._supabaseId) return;
-    const practice = await saveOneAssessment(weekData, 'practice', {
-        id: weekData.practiceAssessmentId,
-        title: 'Practice Test & Assessment',
-        durationMinutes: 60,
-        isOpen: true,
-        questions: weekData.quizzes || []
-    });
+    const [practice, examId] = await Promise.all([
+        saveOneAssessment(weekData, 'practice', {
+            id: weekData.practiceAssessmentId,
+            title: 'Practice Test & Assessment',
+            durationMinutes: 60,
+            isOpen: true,
+            questions: weekData.quizzes || []
+        }),
+        saveOneAssessment(weekData, 'exam', {
+            id: weekData.exam?._supabaseId,
+            title: 'Timed Examination',
+            durationMinutes: weekData.exam?.durationMinutes || 60,
+            isOpen: Boolean(weekData.exam?.isOpen),
+            questions: weekData.exam?.questions || []
+        })
+    ]);
     weekData.practiceAssessmentId = practice;
-    const examId = await saveOneAssessment(weekData, 'exam', {
-        id: weekData.exam?._supabaseId,
-        title: 'Timed Examination',
-        durationMinutes: weekData.exam?.durationMinutes || 60,
-        isOpen: Boolean(weekData.exam?.isOpen),
-        questions: weekData.exam?.questions || []
-    });
     if (weekData.exam) weekData.exam._supabaseId = examId;
 }
 
@@ -234,9 +236,7 @@ async function saveOneAssessment(weekData, kind, model) {
 
     const existingQuestions = await window.supabaseClient.from('questions').select('id, question_number').eq('assessment_id', assessmentId);
     if (existingQuestions.error) throw existingQuestions.error;
-    const retainedIds = [];
-    for (let index = 0; index < model.questions.length; index++) {
-        const question = model.questions[index];
+    const savedQuestions = await Promise.all(model.questions.map(async (question, index) => {
         const existing = existingQuestions.data?.find(item => item.question_number === index + 1);
         const questionPayload = {
             assessment_id: assessmentId,
@@ -256,16 +256,19 @@ async function saveOneAssessment(weekData, kind, model) {
             if (inserted.error) throw inserted.error;
             questionId = inserted.data.id;
         }
-        retainedIds.push(questionId);
         question.id = questionId;
         question._supabaseId = questionId;
-        const { error: keyError } = await window.supabaseClient.from('question_keys').upsert({
+        return {
             question_id: questionId,
             correct_answer: question.answer || '',
             explanation: question.explanation || ''
-        }, { onConflict: 'question_id' });
+        };
+    }));
+    if (savedQuestions.length) {
+        const { error: keyError } = await window.supabaseClient.from('question_keys').upsert(savedQuestions, { onConflict: 'question_id' });
         if (keyError) throw keyError;
     }
+    const retainedIds = savedQuestions.map(item => item.question_id);
     const staleIds = (existingQuestions.data || []).map(item => item.id).filter(id => !retainedIds.includes(id));
     if (staleIds.length) {
         const { error } = await window.supabaseClient.from('questions').delete().in('id', staleIds);

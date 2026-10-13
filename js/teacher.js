@@ -882,7 +882,7 @@ function renderQuizEditor(quizzes) {
 
         return `
             <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 relative text-xs quiz-editor-card">
-                <button onclick="removeQuizItem(${i})" class="absolute top-3 right-3 text-rose-400 hover:text-rose-300">
+                <button type="button" onclick="removeQuizItem(this)" class="absolute top-3 right-3 text-rose-400 hover:text-rose-300" aria-label="Delete question">
                     <i class="fa-solid fa-trash"></i>
                 </button>
 
@@ -965,7 +965,7 @@ function addQuizItem() {
     const div = document.createElement('div');
     div.className = "bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 relative text-xs quiz-editor-card";
     div.innerHTML = `
-        <button onclick="this.parentElement.remove(); autoSaveTeacherEdits();" class="absolute top-3 right-3 text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
+        <button type="button" onclick="removeQuizItem(this)" class="absolute top-3 right-3 text-rose-400 hover:text-rose-300" aria-label="Delete question"><i class="fa-solid fa-trash"></i></button>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
                 <label class="block text-[11px] text-slate-400 font-semibold mb-1">Question Type</label>
@@ -1009,12 +1009,15 @@ function addQuizItem() {
     autoSaveTeacherEdits();
 }
 
-function removeQuizItem(index) {
+function removeQuizItem(buttonOrIndex) {
     const list = document.getElementById('editor-quiz-list');
-    if (list && list.children[index]) {
-        list.children[index].remove();
-        autoSaveTeacherEdits();
-    }
+    if (!list) return;
+    const card = typeof buttonOrIndex === 'number'
+        ? list.children[buttonOrIndex]
+        : buttonOrIndex?.closest('.quiz-editor-card');
+    if (!card || !list.contains(card)) return;
+    card.remove();
+    autoSaveTeacherEdits();
 }
 
 function renderExamEditor(exam) {
@@ -1034,7 +1037,7 @@ function renderExamEditor(exam) {
         const isChoice = (q.type || 'choice') === 'choice';
         return `
             <div class="exam-editor-card bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 relative text-xs">
-                <button onclick="removeExamQuestion(${index})" class="absolute top-3 right-3 text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" onclick="removeExamQuestion(this)" class="absolute top-3 right-3 text-rose-400 hover:text-rose-300" aria-label="Delete exam question"><i class="fa-solid fa-trash"></i></button>
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 pr-6">
                     <select onchange="handleExamTypeChange(this)" class="exam-type-input bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-violet-300 font-bold focus:outline-none">
                         <option value="choice" ${isChoice ? 'selected' : ''}>Multiple Choice</option>
@@ -1239,12 +1242,15 @@ function addExamQuestion() {
     saveDataToStorage();
 }
 
-function removeExamQuestion(index) {
-    const weekData = getCurrentTeacherWeek();
-    if (!weekData?.exam) return;
-    weekData.exam.questions.splice(index, 1);
-    renderExamEditor(weekData.exam);
-    saveTeacherEdits(false);
+function removeExamQuestion(buttonOrIndex) {
+    const list = document.getElementById('editor-exam-list');
+    if (!list) return;
+    const card = typeof buttonOrIndex === 'number'
+        ? list.children[buttonOrIndex]
+        : buttonOrIndex?.closest('.exam-editor-card');
+    if (!card || !list.contains(card)) return;
+    card.remove();
+    autoSaveTeacherEdits();
 }
 
 async function toggleExamAvailability() {
