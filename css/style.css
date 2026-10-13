@@ -1,0 +1,133 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+/* Course Card Hover Effects */
+.subject-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.subject-card:hover {
+    transform: translateY(-4px);
+    border-color: #2563eb;
+    box-shadow: 0 12px 25px -5px rgba(37, 99, 235, 0.18);
+}
+
+/* Editor Container Minimum Height */
+#wang-editor-container {
+    min-height: 420px !important;
+}
+
+#wang-editor-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* PPT Presentation Stage */
+.ppt-slide-stage {
+    background: linear-gradient(145deg, #0f172a, #1e293b);
+    border: 1px solid #334155;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Rich Text Formatting Styles */
+.rich-content h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #38bdf8;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.rich-content h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-top: 0.7rem;
+    margin-bottom: 0.4rem;
+}
+
+.rich-content h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #cbd5e1;
+    margin-top: 0.6rem;
+    margin-bottom: 0.3rem;
+}
+
+.rich-content p {
+    margin-bottom: 0.6rem;
+    line-height: 1.7;
+}
+
+.rich-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+}
+
+.rich-content table th, 
+.rich-content table td {
+    border: 1px solid #475569;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.rich-content table th {
+    background-color: #1e293b;
+    font-weight: 700;
+    color: #38bdf8;
+}
+
+.rich-content img {
+    max-width: 100%;
+    max-height: 285px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    margin: 0.75rem auto;
+}
+
+/* Quiz Figure & Photo Preview */
+.quiz-figure-img {
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+.essay-upload-box {
+    border: 2px dashed #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.essay-upload-box:hover {
+    border-color: #2563eb;
+    background-color: #f0f9ff;
+}
