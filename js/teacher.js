@@ -3,6 +3,8 @@
 let wangEditorInstance = null;
 let autoSaveTimer = null;
 let teacherSlideIndex = 0;
+let renderedTeacherSlideIndex = 0;
+let isSettingEditorContent = false;
 let cloudExamSubmissionCache = [];
 const lastSavedLearningSignatures = new Map();
 const lastSavedAssessmentSignatures = new Map();
@@ -398,6 +400,8 @@ function initRichTextEditor() {
         const editorConfig = {
             placeholder: 'Enter current slide content here... (Supports headings, tables, bullet points, and images)',
             onChange(editor) {
+                if (isSettingEditorContent) return;
+                saveCurrentSlideContentToMemory(editor);
                 triggerAutoSaveDebounced();
             },
             MENU_CONF: {
@@ -716,7 +720,12 @@ function renderCurrentTeacherSlideContent() {
     const weekData = courseData.modules[courseId].find(w => w.week === weekNum);
 
     if (wangEditorInstance && weekData && weekData.slides) {
+        renderedTeacherSlideIndex = teacherSlideIndex;
+        isSettingEditorContent = true;
         wangEditorInstance.setHtml(weekData.slides[teacherSlideIndex] || '<p>Type slide content...</p>');
+        setTimeout(() => {
+            isSettingEditorContent = false;
+        }, 0);
     }
 }
 
@@ -796,7 +805,7 @@ function deleteCurrentSlide() {
     }
 }
 
-function saveCurrentSlideContentToMemory() {
+function saveCurrentSlideContentToMemory(editor = wangEditorInstance) {
     const courseSelect = document.getElementById('editor-course-select');
     const weekSelect = document.getElementById('editor-week-select');
     if (!courseSelect || !weekSelect) return;
@@ -805,9 +814,9 @@ function saveCurrentSlideContentToMemory() {
     const weekNum = parseInt(weekSelect.value) || 1;
     const weekData = courseData.modules[courseId].find(w => w.week === weekNum);
 
-    if (weekData && wangEditorInstance) {
+    if (weekData && editor && !isSettingEditorContent) {
         if (!weekData.slides) weekData.slides = [];
-        weekData.slides[teacherSlideIndex] = wangEditorInstance.getHtml();
+        weekData.slides[renderedTeacherSlideIndex] = editor.getHtml();
     }
 }
 
