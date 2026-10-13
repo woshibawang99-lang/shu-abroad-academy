@@ -4,6 +4,8 @@ let wangEditorInstance = null;
 let autoSaveTimer = null;
 let teacherSlideIndex = 0;
 let cloudExamSubmissionCache = [];
+const lastSavedLearningSignatures = new Map();
+const lastSavedAssessmentSignatures = new Map();
 
 if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -813,11 +815,13 @@ function triggerAutoSaveDebounced() {
     if (autoSaveTimer) clearTimeout(autoSaveTimer);
     
     const statusText = document.getElementById('autosave-text');
-    if (statusText) statusText.innerText = 'Saving changes...';
+    if (statusText) statusText.innerText = 'Unsaved changes...';
 
     autoSaveTimer = setTimeout(() => {
+        autoSaveTimer = null;
+        if (statusText) statusText.innerText = 'Saving changes...';
         saveTeacherEdits(false);
-    }, 400);
+    }, 1800);
 }
 
 function autoSaveTeacherEdits() {
@@ -1295,6 +1299,10 @@ function createNewWeekForCurrentCourse() {
 }
 
 async function saveTeacherEdits(showPopup = false) {
+    if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = null;
+    }
     saveCurrentSlideContentToMemory();
 
     const courseSelect = document.getElementById('editor-course-select');
@@ -1376,8 +1384,30 @@ async function saveTeacherEdits(showPopup = false) {
 
     if (targetWeek && window.supabaseClient && currentUser?.role === 'teacher') {
         try {
-            await queueLearningWeekSave(courseId, targetWeek);
-            await queueAssessmentSave(targetWeek);
+            const saveKey = `${courseId}:${weekNum}`;
+            const learningSignature = JSON.stringify({
+                title: targetWeek.title,
+                slides: targetWeek.slides || [],
+                vocabs: targetWeek.vocabs || []
+            });
+            const assessmentSignature = JSON.stringify({
+                quizzes: (targetWeek.quizzes || []).map(({ id, _supabaseId, ...question }) => question),
+                exam: {
+                    isOpen: Boolean(targetWeek.exam?.isOpen),
+                    durationMinutes: targetWeek.exam?.durationMinutes || 60,
+                    version: targetWeek.exam?.version || 1,
+                    questions: (targetWeek.exam?.questions || []).map(({ id, _supabaseId, ...question }) => question)
+                }
+            });
+
+            if (showPopup || lastSavedLearningSignatures.get(saveKey) !== learningSignature) {
+                await queueLearningWeekSave(courseId, targetWeek);
+                lastSavedLearningSignatures.set(saveKey, learningSignature);
+            }
+            if (showPopup || lastSavedAssessmentSignatures.get(saveKey) !== assessmentSignature) {
+                await queueAssessmentSave(targetWeek);
+                lastSavedAssessmentSignatures.set(saveKey, assessmentSignature);
+            }
         } catch (error) {
             console.error('Online save failed:', error);
             const statusText = document.getElementById('autosave-text');

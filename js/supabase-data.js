@@ -152,63 +152,18 @@ function queueLearningWeekSave(courseId, weekData) {
 
 async function saveLearningWeekToSupabase(courseId, weekData) {
     if (!window.supabaseClient || !currentUser || currentUser.role !== 'teacher') return;
-
-    const weekPayload = {
-        course_id: courseId,
-        week_number: weekData.week,
-        title: weekData.title,
-        is_published: true
-    };
-
-    let weekId = weekData._supabaseId;
-    if (weekId) {
-        const { error } = await window.supabaseClient.from('course_weeks').update(weekPayload).eq('id', weekId);
-        if (error) throw error;
-    } else {
-        const existing = await window.supabaseClient
-            .from('course_weeks')
-            .select('id')
-            .eq('course_id', courseId)
-            .eq('week_number', weekData.week)
-            .maybeSingle();
-        if (existing.error) throw existing.error;
-
-        if (existing.data?.id) {
-            weekId = existing.data.id;
-            const { error } = await window.supabaseClient.from('course_weeks').update(weekPayload).eq('id', weekId);
-            if (error) throw error;
-        } else {
-            const inserted = await window.supabaseClient.from('course_weeks').insert(weekPayload).select('id').single();
-            if (inserted.error) throw inserted.error;
-            weekId = inserted.data.id;
-        }
-        weekData._supabaseId = weekId;
-    }
-
-    const { error: deleteSlidesError } = await window.supabaseClient.from('slides').delete().eq('week_id', weekId);
-    if (deleteSlidesError) throw deleteSlidesError;
-    const slideRows = (weekData.slides || []).map((content, index) => ({
-        week_id: weekId,
-        slide_number: index + 1,
-        content_html: content
-    }));
-    if (slideRows.length) {
-        const { error } = await window.supabaseClient.from('slides').insert(slideRows);
-        if (error) throw error;
-    }
-
-    const { error: deleteVocabularyError } = await window.supabaseClient.from('vocabulary').delete().eq('week_id', weekId);
-    if (deleteVocabularyError) throw deleteVocabularyError;
-    const vocabularyRows = (weekData.vocabs || []).map((item, index) => ({
-        week_id: weekId,
-        term: item.word,
-        definition: item.def,
-        sort_order: index + 1
-    }));
-    if (vocabularyRows.length) {
-        const { error } = await window.supabaseClient.from('vocabulary').insert(vocabularyRows);
-        if (error) throw error;
-    }
+    const result = await window.supabaseClient.rpc('save_learning_week_content', {
+        target_course_id: courseId,
+        target_week_number: weekData.week,
+        target_title: weekData.title || '',
+        slide_contents: weekData.slides || [],
+        vocabulary_items: (weekData.vocabs || []).map(item => ({
+            word: item.word || '',
+            def: item.def || ''
+        }))
+    });
+    if (result.error) throw result.error;
+    weekData._supabaseId = result.data;
 }
 
 function queueAssessmentSave(weekData) {
