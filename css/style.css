@@ -41,6 +41,37 @@ body {
     min-height: 420px !important;
 }
 
+#wang-toolbar-container {
+    position: sticky;
+    top: 72px;
+    z-index: 30;
+    border-radius: 0.75rem 0.75rem 0 0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+#wang-toolbar-container .w-e-bar {
+    flex-wrap: wrap;
+}
+
+#wang-editor-container .w-e-text-container {
+    overflow-x: auto;
+}
+
+#wang-editor-container [data-slate-editor="true"] table {
+    width: auto;
+    max-width: 100%;
+    margin: 1rem auto !important;
+    table-layout: auto;
+}
+
+#wang-editor-container [data-slate-editor="true"] table td,
+#wang-editor-container [data-slate-editor="true"] table th {
+    min-width: 90px;
+    vertical-align: middle;
+    user-select: text;
+    cursor: text;
+}
+
 #wang-editor-container img {
     max-width: 100%;
     height: auto;
@@ -84,10 +115,12 @@ body {
 }
 
 .rich-content table {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     border-collapse: collapse;
-    margin: 1rem 0;
+    margin: 1rem auto;
     font-size: 0.85rem;
+    table-layout: auto;
 }
 
 .rich-content table th, 

@@ -452,6 +452,10 @@ function initRichTextEditor() {
 
         const editorConfig = {
             placeholder: 'Enter current slide content here... (Supports headings, tables, bullet points, and images)',
+            customPaste() {
+                // Keep WangEditor's native Word/Excel/text paste handling enabled.
+                return true;
+            },
             onChange(editor) {
                 if (isSettingEditorContent) return;
                 saveCurrentSlideContentToMemory(editor);
@@ -460,6 +464,18 @@ function initRichTextEditor() {
             MENU_CONF: {
                 uploadImage: {
                     base64LimitSize: 10 * 1024 * 1024
+                },
+                color: {
+                    colors: ['#111827', '#ffffff', '#2563eb', '#0284c7', '#059669', '#d97706', '#dc2626', '#7c3aed']
+                },
+                bgColor: {
+                    colors: ['#ffffff', '#dbeafe', '#cffafe', '#d1fae5', '#fef3c7', '#fee2e2', '#ede9fe', '#1e293b']
+                },
+                fontSize: {
+                    fontSizeList: ['12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px']
+                },
+                lineHeight: {
+                    lineHeightList: ['1', '1.25', '1.5', '1.75', '2']
                 },
                 fontFamily: {
                     fontFamilyList: [
@@ -495,7 +511,7 @@ function initRichTextEditor() {
             selector: '#wang-editor-container',
             html: '<h2>Slide Title</h2><p>Type slide lecture content here...</p>',
             config: editorConfig,
-            mode: 'simple'
+            mode: 'default'
         });
 
         const toolbarConfig = {
@@ -505,8 +521,11 @@ function initRichTextEditor() {
                 'underline',
                 'italic',
                 'color',
+                'bgColor',
                 'fontSize',
                 'fontFamily',
+                'lineHeight',
+                'clearStyle',
                 '|',
                 'insertTable',
                 'uploadImage',
@@ -514,8 +533,10 @@ function initRichTextEditor() {
                 'numberedList',
                 'justifyLeft',
                 'justifyCenter',
+                'justifyRight',
                 'undo',
-                'redo'
+                'redo',
+                'fullScreen'
             ]
         };
 
@@ -523,7 +544,7 @@ function initRichTextEditor() {
             editor: wangEditorInstance,
             selector: '#wang-toolbar-container',
             config: toolbarConfig,
-            mode: 'simple'
+            mode: 'default'
         });
     } catch(e) {
         console.warn('WangEditor load delayed or prevented:', e);
