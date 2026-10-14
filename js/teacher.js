@@ -151,9 +151,16 @@ function parseQuizDocument(content) {
     let readingExplanation = false;
 
     const finishQuestion = () => {
-        if (!current || !current.question) return;
-        current.type = current.options.length ? 'choice' : 'essay';
-        current.answer = current.answer || (current.type === 'choice' ? 'A' : '详见参考答案');
+        if (!current) return;
+        current.question = String(current.question || '').trim();
+        if (!current.question) {
+            current = null;
+            readingExplanation = false;
+            return;
+        }
+        current.type = current.explicitType || (current.options.length ? 'choice' : 'essay');
+        delete current.explicitType;
+        current.answer = current.answer || (current.type === 'essay' ? '详见参考答案' : '');
         current.explanation = current.explanation || '';
         current.id = `q_import_${Date.now()}_${quizzes.length}`;
         current.image = '';
@@ -162,18 +169,35 @@ function parseQuizDocument(content) {
         readingExplanation = false;
     };
 
+    let previousLine = '';
     content.lines.forEach(rawLine => {
-        const line = rawLine.replace(/^\s*[•·]\s*/, '').trim();
+        const line = String(rawLine || '')
+            .replace(/[↵\r]+$/g, '')
+            .replace(/^\s*[•·▪■□◾◼]+\s*/, '')
+            .replace(/\u00a0/g, ' ')
+            .trim();
         if (!line || /^(quiz|questions?|练习题|题库|答案与解析)$/i.test(line)) return;
+        if (line === previousLine) return;
+        previousLine = line;
 
-        const questionMatch = line.match(/^(?:question\s*)?(\d+)\s*[.、):：]\s*(.+)$/i);
+        const questionMatch = line.match(/^(?:q(?:uestion)?\s*)?(\d+)\b\s*(?:[.、):：|\-–—]\s*)?(.*)$/i);
         const optionMatch = line.match(/^([A-H])\s*[.、):：]\s*(.+)$/i);
         const answerMatch = line.match(/^(?:correct\s*answer|answer|正确答案|答案)\s*[:：]?\s*([A-H]|.+)$/i);
         const explanationMatch = line.match(/^(?:explanation|analysis|解析|答案解析|参考答案|standard solution)\s*[:：]?\s*(.*)$/i);
 
         if (questionMatch && !optionMatch) {
             finishQuestion();
-            current = { question: `${questionMatch[1]}. ${questionMatch[2]}`, options: [], answer: '', explanation: '' };
+            const number = questionMatch[1];
+            let questionText = questionMatch[2].trim().replace(/^\|\s*/, '');
+            const isEssayHeading = /^(?:short\s*answer|essay|written\s*answer|简答题|解答题|论述题)\s*[:：]?$/i.test(questionText);
+            current = {
+                question: isEssayHeading ? '' : `${number}. ${questionText}`.trim(),
+                options: [],
+                answer: '',
+                explanation: '',
+                explicitType: isEssayHeading ? 'essay' : null,
+                questionNumber: number
+            };
             return;
         }
         if (!current && /[?？]$/.test(line)) {
@@ -193,8 +217,10 @@ function parseQuizDocument(content) {
         } else if (readingExplanation) {
             current.explanation += `${current.explanation ? ' ' : ''}${line}`;
         } else if (!current.options.length) {
+            if (/^[_―—-]{3,}$/.test(line)) return;
             const isSubQuestion = /^(?:\(\d+\)|（\d+）|\d+\))\s*/.test(line);
-            current.question += `${isSubQuestion ? '\n' : ' '}${line}`;
+            const prefix = current.question ? (isSubQuestion ? '\n' : ' ') : `${current.questionNumber || quizzes.length + 1}. `;
+            current.question += `${prefix}${line}`;
         }
     });
     finishQuestion();
