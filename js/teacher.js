@@ -452,6 +452,30 @@ function initRichTextEditor() {
 
         const editorConfig = {
             placeholder: 'Enter current slide content here... (Supports headings, tables, bullet points, and images)',
+            hoverbarKeys: {
+                table: {
+                    menuKeys: [
+                        'enter',
+                        'tableHeader',
+                        'tableFullWidth',
+                        'insertTableRow',
+                        'deleteTableRow',
+                        'insertTableCol',
+                        'deleteTableCol',
+                        'bold',
+                        'underline',
+                        'italic',
+                        'fontSize',
+                        'fontFamily',
+                        'color',
+                        'bgColor',
+                        'justifyLeft',
+                        'justifyCenter',
+                        'justifyRight',
+                        'deleteTable'
+                    ]
+                }
+            },
             customPaste() {
                 // Keep WangEditor's native Word/Excel/text paste handling enabled.
                 return true;

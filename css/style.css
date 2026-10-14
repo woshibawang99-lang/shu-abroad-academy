@@ -53,6 +53,18 @@ body {
     flex-wrap: wrap;
 }
 
+#wang-editor-wrapper .w-e-hover-bar {
+    max-width: min(96vw, 980px);
+    flex-wrap: wrap;
+    row-gap: 4px;
+    padding: 6px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+}
+
+#wang-editor-wrapper .w-e-hover-bar .w-e-bar-item {
+    flex: 0 0 auto;
+}
+
 #wang-editor-container .w-e-text-container {
     overflow-x: auto;
 }
