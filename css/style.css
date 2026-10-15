@@ -194,8 +194,31 @@ body {
 }
 
 .question-math-preview .katex-display,
+.slide-math-preview-wrap .katex-display,
 .rich-content .katex-display {
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0.25rem 0;
+}
+
+#slide-math-preview img {
+    max-width: 100%;
+    height: auto;
+}
+
+#slide-math-preview h1,
+#slide-math-preview h2,
+#slide-math-preview h3 {
+    color: #0f172a;
+}
+
+#slide-math-preview table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#slide-math-preview td,
+#slide-math-preview th {
+    border: 1px solid #cbd5e1;
+    padding: 0.4rem;
 }

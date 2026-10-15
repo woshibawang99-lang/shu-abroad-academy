@@ -110,20 +110,23 @@ function renderDocxParagraphNode(node) {
 }
 
 async function extractDocxLinesWithMath(arrayBuffer) {
-    if (!window.JSZip) return { lines: [], hasMath: false };
+    if (!window.JSZip) return { lines: [], paragraphs: [], hasMath: false };
     const zip = await window.JSZip.loadAsync(arrayBuffer);
     const documentFile = zip.file('word/document.xml');
-    if (!documentFile) return { lines: [], hasMath: false };
+    if (!documentFile) return { lines: [], paragraphs: [], hasMath: false };
     const xmlText = await documentFile.async('string');
     const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
-    if (xml.querySelector('parsererror')) return { lines: [], hasMath: false };
+    if (xml.querySelector('parsererror')) return { lines: [], paragraphs: [], hasMath: false };
     const hasMath = Array.from(xml.getElementsByTagName('*')).some(node => node.localName === 'oMath');
-    if (!hasMath) return { lines: [], hasMath: false };
-    const paragraphs = Array.from(xml.getElementsByTagName('*')).filter(node =>
+    if (!hasMath) return { lines: [], paragraphs: [], hasMath: false };
+    const paragraphNodes = Array.from(xml.getElementsByTagName('*')).filter(node =>
         node.localName === 'p' && /wordprocessingml/.test(node.namespaceURI || '')
     );
-    const lines = paragraphs.map(paragraph => renderDocxParagraphNode(paragraph).replace(/\s+/g, ' ').trim()).filter(Boolean);
-    return { lines, hasMath: true };
+    const paragraphs = paragraphNodes.map(paragraph => ({
+        text: renderDocxParagraphNode(paragraph).replace(/\s+/g, ' ').trim(),
+        hasMath: Array.from(paragraph.getElementsByTagName('*')).some(node => node.localName === 'oMath')
+    })).filter(paragraph => paragraph.text);
+    return { lines: paragraphs.map(paragraph => paragraph.text), paragraphs, hasMath: true };
 }
 
 async function extractStructuredDocument(file) {
@@ -465,8 +468,25 @@ async function importWordDocument(file) {
             })))
         }
     );
-    const html = result.value && result.value.trim();
+    let html = result.value && result.value.trim();
     if (!html) throw new Error('No text or images were found in this Word document.');
+    try {
+        const mathContent = await extractDocxLinesWithMath(arrayBuffer);
+        if (mathContent.hasMath && mathContent.paragraphs.length) {
+            const importedDocument = new DOMParser().parseFromString(html, 'text/html');
+            const importedParagraphs = Array.from(importedDocument.body.querySelectorAll('p')).filter(paragraph =>
+                (paragraph.textContent || '').trim()
+            );
+            mathContent.paragraphs.forEach((paragraph, index) => {
+                if (paragraph.hasMath && importedParagraphs[index]) {
+                    importedParagraphs[index].innerHTML = escapeImportedText(paragraph.text);
+                }
+            });
+            html = importedDocument.body.innerHTML;
+        }
+    } catch (error) {
+        console.warn('Word slide equations could not be converted; continuing with standard Word import.', error);
+    }
     const slides = splitImportedWordIntoSlides(html);
     applyImportedSlides(slides);
     return result.messages && result.messages.length
@@ -542,7 +562,7 @@ function initRichTextEditor() {
         const { createEditor, createToolbar } = window.wangEditor;
 
         const editorConfig = {
-            placeholder: 'Enter current slide content here... (Supports headings, tables, bullet points, and images)',
+            placeholder: 'Enter slide content here... Use $...$ for an inline formula or $$...$$ for a display formula.',
             hoverbarKeys: {
                 table: {
                     menuKeys: [
@@ -574,6 +594,7 @@ function initRichTextEditor() {
             onChange(editor) {
                 if (isSettingEditorContent) return;
                 saveCurrentSlideContentToMemory(editor);
+                refreshSlideMathPreview(editor.getHtml());
                 triggerAutoSaveDebounced();
             },
             MENU_CONF: {
@@ -661,6 +682,7 @@ function initRichTextEditor() {
             config: toolbarConfig,
             mode: 'default'
         });
+        refreshSlideMathPreview(wangEditorInstance.getHtml());
     } catch(e) {
         console.warn('WangEditor load delayed or prevented:', e);
     }
@@ -914,8 +936,31 @@ function renderCurrentTeacherSlideContent() {
         wangEditorInstance.setHtml(weekData.slides[teacherSlideIndex] || '<p>Type slide content...</p>');
         setTimeout(() => {
             isSettingEditorContent = false;
+            refreshSlideMathPreview(wangEditorInstance.getHtml());
         }, 0);
     }
+}
+
+function refreshSlideMathPreview(html = '') {
+    const preview = document.getElementById('slide-math-preview');
+    if (!preview) return;
+    preview.innerHTML = html || '<p class="text-slate-400">Type slide content to preview formulas.</p>';
+    renderMathContent(preview);
+}
+
+function insertSlideMathTemplate(type) {
+    if (!wangEditorInstance) return;
+    const templates = {
+        power: '$x^{2}$',
+        subscript: '$x_{1}$',
+        fraction: '$\\frac{a}{b}$',
+        root: '$\\sqrt{x}$',
+        inline: '$formula$',
+        display: '$$\\frac{a}{b}=c$$'
+    };
+    wangEditorInstance.focus();
+    wangEditorInstance.insertText(templates[type] || templates.inline);
+    refreshSlideMathPreview(wangEditorInstance.getHtml());
 }
 
 function switchTeacherSlide(index) {

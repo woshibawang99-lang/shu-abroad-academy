@@ -219,13 +219,30 @@
                 
                 <div class="space-y-2">
                     <label class="block text-xs text-slate-400 font-medium flex justify-between">
-                        <span>Current Slide Content (Rich text formatting, headings, tables, and images):</span>
+                        <span>Current Slide Content (Rich text, tables, images, and LaTeX formulas):</span>
                         <span class="text-blue-400 font-mono" id="current-slide-label">Slide 1</span>
                     </label>
                     <p class="text-[11px] text-slate-500">Table editing: click a cell or select its text, then use the floating table toolbar for rows, columns, width, font, alignment, text color and highlight. Ctrl+C / Ctrl+V works inside cells.</p>
+                    <div class="slide-math-tools flex flex-wrap items-center gap-1.5 text-[11px]">
+                        <span class="text-slate-400 mr-1"><i class="fa-solid fa-square-root-variable mr-1"></i>Insert formula:</span>
+                        <button type="button" onclick="insertSlideMathTemplate('power')" class="math-template-btn">xⁿ</button>
+                        <button type="button" onclick="insertSlideMathTemplate('subscript')" class="math-template-btn">xₙ</button>
+                        <button type="button" onclick="insertSlideMathTemplate('fraction')" class="math-template-btn">a⁄b</button>
+                        <button type="button" onclick="insertSlideMathTemplate('root')" class="math-template-btn">√x</button>
+                        <button type="button" onclick="insertSlideMathTemplate('inline')" class="math-template-btn">Inline $…$</button>
+                        <button type="button" onclick="insertSlideMathTemplate('display')" class="math-template-btn">Display formula</button>
+                        <span class="text-slate-500 ml-1">Edit the code in the slide; the preview below shows the result.</span>
+                    </div>
                     <div id="wang-editor-wrapper" class="border border-slate-800 rounded-xl overflow-visible bg-white text-slate-900 shadow-inner">
                         <div id="wang-toolbar-container" class="border-b border-slate-200 bg-slate-100"></div>
                         <div id="wang-editor-container" class="min-h-[420px] p-4 text-sm"></div>
+                    </div>
+                    <div class="slide-math-preview-wrap bg-white border border-slate-700 rounded-xl p-4 text-slate-900">
+                        <div class="flex items-center justify-between gap-2 border-b border-slate-200 pb-2 mb-3">
+                            <span class="text-xs font-bold text-slate-700"><i class="fa-solid fa-eye mr-1.5 text-blue-600"></i>Slide formula preview</span>
+                            <span class="text-[10px] text-slate-400">Preview only — saved content remains editable</span>
+                        </div>
+                        <div id="slide-math-preview" class="rich-content min-h-16 text-sm leading-relaxed overflow-x-auto"></div>
                     </div>
                 </div>
             </div>

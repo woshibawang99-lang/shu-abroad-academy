@@ -437,6 +437,7 @@ function renderStudentSlide() {
         const parser = new DOMParser();
         const decodedDoc = parser.parseFromString(slides[studentSlideIndex], 'text/html');
         contentContainer.innerHTML = decodedDoc.body.innerHTML;
+        renderMathContent(contentContainer);
     }
 
     const badge = document.getElementById('student-slide-badge');
