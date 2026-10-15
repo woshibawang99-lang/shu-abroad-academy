@@ -176,3 +176,26 @@ body {
     border-color: #2563eb;
     background-color: #f0f9ff;
 }
+
+.math-template-btn {
+    border: 1px solid #475569;
+    border-radius: 0.5rem;
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 0.25rem 0.55rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.math-template-btn:hover {
+    border-color: #3b82f6;
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.question-math-preview .katex-display,
+.rich-content .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.25rem 0;
+}

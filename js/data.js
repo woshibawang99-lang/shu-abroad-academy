@@ -1,3 +1,30 @@
+function escapePortalText(value) {
+    return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function renderMathContent(root = document) {
+    if (!root || typeof window.renderMathInElement !== 'function') return;
+    try {
+        window.renderMathInElement(root, {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '\\[', right: '\\]', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false }
+            ],
+            throwOnError: false,
+            strict: false
+        });
+    } catch (error) {
+        console.warn('Math rendering skipped:', error);
+    }
+}
+
 // 有效测试账号
 const validAccounts = {
     students: { 

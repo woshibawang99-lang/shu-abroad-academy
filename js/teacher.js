@@ -42,19 +42,110 @@ function setStructuredImportStatus(kind, message, type = 'normal') {
     status.className = `text-[11px] ${type === 'error' ? 'text-rose-400' : type === 'success' ? 'text-emerald-400' : 'text-blue-300'}`;
 }
 
+function docxChild(node, name) {
+    return Array.from(node?.children || []).find(child => child.localName === name) || null;
+}
+
+function normaliseMathText(value) {
+    return String(value || '')
+        .replace(/−/g, '-')
+        .replace(/×/g, '\\times ')
+        .replace(/÷/g, '\\div ')
+        .replace(/≤/g, '\\le ')
+        .replace(/≥/g, '\\ge ')
+        .replace(/≠/g, '\\ne ')
+        .replace(/∞/g, '\\infty ')
+        .replace(/π/g, '\\pi ')
+        .replace(/√/g, '\\sqrt{}');
+}
+
+function convertOmmlToLatex(node) {
+    if (!node) return '';
+    const name = node.localName;
+    if (name === 't') return normaliseMathText(node.textContent);
+    if (/Pr$/.test(name) || ['ctrlPr', 'rPr'].includes(name)) return '';
+
+    const render = childName => convertOmmlToLatex(docxChild(node, childName));
+    if (name === 'f') return `\\frac{${render('num')}}{${render('den')}}`;
+    if (name === 'sSup') return `{${render('e')}}^{${render('sup')}}`;
+    if (name === 'sSub') return `{${render('e')}}_{${render('sub')}}`;
+    if (name === 'sSubSup') return `{${render('e')}}_{${render('sub')}}^{${render('sup')}}`;
+    if (name === 'rad') {
+        const degree = render('deg');
+        const expression = render('e');
+        return degree ? `\\sqrt[${degree}]{${expression}}` : `\\sqrt{${expression}}`;
+    }
+    if (name === 'nary') {
+        const property = docxChild(node, 'naryPr');
+        const symbol = normaliseMathText(docxChild(property, 'chr')?.getAttribute('m:val') || '∑');
+        return `${symbol || '\\sum'}_{${render('sub')}}^{${render('sup')}} ${render('e')}`;
+    }
+    if (name === 'd') {
+        const property = docxChild(node, 'dPr');
+        const begin = docxChild(property, 'begChr')?.getAttribute('m:val') || '(';
+        const end = docxChild(property, 'endChr')?.getAttribute('m:val') || ')';
+        return `\\left${begin}${render('e')}\\right${end}`;
+    }
+    if (name === 'acc') {
+        const accent = docxChild(docxChild(node, 'accPr'), 'chr')?.getAttribute('m:val') || '^';
+        const command = accent === '¯' ? '\\bar' : accent === '→' ? '\\vec' : '\\hat';
+        return `${command}{${render('e')}}`;
+    }
+    if (name === 'bar') return `\\overline{${render('e')}}`;
+    if (name === 'limLow') return `${render('e')}_{${render('lim')}}`;
+    if (name === 'limUpp') return `${render('e')}^{${render('lim')}}`;
+
+    return Array.from(node.children || []).map(convertOmmlToLatex).join('');
+}
+
+function renderDocxParagraphNode(node) {
+    if (!node) return '';
+    if (node.localName === 'oMath' || node.localName === 'oMathPara') {
+        const latex = convertOmmlToLatex(node).trim();
+        return latex ? `$${latex}$` : '';
+    }
+    if (node.localName === 't') return node.textContent || '';
+    if (/Pr$/.test(node.localName)) return '';
+    return Array.from(node.children || []).map(renderDocxParagraphNode).join('');
+}
+
+async function extractDocxLinesWithMath(arrayBuffer) {
+    if (!window.JSZip) return { lines: [], hasMath: false };
+    const zip = await window.JSZip.loadAsync(arrayBuffer);
+    const documentFile = zip.file('word/document.xml');
+    if (!documentFile) return { lines: [], hasMath: false };
+    const xmlText = await documentFile.async('string');
+    const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
+    if (xml.querySelector('parsererror')) return { lines: [], hasMath: false };
+    const hasMath = Array.from(xml.getElementsByTagName('*')).some(node => node.localName === 'oMath');
+    if (!hasMath) return { lines: [], hasMath: false };
+    const paragraphs = Array.from(xml.getElementsByTagName('*')).filter(node =>
+        node.localName === 'p' && /wordprocessingml/.test(node.namespaceURI || '')
+    );
+    const lines = paragraphs.map(paragraph => renderDocxParagraphNode(paragraph).replace(/\s+/g, ' ').trim()).filter(Boolean);
+    return { lines, hasMath: true };
+}
+
 async function extractStructuredDocument(file) {
     const extension = file.name.split('.').pop().toLowerCase();
     if (extension === 'docx') {
         if (!window.mammoth) throw new Error('Word import component failed to load.');
-        const result = await window.mammoth.convertToHtml({ arrayBuffer: await file.arrayBuffer() });
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await window.mammoth.convertToHtml({ arrayBuffer });
         const doc = new DOMParser().parseFromString(result.value || '', 'text/html');
-        const lines = Array.from(doc.querySelectorAll('p, li, h1, h2, h3, td'))
+        let lines = Array.from(doc.querySelectorAll('p, li, h1, h2, h3, td'))
             .map(node => (node.textContent || '').trim()).filter(Boolean);
         const tables = Array.from(doc.querySelectorAll('table')).map(table =>
             Array.from(table.querySelectorAll('tr')).map(row =>
                 Array.from(row.querySelectorAll('th, td')).map(cell => (cell.textContent || '').trim())
             ).filter(row => row.some(Boolean))
         );
+        try {
+            const mathContent = await extractDocxLinesWithMath(arrayBuffer);
+            if (mathContent.hasMath && mathContent.lines.length) lines = mathContent.lines;
+        } catch (error) {
+            console.warn('Word equations could not be converted; continuing with text import.', error);
+        }
         return { lines, tables };
     }
 
@@ -971,6 +1062,62 @@ function removeVocabItem(index) {
     }
 }
 
+function refreshQuestionMathPreview(card) {
+    if (!card) return;
+    const preview = card.querySelector('.question-math-preview');
+    if (!preview) return;
+    const question = card.querySelector('.quiz-q-input, .exam-q-input')?.value || '';
+    const options = card.querySelector('.quiz-opts-input, .exam-opts-input')?.value || '';
+    const explanation = card.querySelector('.quiz-exp-input, .exam-exp-input')?.value || '';
+    const content = [question, options, explanation].filter(Boolean).join('\n');
+    preview.innerHTML = content
+        ? `<div class="whitespace-pre-line">${escapeImportedText(content)}</div>`
+        : '<span class="text-slate-500">Formula preview: type $2^{-3}$ or $\\frac{1}{8}$</span>';
+    renderMathContent(preview);
+}
+
+function mathEditorToolsHtml() {
+    return `<div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+        <span class="text-slate-400 mr-1">Insert formula:</span>
+        <button type="button" onclick="insertMathTemplate(this, 'power')" class="math-template-btn">xⁿ</button>
+        <button type="button" onclick="insertMathTemplate(this, 'subscript')" class="math-template-btn">xₙ</button>
+        <button type="button" onclick="insertMathTemplate(this, 'fraction')" class="math-template-btn">a⁄b</button>
+        <button type="button" onclick="insertMathTemplate(this, 'root')" class="math-template-btn">√x</button>
+        <button type="button" onclick="insertMathTemplate(this, 'inline')" class="math-template-btn">$…$</button>
+    </div>`;
+}
+
+function insertMathTemplate(button, type) {
+    const card = button.closest('.quiz-editor-card, .exam-editor-card');
+    if (!card) return;
+    const input = card._lastMathInput || card.querySelector('.quiz-q-input, .exam-q-input, .quiz-opts-input, .exam-opts-input, .quiz-exp-input, .exam-exp-input');
+    if (!input) return;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? start;
+    const selected = input.value.slice(start, end);
+    const subject = selected || 'x';
+    const templates = {
+        power: `$${subject}^{2}$`,
+        subscript: `$${subject}_{1}$`,
+        fraction: `$\\frac{${selected || 'a'}}{b}$`,
+        root: `$\\sqrt{${subject}}$`,
+        inline: `$${selected || 'formula'}$`
+    };
+    input.setRangeText(templates[type] || templates.inline, start, end, 'end');
+    input.focus();
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function initialiseQuestionMathPreviews(container) {
+    if (!container) return;
+    container.querySelectorAll('.quiz-q-input, .quiz-opts-input, .quiz-exp-input, .exam-q-input, .exam-opts-input, .exam-exp-input')
+        .forEach(input => {
+            input.addEventListener('focus', () => { input.closest('.quiz-editor-card, .exam-editor-card')._lastMathInput = input; });
+            input.addEventListener('input', () => refreshQuestionMathPreview(input.closest('.quiz-editor-card, .exam-editor-card')));
+        });
+    container.querySelectorAll('.quiz-editor-card, .exam-editor-card').forEach(refreshQuestionMathPreview);
+}
+
 function renderQuizEditor(quizzes) {
     const container = document.getElementById('editor-quiz-list');
     if (!container) return;
@@ -1022,9 +1169,12 @@ function renderQuizEditor(quizzes) {
                     <label class="block text-[11px] text-slate-400 font-semibold mb-1">${isChoice ? 'Explanation' : 'Standard Solution & Rubric'}</label>
                     <textarea rows="3" oninput="autoSaveTeacherEdits()" placeholder="${isChoice ? 'Explanation details...' : 'Standard step-by-step solution points...'}" class="quiz-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-300 leading-relaxed focus:border-blue-500 focus:outline-none resize-y">${escapeImportedText(q.explanation)}</textarea>
                 </div>
+                ${mathEditorToolsHtml()}
+                <div class="question-math-preview bg-white text-slate-900 border border-slate-700 rounded-lg p-3 leading-relaxed overflow-x-auto"></div>
             </div>
         `;
     }).join('');
+    initialiseQuestionMathPreviews(container);
 }
 
 function handleQuizTypeChange(selectEl, index) {
@@ -1102,8 +1252,11 @@ function addQuizItem() {
             <label class="block text-[11px] text-slate-400 font-semibold mb-1">Explanation / Standard Solution</label>
             <textarea rows="3" oninput="autoSaveTeacherEdits()" placeholder="Write standard solution steps..." class="quiz-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-300 leading-relaxed focus:border-blue-500 focus:outline-none resize-y"></textarea>
         </div>
+        ${mathEditorToolsHtml()}
+        <div class="question-math-preview bg-white text-slate-900 border border-slate-700 rounded-lg p-3 leading-relaxed overflow-x-auto"></div>
     `;
     container.appendChild(div);
+    initialiseQuestionMathPreviews(div);
     autoSaveTeacherEdits();
 }
 
@@ -1150,8 +1303,11 @@ function renderExamEditor(exam) {
                     <input value="${escapeHtmlAttribute(q.answer || '')}" oninput="autoSaveTeacherEdits()" placeholder="Correct answer, e.g. A" class="exam-ans-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-emerald-300 font-bold focus:outline-none">
                 </div>
                 <textarea rows="3" oninput="autoSaveTeacherEdits()" placeholder="Detailed explanation / reference solution" class="exam-exp-input w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-300 leading-relaxed focus:outline-none resize-y">${escapeImportedText(q.explanation || '')}</textarea>
+                ${mathEditorToolsHtml()}
+                <div class="question-math-preview bg-white text-slate-900 border border-slate-700 rounded-lg p-3 leading-relaxed overflow-x-auto"></div>
             </div>`;
     }).join('');
+    initialiseQuestionMathPreviews(container);
 }
 
 async function renderExamSubmissions() {

@@ -359,7 +359,7 @@ function selectWeek(weekNum) {
                             ${(q.options || []).map(opt => `
                                 <label class="quiz-option-label flex items-center space-x-2 text-slate-700 bg-white p-2.5 rounded-xl border border-slate-200 hover:border-blue-300 cursor-pointer transition">
                                     <input type="radio" name="question-${q.id}" value="${opt.charAt(0)}" class="text-blue-600 focus:ring-0">
-                                    <span>${opt}</span>
+                                    <span>${escapePortalText(opt)}</span>
                                 </label>
                             `).join('')}
                         </div>
@@ -391,6 +391,7 @@ function selectWeek(weekNum) {
                 </div>
             `;
         }).join('');
+        renderMathContent(quizContainer);
     }
 
     const scoreRes = document.getElementById('score-result');
@@ -609,6 +610,7 @@ async function submitQuiz() {
             }
         }
     });
+    renderMathContent(document.getElementById('quiz-container'));
 
     let scoreText = '';
     if (totalChoiceCount > 0) {
@@ -750,11 +752,12 @@ function renderActiveStudentExam(exam, attempt) {
                 ${isChoice ? `<div class="space-y-1.5">${(q.options || []).map(opt => {
                     const value = opt.charAt(0).toUpperCase();
                     const checked = attempt.answers?.[q.id] === value ? 'checked' : '';
-                    return `<label class="exam-option-label flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-2.5"><input type="radio" name="exam-${q.id}" value="${value}" ${checked} onchange="saveStudentExamAnswer('${q.id}', this.value)"><span>${opt}</span></label>`;
+                    return `<label class="exam-option-label flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-2.5"><input type="radio" name="exam-${q.id}" value="${value}" ${checked} onchange="saveStudentExamAnswer('${q.id}', this.value)"><span>${escapePortalText(opt)}</span></label>`;
                 }).join('')}</div>` : `<div><input type="file" accept="image/*" onchange="handleExamEssayUpload(this, '${q.id}')" class="text-xs"><div id="exam-essay-status-${q.id}" class="text-[11px] text-slate-500 mt-2">Upload a photo of your handwritten solution.</div></div>`}
                 <div id="exam-feedback-${q.id}" class="hidden rounded-xl border p-3 text-[11px] leading-relaxed"></div>
             </div>`;
         }).join('');
+        renderMathContent(container);
     }
     updateExamCountdown(exam, attempt);
     examTimerInterval = setInterval(() => updateExamCountdown(exam, readExamAttempt() || attempt), 1000);
@@ -827,6 +830,7 @@ function submitStudentExam(autoSubmitted = false) {
             feedback.innerText = `Reference solution: ${q.explanation || 'Pending teacher review.'}`;
         }
     });
+    renderMathContent(document.getElementById('student-exam-questions'));
 
     attempt.submitted = true;
     attempt.submittedAt = Date.now();
