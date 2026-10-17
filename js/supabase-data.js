@@ -323,19 +323,38 @@ async function submitAssessmentToSupabase(assessmentId, questions, answers, essa
         throw new Error('Student login is required.');
     }
 
-    if (!existingSubmissionId) {
+    let submissionQuery = window.supabaseClient.from('assessment_submissions').select('*');
+    if (existingSubmissionId) {
+        submissionQuery = submissionQuery.eq('id', existingSubmissionId);
+    } else {
+        submissionQuery = submissionQuery
+            .eq('assessment_id', assessmentId)
+            .eq('student_id', currentUser.id)
+            .order('created_at', { ascending: false })
+            .limit(1);
+    }
+    let submissionResult = await submissionQuery.maybeSingle();
+    if (submissionResult.error) throw submissionResult.error;
+
+    if (!submissionResult.data && !existingSubmissionId) {
         const started = await window.supabaseClient.rpc('start_assessment', {
             target_assessment_id: assessmentId
         });
         if (started.error) throw started.error;
+        submissionResult = await window.supabaseClient.from('assessment_submissions').select('*')
+            .eq('assessment_id', assessmentId)
+            .eq('student_id', currentUser.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
     }
-
-    let submissionQuery = window.supabaseClient.from('assessment_submissions').select('*');
-    if (existingSubmissionId) submissionQuery = submissionQuery.eq('id', existingSubmissionId);
-    else submissionQuery = submissionQuery.eq('assessment_id', assessmentId).eq('student_id', currentUser.id).order('created_at', { ascending: false }).limit(1);
-    const submissionResult = await submissionQuery.single();
     if (submissionResult.error) throw submissionResult.error;
     const submission = submissionResult.data;
+    if (!submission) throw new Error('The assessment attempt could not be created.');
+
+    if (submission.status === 'submitted' || submission.status === 'graded') {
+        return loadExistingAssessmentResult(submission);
+    }
 
     const answerRows = [];
     for (const question of questions) {
@@ -376,6 +395,21 @@ async function submitAssessmentToSupabase(assessmentId, questions, answers, essa
     if (gradeResult.error) throw gradeResult.error;
     if (reviewResult.error) throw reviewResult.error;
     return { submission, grade: gradeResult.data, review: reviewResult.data || [] };
+}
+
+async function loadExistingAssessmentResult(submission) {
+    const [gradeResult, reviewResult] = await Promise.all([
+        window.supabaseClient.from('submission_grades').select('*').eq('submission_id', submission.id).maybeSingle(),
+        window.supabaseClient.rpc('get_submission_review', { target_submission_id: submission.id })
+    ]);
+    if (gradeResult.error) throw gradeResult.error;
+    if (reviewResult.error) throw reviewResult.error;
+    return {
+        submission,
+        grade: gradeResult.data,
+        review: reviewResult.data || [],
+        alreadySubmitted: true
+    };
 }
 
 function formatAssessmentSubmissionError(error) {
