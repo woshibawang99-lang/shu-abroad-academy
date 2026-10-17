@@ -123,7 +123,7 @@ async function submitStandaloneExam(autoSubmitted) {
     } catch (error) {
         standaloneAttempt.submitting = false;
         saveStandaloneAttempt();
-        alert(`Exam submission failed: ${error.message}`);
+        alert(`Exam submission failed: ${formatAssessmentSubmissionError(error)}`);
         if (new Date(standaloneAttempt.deadlineAt).getTime() > Date.now()) standaloneTimer = setInterval(updateStandaloneCountdown, 1000);
     }
 }

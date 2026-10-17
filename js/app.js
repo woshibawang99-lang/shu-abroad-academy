@@ -517,7 +517,7 @@ async function submitQuiz() {
         } catch (error) {
             console.error('Online submission failed:', error);
             if (button) { button.disabled = false; button.innerHTML = '<i class="fa-solid fa-paper-plane mr-1.5"></i>Submit Test / Solutions'; }
-            alert(`Submission failed: ${error.message}`);
+            alert(`Submission failed: ${formatAssessmentSubmissionError(error)}`);
             return;
         }
     }
