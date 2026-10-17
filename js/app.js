@@ -655,10 +655,12 @@ function renderSecurePracticeReview(weekData, result) {
         feedback.querySelector('.quiz-feedback-explanation').innerText = review.explanation || 'No detailed explanation has been provided yet.';
     });
     const grade = result.grade || {};
-    const score = grade.final_score ?? grade.objective_score ?? 0;
+    const hasWrittenAnswers = weekData.quizzes.some(question => (question.type || 'choice') === 'essay');
+    const isFullyGraded = !hasWrittenAnswers || Boolean(grade.graded_at);
+    const score = isFullyGraded ? (grade.final_score ?? grade.objective_score ?? 0) : (grade.objective_score ?? 0);
     const scoreText = document.getElementById('score-text');
     const scoreBox = document.getElementById('score-result');
-    if (scoreText) scoreText.innerText = `Current Score: ${score}${grade.final_score == null ? ' · Written answers are awaiting teacher grading' : ''}`;
+    if (scoreText) scoreText.innerText = `Current Score: ${score}${hasWrittenAnswers && !isFullyGraded ? ' · Written answers are awaiting teacher grading' : ''}`;
     scoreBox?.classList.remove('hidden');
     const button = document.getElementById('submit-quiz-btn');
     if (button) { button.disabled = true; button.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i>Submitted'; }

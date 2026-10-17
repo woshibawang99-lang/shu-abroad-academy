@@ -141,8 +141,9 @@ function renderCloudResult(grade) {
     const result = document.getElementById('standalone-result');
     result.classList.remove('hidden');
     const hasEssay = standaloneExam.questions.some(q => (q.type || 'choice') === 'essay');
-    const score = grade?.final_score ?? grade?.objective_score ?? 0;
-    result.innerHTML = `<div class="text-xs text-slate-400">Examination submitted securely</div><div class="text-2xl font-black text-violet-300 mt-1">${hasEssay && grade?.final_score == null ? `Objective score: ${score}` : `Final score: ${score}`}</div><div class="text-sm text-slate-300 mt-2">${hasEssay && grade?.final_score == null ? 'Written solutions are awaiting teacher grading.' : (grade?.teacher_feedback || 'Grading completed.')}</div>`;
+    const isFullyGraded = !hasEssay || Boolean(grade?.graded_at);
+    const score = isFullyGraded ? (grade?.final_score ?? grade?.objective_score ?? 0) : (grade?.objective_score ?? 0);
+    result.innerHTML = `<div class="text-xs text-slate-400">Examination submitted securely</div><div class="text-2xl font-black text-violet-300 mt-1">${hasEssay && !isFullyGraded ? `Objective score: ${score}` : `Final score: ${score}`}</div><div class="text-sm text-slate-300 mt-2">${hasEssay && !isFullyGraded ? 'Written solutions are awaiting teacher grading.' : (grade?.teacher_feedback || 'Grading completed.')}</div>`;
 }
 
 function highlightSelectedKeyword() {
