@@ -39,6 +39,20 @@ function setManualSaveButtonBusy(isBusy) {
         : '<i class="fa-solid fa-check"></i><span>Save Current Week</span>';
 }
 
+function waitForTeacherSave(operation, timeoutMs = 60000) {
+    let timeoutId;
+    const timeout = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error('Save timed out. Please check the network and try again.')), timeoutMs);
+    });
+    return Promise.race([operation, timeout]).finally(() => clearTimeout(timeoutId));
+}
+
+function resetManualSaveUi(message, state = 'error') {
+    updateSaveProgress(100, message, state);
+    teacherManualSaveInProgress = false;
+    setManualSaveButtonBusy(false);
+}
+
 function buildAssessmentSaveSignature(week) {
     return JSON.stringify({
         quizzes: (week?.quizzes || []).map(({ id, _supabaseId, ...question }) => question),
@@ -1679,7 +1693,10 @@ async function saveTeacherEdits(showPopup = false) {
 
     const courseSelect = document.getElementById('editor-course-select');
     const weekSelect = document.getElementById('editor-week-select');
-    if (!courseSelect || !weekSelect) return;
+    if (!courseSelect || !weekSelect) {
+        if (showPopup) resetManualSaveUi('Save failed: course or week is not selected.');
+        return;
+    }
 
     const courseId = courseSelect.value;
     const weekNum = parseInt(weekSelect.value) || 1;
@@ -1752,7 +1769,10 @@ async function saveTeacherEdits(showPopup = false) {
         };
     }
 
-    saveDataToStorage();
+    // Do not serialise the entire course into localStorage here. Large embedded
+    // images make that synchronous operation block the page before cloud saving
+    // even starts. The current in-memory week is sent straight to Supabase.
+    if (showPopup) updateSaveProgress(5, `Week ${weekNum} prepared. Connecting to cloud...`);
 
     const statusText = document.getElementById('autosave-text');
     if (targetWeek && window.supabaseClient && currentUser?.role === 'teacher') {
@@ -1760,7 +1780,7 @@ async function saveTeacherEdits(showPopup = false) {
             if (showPopup) {
                 const saveKey = `${courseId}:${targetWeek.week}`;
                 updateSaveProgress(10, `Saving Week ${targetWeek.week} slides and vocabulary...`);
-                await queueLearningWeekSave(courseId, targetWeek);
+                await waitForTeacherSave(queueLearningWeekSave(courseId, targetWeek));
                 lastSavedLearningSignatures.set(saveKey, JSON.stringify({
                     title: targetWeek.title,
                     slides: targetWeek.slides || [],
@@ -1772,7 +1792,7 @@ async function saveTeacherEdits(showPopup = false) {
                 if (lastSavedAssessmentSignatures.get(saveKey) !== currentAssessmentSignature) {
                     if (statusText) statusText.innerText = 'Saving current week quiz and exam...';
                     updateSaveProgress(85, `Saving Week ${targetWeek.week} quiz and exam...`);
-                    await queueAssessmentSave(targetWeek);
+                    await waitForTeacherSave(queueAssessmentSave(targetWeek));
                     lastSavedAssessmentSignatures.set(saveKey, currentAssessmentSignature);
                 }
                 if (statusText) statusText.innerText = `Week ${targetWeek.week} saved / ${(targetWeek.slides || []).length} slides verified`;
@@ -1787,11 +1807,11 @@ async function saveTeacherEdits(showPopup = false) {
                 const assessmentSignature = buildAssessmentSaveSignature(week);
 
                 if (lastSavedLearningSignatures.get(saveKey) !== learningSignature) {
-                    await queueLearningWeekSave(courseId, week);
+                    await waitForTeacherSave(queueLearningWeekSave(courseId, week));
                     lastSavedLearningSignatures.set(saveKey, learningSignature);
                 }
                 if (lastSavedAssessmentSignatures.get(saveKey) !== assessmentSignature) {
-                    await queueAssessmentSave(week);
+                    await waitForTeacherSave(queueAssessmentSave(week));
                     lastSavedAssessmentSignatures.set(saveKey, assessmentSignature);
                 }
             }
@@ -1799,9 +1819,7 @@ async function saveTeacherEdits(showPopup = false) {
             console.error('Online save failed:', error);
             if (statusText) statusText.innerText = 'Online save failed';
             if (showPopup) {
-                updateSaveProgress(100, `Save failed: ${error.message}`, 'error');
-                teacherManualSaveInProgress = false;
-                setManualSaveButtonBusy(false);
+                resetManualSaveUi(`Save failed: ${error.message}`);
             }
             if (showPopup) alert(`Online save failed: ${error.message}`);
             return;
