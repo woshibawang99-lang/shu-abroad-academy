@@ -36,7 +36,7 @@ function setManualSaveButtonBusy(isBusy) {
     button.disabled = isBusy;
     button.innerHTML = isBusy
         ? '<i class="fa-solid fa-spinner fa-spin"></i><span>Saving...</span>'
-        : '<i class="fa-solid fa-check"></i><span>Manual Save Confirmation</span>';
+        : '<i class="fa-solid fa-check"></i><span>Save Current Week</span>';
 }
 
 function buildAssessmentSaveSignature(week) {
@@ -1758,32 +1758,24 @@ async function saveTeacherEdits(showPopup = false) {
     if (targetWeek && window.supabaseClient && currentUser?.role === 'teacher') {
         try {
             if (showPopup) {
-                const weeksToSave = courseData.modules[courseId] || [];
-                updateSaveProgress(4, `Prioritising Week ${weekNum}...`);
-                const verified = await saveCourseLearningContentFast(courseId, weeksToSave, weekNum, (week, completed, total) => {
-                    if (statusText) statusText.innerText = `Saved Week ${week.week} (${completed}/${total})...`;
-                    updateSaveProgress(5 + (completed / total) * 80, `Saved Week ${week.week} — ${completed} of ${total} weeks`);
-                });
-
-                weeksToSave.forEach(week => {
-                    const saveKey = `${courseId}:${week.week}`;
-                    lastSavedLearningSignatures.set(saveKey, JSON.stringify({
-                        title: week.title,
-                        slides: week.slides || [],
-                        vocabs: week.vocabs || []
-                    }));
-                });
+                const saveKey = `${courseId}:${targetWeek.week}`;
+                updateSaveProgress(10, `Saving Week ${targetWeek.week} slides and vocabulary...`);
+                await queueLearningWeekSave(courseId, targetWeek);
+                lastSavedLearningSignatures.set(saveKey, JSON.stringify({
+                    title: targetWeek.title,
+                    slides: targetWeek.slides || [],
+                    vocabs: targetWeek.vocabs || []
+                }));
+                updateSaveProgress(75, `Week ${targetWeek.week}: ${(targetWeek.slides || []).length} slides verified online`);
 
                 const currentAssessmentSignature = buildAssessmentSaveSignature(targetWeek);
-                const currentSaveKey = `${courseId}:${targetWeek.week}`;
-                updateSaveProgress(92, `Verified ${verified.weekCount} weeks and ${verified.slideCount} slides`);
-                if (lastSavedAssessmentSignatures.get(currentSaveKey) !== currentAssessmentSignature) {
+                if (lastSavedAssessmentSignatures.get(saveKey) !== currentAssessmentSignature) {
                     if (statusText) statusText.innerText = 'Saving current week quiz and exam...';
-                    updateSaveProgress(96, 'Saving current week quiz and exam...');
+                    updateSaveProgress(85, `Saving Week ${targetWeek.week} quiz and exam...`);
                     await queueAssessmentSave(targetWeek);
-                    lastSavedAssessmentSignatures.set(currentSaveKey, currentAssessmentSignature);
+                    lastSavedAssessmentSignatures.set(saveKey, currentAssessmentSignature);
                 }
-                if (statusText) statusText.innerText = `Verified ${verified.weekCount} weeks / ${verified.slideCount} slides`;
+                if (statusText) statusText.innerText = `Week ${targetWeek.week} saved / ${(targetWeek.slides || []).length} slides verified`;
             } else {
                 const week = targetWeek;
                 const saveKey = `${courseId}:${week.week}`;
@@ -1825,11 +1817,10 @@ async function saveTeacherEdits(showPopup = false) {
     if (statusText && !showPopup) statusText.innerText = `Auto-saved at ${timeStr}`;
 
     if (showPopup) {
-        const savedWeeks = courseData.modules[courseId] || [];
-        const savedSlideCount = savedWeeks.reduce((sum, week) => sum + (week.slides || []).length, 0);
-        updateSaveProgress(100, `Save complete — ${savedWeeks.length} weeks, ${savedSlideCount} slides verified`, 'complete');
+        const savedSlideCount = (targetWeek?.slides || []).length;
+        updateSaveProgress(100, `Week ${weekNum} saved — ${savedSlideCount} slides verified online`, 'complete');
         teacherManualSaveInProgress = false;
         setManualSaveButtonBusy(false);
-        alert(`🎉 Course saved and verified online: ${savedWeeks.length} weeks, ${savedSlideCount} slides.`);
+        alert(`🎉 Week ${weekNum} saved successfully: ${savedSlideCount} slides verified online.`);
     }
 }
