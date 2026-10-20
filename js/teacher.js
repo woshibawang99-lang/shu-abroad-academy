@@ -9,6 +9,27 @@ let cloudExamSubmissionCache = [];
 const lastSavedLearningSignatures = new Map();
 const lastSavedAssessmentSignatures = new Map();
 
+function buildAssessmentSaveSignature(week) {
+    return JSON.stringify({
+        quizzes: (week?.quizzes || []).map(({ id, _supabaseId, ...question }) => question),
+        exam: {
+            isOpen: Boolean(week?.exam?.isOpen),
+            durationMinutes: week?.exam?.durationMinutes || 60,
+            version: week?.exam?.version || 1,
+            questions: (week?.exam?.questions || []).map(({ id, _supabaseId, ...question }) => question)
+        }
+    });
+}
+
+function primeTeacherAssessmentSaveSignatures() {
+    if (currentUser?.role !== 'teacher') return;
+    (courseData.courses || []).forEach(course => {
+        (courseData.modules[course.id] || []).forEach(week => {
+            lastSavedAssessmentSignatures.set(`${course.id}:${week.week}`, buildAssessmentSaveSignature(week));
+        });
+    });
+}
+
 if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 }
@@ -1700,39 +1721,47 @@ async function saveTeacherEdits(showPopup = false) {
     const statusText = document.getElementById('autosave-text');
     if (targetWeek && window.supabaseClient && currentUser?.role === 'teacher') {
         try {
-            const weeksToSave = showPopup ? (courseData.modules[courseId] || []) : [targetWeek];
-            for (let index = 0; index < weeksToSave.length; index++) {
-                const week = weeksToSave[index];
+            if (showPopup) {
+                const weeksToSave = courseData.modules[courseId] || [];
+                const verified = await saveCourseLearningContentFast(courseId, weeksToSave, weekNum, (week, completed, total) => {
+                    if (statusText) statusText.innerText = `Saved Week ${week.week} (${completed}/${total})...`;
+                });
+
+                weeksToSave.forEach(week => {
+                    const saveKey = `${courseId}:${week.week}`;
+                    lastSavedLearningSignatures.set(saveKey, JSON.stringify({
+                        title: week.title,
+                        slides: week.slides || [],
+                        vocabs: week.vocabs || []
+                    }));
+                });
+
+                const currentAssessmentSignature = buildAssessmentSaveSignature(targetWeek);
+                const currentSaveKey = `${courseId}:${targetWeek.week}`;
+                if (lastSavedAssessmentSignatures.get(currentSaveKey) !== currentAssessmentSignature) {
+                    if (statusText) statusText.innerText = 'Saving current week quiz and exam...';
+                    await queueAssessmentSave(targetWeek);
+                    lastSavedAssessmentSignatures.set(currentSaveKey, currentAssessmentSignature);
+                }
+                if (statusText) statusText.innerText = `Verified ${verified.weekCount} weeks / ${verified.slideCount} slides`;
+            } else {
+                const week = targetWeek;
                 const saveKey = `${courseId}:${week.week}`;
                 const learningSignature = JSON.stringify({
                     title: week.title,
                     slides: week.slides || [],
                     vocabs: week.vocabs || []
                 });
-                const assessmentSignature = JSON.stringify({
-                    quizzes: (week.quizzes || []).map(({ id, _supabaseId, ...question }) => question),
-                    exam: {
-                        isOpen: Boolean(week.exam?.isOpen),
-                        durationMinutes: week.exam?.durationMinutes || 60,
-                        version: week.exam?.version || 1,
-                        questions: (week.exam?.questions || []).map(({ id, _supabaseId, ...question }) => question)
-                    }
-                });
+                const assessmentSignature = buildAssessmentSaveSignature(week);
 
-                if (showPopup && statusText) statusText.innerText = `Saving Week ${week.week} (${index + 1}/${weeksToSave.length})...`;
-                if (showPopup || lastSavedLearningSignatures.get(saveKey) !== learningSignature) {
+                if (lastSavedLearningSignatures.get(saveKey) !== learningSignature) {
                     await queueLearningWeekSave(courseId, week);
                     lastSavedLearningSignatures.set(saveKey, learningSignature);
                 }
-                if (showPopup || lastSavedAssessmentSignatures.get(saveKey) !== assessmentSignature) {
+                if (lastSavedAssessmentSignatures.get(saveKey) !== assessmentSignature) {
                     await queueAssessmentSave(week);
                     lastSavedAssessmentSignatures.set(saveKey, assessmentSignature);
                 }
-            }
-
-            if (showPopup) {
-                const verified = await verifyCourseLearningContent(courseId, weeksToSave);
-                if (statusText) statusText.innerText = `Verified ${verified.weekCount} weeks / ${verified.slideCount} slides`;
             }
         } catch (error) {
             console.error('Online save failed:', error);

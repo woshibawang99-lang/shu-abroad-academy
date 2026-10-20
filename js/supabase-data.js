@@ -147,6 +147,7 @@ async function loadSupabaseLearningContent() {
     courseData.modules = mappedModules;
     currentCourseId = mappedCourses[0].id;
     refreshCourseSelectOptions();
+    if (typeof primeTeacherAssessmentSaveSignatures === 'function') primeTeacherAssessmentSaveSignatures();
     if (typeof renderSubjectCards === 'function') renderSubjectCards();
     return true;
 }
@@ -168,7 +169,7 @@ function queueLearningWeekSave(courseId, weekData) {
     return supabaseLearningSaveChain;
 }
 
-async function saveLearningWeekToSupabase(courseId, weekData) {
+async function saveLearningWeekToSupabase(courseId, weekData, verifyAfterSave = true) {
     if (!window.supabaseClient || !currentUser || currentUser.role !== 'teacher') return;
     const result = await window.supabaseClient.rpc('save_learning_week_content', {
         target_course_id: courseId,
@@ -182,6 +183,8 @@ async function saveLearningWeekToSupabase(courseId, weekData) {
     });
     if (result.error) throw result.error;
     weekData._supabaseId = result.data;
+
+    if (!verifyAfterSave) return;
 
     const [slideVerification, vocabularyVerification] = await Promise.all([
         window.supabaseClient
@@ -216,6 +219,35 @@ async function saveLearningWeekToSupabase(courseId, weekData) {
     if (!vocabularyIsExactMatch) {
         throw new Error(`Vocabulary verification failed: expected ${expectedVocabulary.length}, database returned ${savedVocabulary.length}.`);
     }
+}
+
+async function saveCourseLearningContentFast(courseId, weeks, priorityWeekNumber, onProgress) {
+    if (!weeks.length) return { weekCount: 0, slideCount: 0 };
+    await supabaseLearningSaveChain.catch(() => undefined);
+
+    const priorityWeek = weeks.find(week => week.week === priorityWeekNumber);
+    const remainingWeeks = weeks.filter(week => week !== priorityWeek);
+    let completed = 0;
+    const report = week => {
+        completed += 1;
+        if (typeof onProgress === 'function') onProgress(week, completed, weeks.length);
+    };
+
+    if (priorityWeek) {
+        await saveLearningWeekToSupabase(courseId, priorityWeek, false);
+        report(priorityWeek);
+    }
+
+    const batchSize = 5;
+    for (let start = 0; start < remainingWeeks.length; start += batchSize) {
+        const batch = remainingWeeks.slice(start, start + batchSize);
+        await Promise.all(batch.map(async week => {
+            await saveLearningWeekToSupabase(courseId, week, false);
+            report(week);
+        }));
+    }
+
+    return verifyCourseLearningContent(courseId, weeks);
 }
 
 async function verifyCourseLearningContent(courseId, expectedWeeks) {
