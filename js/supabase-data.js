@@ -66,8 +66,9 @@ async function loadSupabaseLearningContent() {
     mappedCourses.forEach(course => {
         const databaseWeeks = (weeksResult.data || []).filter(week => week.course_id === course.id);
         const previousCourseId = previousCourseIdByTitle.get(course.title);
+        const previousCourseWeeks = previousModules[previousCourseId] || [];
         if (!databaseWeeks.length) {
-            mappedModules[course.id] = (previousModules[previousCourseId] || []).map(week => ({
+            mappedModules[course.id] = previousCourseWeeks.map(week => ({
                 ...week,
                 slides: [...(week.slides || [])],
                 vocabs: (week.vocabs || []).map(item => ({ ...item })),
@@ -76,10 +77,9 @@ async function loadSupabaseLearningContent() {
             }));
             return;
         }
-        mappedModules[course.id] = databaseWeeks.map(week => {
-            const localFallback = Object.values(previousModules).flat().find(item =>
-                item.week === week.week_number && item.title === week.title
-            );
+        const mappedDatabaseWeeks = databaseWeeks.map(week => {
+            const localFallback = previousCourseWeeks.find(item => item.week === week.week_number)
+                || Object.values(previousModules).flat().find(item => item.week === week.week_number && item.title === week.title);
             const practiceAssessment = assessments.find(item => item.week_id === week.id && item.kind === 'practice');
             const examAssessment = assessments.find(item => item.week_id === week.id && item.kind === 'exam');
             const mapQuestions = assessment => !assessment ? [] : questions
@@ -99,15 +99,20 @@ async function loadSupabaseLearningContent() {
                         explanation: key?.explanation || ''
                     };
                 });
+            const databaseSlides = (slidesResult.data || [])
+                .filter(slide => slide.week_id === week.id)
+                .sort((a, b) => a.slide_number - b.slide_number)
+                .map(slide => slide.content_html);
+            const recoveredSlides = currentUser?.role === 'teacher'
+                && (localFallback?.slides || []).length > databaseSlides.length
+                ? [...localFallback.slides]
+                : databaseSlides;
             return {
                 _supabaseId: week.id,
                 week: week.week_number,
                 title: week.title,
                 isPublished: week.is_published,
-                slides: (slidesResult.data || [])
-                    .filter(slide => slide.week_id === week.id)
-                    .sort((a, b) => a.slide_number - b.slide_number)
-                    .map(slide => slide.content_html),
+                slides: recoveredSlides,
                 vocabs: (vocabularyResult.data || [])
                     .filter(item => item.week_id === week.id)
                     .sort((a, b) => a.sort_order - b.sort_order)
@@ -123,6 +128,19 @@ async function loadSupabaseLearningContent() {
                 } : (localFallback?.exam || { isOpen: false, durationMinutes: 60, questions: [], version: 1 })
             };
         });
+        const localOnlyWeeks = currentUser?.role === 'teacher'
+            ? previousCourseWeeks.filter(localWeek =>
+                !databaseWeeks.some(databaseWeek => databaseWeek.week_number === localWeek.week)
+            ).map(week => ({
+                ...week,
+                slides: [...(week.slides || [])],
+                vocabs: (week.vocabs || []).map(item => ({ ...item })),
+                quizzes: (week.quizzes || []).map(item => ({ ...item })),
+                exam: week.exam ? { ...week.exam, questions: (week.exam.questions || []).map(item => ({ ...item })) } : { isOpen: false, durationMinutes: 60, questions: [], version: 1 }
+            }))
+            : [];
+        mappedModules[course.id] = [...mappedDatabaseWeeks, ...localOnlyWeeks]
+            .sort((a, b) => a.week - b.week);
     });
 
     courseData.courses = mappedCourses;
@@ -198,6 +216,41 @@ async function saveLearningWeekToSupabase(courseId, weekData) {
     if (!vocabularyIsExactMatch) {
         throw new Error(`Vocabulary verification failed: expected ${expectedVocabulary.length}, database returned ${savedVocabulary.length}.`);
     }
+}
+
+async function verifyCourseLearningContent(courseId, expectedWeeks) {
+    const weeksResult = await window.supabaseClient
+        .from('course_weeks')
+        .select('id, week_number, title')
+        .eq('course_id', courseId)
+        .order('week_number');
+    if (weeksResult.error) throw weeksResult.error;
+
+    const savedWeeks = weeksResult.data || [];
+    const missingWeeks = expectedWeeks.filter(expected =>
+        !savedWeeks.some(saved => saved.week_number === expected.week)
+    );
+    if (missingWeeks.length) {
+        throw new Error(`Course verification failed: Week ${missingWeeks.map(week => week.week).join(', ')} did not reach the database.`);
+    }
+
+    const weekIds = savedWeeks.map(week => week.id);
+    const slidesResult = weekIds.length
+        ? await window.supabaseClient.from('slides').select('week_id, slide_number').in('week_id', weekIds)
+        : { data: [], error: null };
+    if (slidesResult.error) throw slidesResult.error;
+
+    const mismatches = expectedWeeks.map(expected => {
+        const savedWeek = savedWeeks.find(item => item.week_number === expected.week);
+        const savedCount = (slidesResult.data || []).filter(slide => slide.week_id === savedWeek?.id).length;
+        const expectedCount = (expected.slides || []).length;
+        return savedCount === expectedCount ? null : `Week ${expected.week}: expected ${expectedCount}, saved ${savedCount}`;
+    }).filter(Boolean);
+    if (mismatches.length) {
+        throw new Error(`Slide verification failed — ${mismatches.join('; ')}.`);
+    }
+
+    return { weekCount: expectedWeeks.length, slideCount: expectedWeeks.reduce((sum, week) => sum + (week.slides || []).length, 0) };
 }
 
 function queueAssessmentSave(weekData) {

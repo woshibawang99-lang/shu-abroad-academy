@@ -1610,6 +1610,7 @@ function createNewWeekForCurrentCourse() {
     const weekSelect = document.getElementById('editor-week-select');
     if (weekSelect) weekSelect.value = newWeekNum;
     loadWeekToEditor();
+    autoSaveTeacherEdits();
 }
 
 async function saveTeacherEdits(showPopup = false) {
@@ -1696,35 +1697,45 @@ async function saveTeacherEdits(showPopup = false) {
 
     saveDataToStorage();
 
+    const statusText = document.getElementById('autosave-text');
     if (targetWeek && window.supabaseClient && currentUser?.role === 'teacher') {
         try {
-            const saveKey = `${courseId}:${weekNum}`;
-            const learningSignature = JSON.stringify({
-                title: targetWeek.title,
-                slides: targetWeek.slides || [],
-                vocabs: targetWeek.vocabs || []
-            });
-            const assessmentSignature = JSON.stringify({
-                quizzes: (targetWeek.quizzes || []).map(({ id, _supabaseId, ...question }) => question),
-                exam: {
-                    isOpen: Boolean(targetWeek.exam?.isOpen),
-                    durationMinutes: targetWeek.exam?.durationMinutes || 60,
-                    version: targetWeek.exam?.version || 1,
-                    questions: (targetWeek.exam?.questions || []).map(({ id, _supabaseId, ...question }) => question)
-                }
-            });
+            const weeksToSave = showPopup ? (courseData.modules[courseId] || []) : [targetWeek];
+            for (let index = 0; index < weeksToSave.length; index++) {
+                const week = weeksToSave[index];
+                const saveKey = `${courseId}:${week.week}`;
+                const learningSignature = JSON.stringify({
+                    title: week.title,
+                    slides: week.slides || [],
+                    vocabs: week.vocabs || []
+                });
+                const assessmentSignature = JSON.stringify({
+                    quizzes: (week.quizzes || []).map(({ id, _supabaseId, ...question }) => question),
+                    exam: {
+                        isOpen: Boolean(week.exam?.isOpen),
+                        durationMinutes: week.exam?.durationMinutes || 60,
+                        version: week.exam?.version || 1,
+                        questions: (week.exam?.questions || []).map(({ id, _supabaseId, ...question }) => question)
+                    }
+                });
 
-            if (showPopup || lastSavedLearningSignatures.get(saveKey) !== learningSignature) {
-                await queueLearningWeekSave(courseId, targetWeek);
-                lastSavedLearningSignatures.set(saveKey, learningSignature);
+                if (showPopup && statusText) statusText.innerText = `Saving Week ${week.week} (${index + 1}/${weeksToSave.length})...`;
+                if (showPopup || lastSavedLearningSignatures.get(saveKey) !== learningSignature) {
+                    await queueLearningWeekSave(courseId, week);
+                    lastSavedLearningSignatures.set(saveKey, learningSignature);
+                }
+                if (showPopup || lastSavedAssessmentSignatures.get(saveKey) !== assessmentSignature) {
+                    await queueAssessmentSave(week);
+                    lastSavedAssessmentSignatures.set(saveKey, assessmentSignature);
+                }
             }
-            if (showPopup || lastSavedAssessmentSignatures.get(saveKey) !== assessmentSignature) {
-                await queueAssessmentSave(targetWeek);
-                lastSavedAssessmentSignatures.set(saveKey, assessmentSignature);
+
+            if (showPopup) {
+                const verified = await verifyCourseLearningContent(courseId, weeksToSave);
+                if (statusText) statusText.innerText = `Verified ${verified.weekCount} weeks / ${verified.slideCount} slides`;
             }
         } catch (error) {
             console.error('Online save failed:', error);
-            const statusText = document.getElementById('autosave-text');
             if (statusText) statusText.innerText = 'Online save failed';
             if (showPopup) alert(`Online save failed: ${error.message}`);
             return;
@@ -1737,10 +1748,11 @@ async function saveTeacherEdits(showPopup = false) {
 
     const now = new Date();
     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-    const statusText = document.getElementById('autosave-text');
-    if (statusText) statusText.innerText = `Auto-saved at ${timeStr}`;
+    if (statusText && !showPopup) statusText.innerText = `Auto-saved at ${timeStr}`;
 
     if (showPopup) {
-        alert('🎉 PPT Slides and Vocabulary saved online successfully!');
+        const savedWeeks = courseData.modules[courseId] || [];
+        const savedSlideCount = savedWeeks.reduce((sum, week) => sum + (week.slides || []).length, 0);
+        alert(`🎉 Course saved and verified online: ${savedWeeks.length} weeks, ${savedSlideCount} slides.`);
     }
 }
