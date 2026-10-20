@@ -5,9 +5,39 @@ let autoSaveTimer = null;
 let teacherSlideIndex = 0;
 let renderedTeacherSlideIndex = 0;
 let isSettingEditorContent = false;
+let teacherManualSaveInProgress = false;
+let saveProgressHideTimer = null;
 let cloudExamSubmissionCache = [];
 const lastSavedLearningSignatures = new Map();
 const lastSavedAssessmentSignatures = new Map();
+
+function updateSaveProgress(percent, label, state = 'saving') {
+    const panel = document.getElementById('save-progress-panel');
+    const bar = document.getElementById('save-progress-bar');
+    const percentText = document.getElementById('save-progress-percent');
+    const labelText = document.getElementById('save-progress-label');
+    if (!panel || !bar || !percentText || !labelText) return;
+    if (saveProgressHideTimer) clearTimeout(saveProgressHideTimer);
+    const safePercent = Math.max(0, Math.min(100, Math.round(percent)));
+    panel.classList.remove('hidden');
+    bar.style.width = `${safePercent}%`;
+    bar.style.backgroundColor = state === 'error' ? '#f43f5e' : state === 'complete' ? '#10b981' : '#3b82f6';
+    percentText.innerText = `${safePercent}%`;
+    labelText.innerText = label;
+    labelText.className = `text-xs font-semibold ${state === 'error' ? 'text-rose-300' : state === 'complete' ? 'text-emerald-300' : 'text-blue-300'}`;
+    if (state === 'complete') {
+        saveProgressHideTimer = setTimeout(() => panel.classList.add('hidden'), 5000);
+    }
+}
+
+function setManualSaveButtonBusy(isBusy) {
+    const button = document.getElementById('manual-save-button');
+    if (!button) return;
+    button.disabled = isBusy;
+    button.innerHTML = isBusy
+        ? '<i class="fa-solid fa-spinner fa-spin"></i><span>Saving...</span>'
+        : '<i class="fa-solid fa-check"></i><span>Manual Save Confirmation</span>';
+}
 
 function buildAssessmentSaveSignature(week) {
     return JSON.stringify({
@@ -1635,6 +1665,12 @@ function createNewWeekForCurrentCourse() {
 }
 
 async function saveTeacherEdits(showPopup = false) {
+    if (showPopup && teacherManualSaveInProgress) return;
+    if (showPopup) {
+        teacherManualSaveInProgress = true;
+        setManualSaveButtonBusy(true);
+        updateSaveProgress(2, 'Preparing course data...');
+    }
     if (autoSaveTimer) {
         clearTimeout(autoSaveTimer);
         autoSaveTimer = null;
@@ -1723,8 +1759,10 @@ async function saveTeacherEdits(showPopup = false) {
         try {
             if (showPopup) {
                 const weeksToSave = courseData.modules[courseId] || [];
+                updateSaveProgress(4, `Prioritising Week ${weekNum}...`);
                 const verified = await saveCourseLearningContentFast(courseId, weeksToSave, weekNum, (week, completed, total) => {
                     if (statusText) statusText.innerText = `Saved Week ${week.week} (${completed}/${total})...`;
+                    updateSaveProgress(5 + (completed / total) * 80, `Saved Week ${week.week} — ${completed} of ${total} weeks`);
                 });
 
                 weeksToSave.forEach(week => {
@@ -1738,8 +1776,10 @@ async function saveTeacherEdits(showPopup = false) {
 
                 const currentAssessmentSignature = buildAssessmentSaveSignature(targetWeek);
                 const currentSaveKey = `${courseId}:${targetWeek.week}`;
+                updateSaveProgress(92, `Verified ${verified.weekCount} weeks and ${verified.slideCount} slides`);
                 if (lastSavedAssessmentSignatures.get(currentSaveKey) !== currentAssessmentSignature) {
                     if (statusText) statusText.innerText = 'Saving current week quiz and exam...';
+                    updateSaveProgress(96, 'Saving current week quiz and exam...');
                     await queueAssessmentSave(targetWeek);
                     lastSavedAssessmentSignatures.set(currentSaveKey, currentAssessmentSignature);
                 }
@@ -1766,6 +1806,11 @@ async function saveTeacherEdits(showPopup = false) {
         } catch (error) {
             console.error('Online save failed:', error);
             if (statusText) statusText.innerText = 'Online save failed';
+            if (showPopup) {
+                updateSaveProgress(100, `Save failed: ${error.message}`, 'error');
+                teacherManualSaveInProgress = false;
+                setManualSaveButtonBusy(false);
+            }
             if (showPopup) alert(`Online save failed: ${error.message}`);
             return;
         }
@@ -1782,6 +1827,9 @@ async function saveTeacherEdits(showPopup = false) {
     if (showPopup) {
         const savedWeeks = courseData.modules[courseId] || [];
         const savedSlideCount = savedWeeks.reduce((sum, week) => sum + (week.slides || []).length, 0);
+        updateSaveProgress(100, `Save complete — ${savedWeeks.length} weeks, ${savedSlideCount} slides verified`, 'complete');
+        teacherManualSaveInProgress = false;
+        setManualSaveButtonBusy(false);
         alert(`🎉 Course saved and verified online: ${savedWeeks.length} weeks, ${savedSlideCount} slides.`);
     }
 }

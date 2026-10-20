@@ -111,10 +111,20 @@
                         <i class="fa-solid fa-plus"></i>
                         <span>Add New Week</span>
                     </button>
-                    <button onclick="saveTeacherEdits(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-md transition flex items-center space-x-1">
+                    <button id="manual-save-button" onclick="saveTeacherEdits(true)" class="bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-600 disabled:cursor-wait text-white text-xs font-bold px-4 py-2 rounded-lg shadow-md transition flex items-center space-x-1">
                         <i class="fa-solid fa-check"></i>
                         <span>Manual Save Confirmation</span>
                     </button>
+                </div>
+            </div>
+
+            <div id="save-progress-panel" class="hidden bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 shadow-inner" role="status" aria-live="polite">
+                <div class="flex items-center justify-between gap-3 mb-2">
+                    <span id="save-progress-label" class="text-xs font-semibold text-blue-300">Preparing to save...</span>
+                    <span id="save-progress-percent" class="text-xs font-mono font-bold text-white">0%</span>
+                </div>
+                <div class="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div id="save-progress-bar" class="h-full bg-blue-500 rounded-full transition-all duration-300 ease-out" style="width:0%"></div>
                 </div>
             </div>
 
