@@ -1659,7 +1659,7 @@ function createNewWeekForCurrentCourse() {
     if (!courseSelect) return;
     const courseId = courseSelect.value;
     const currentWeeks = courseData.modules[courseId] || [];
-    const newWeekNum = currentWeeks.length + 1;
+    const newWeekNum = currentWeeks.reduce((largest, week) => Math.max(largest, Number(week.week) || 0), 0) + 1;
 
     currentWeeks.push({
         week: newWeekNum,
@@ -1676,6 +1676,62 @@ function createNewWeekForCurrentCourse() {
     if (weekSelect) weekSelect.value = newWeekNum;
     loadWeekToEditor();
     autoSaveTeacherEdits();
+}
+
+async function deleteCurrentWeek() {
+    const courseSelect = document.getElementById('editor-course-select');
+    const weekSelect = document.getElementById('editor-week-select');
+    const deleteButton = document.getElementById('delete-week-button');
+    if (!courseSelect || !weekSelect) return;
+
+    const courseId = courseSelect.value;
+    const weeks = courseData.modules[courseId] || [];
+    const weekNumber = parseInt(weekSelect.value) || 1;
+    const weekIndex = weeks.findIndex(week => week.week === weekNumber);
+    const weekData = weeks[weekIndex];
+    if (!weekData) return;
+    if (weeks.length <= 1) {
+        alert('A course must keep at least one week. Add another week before deleting this one.');
+        return;
+    }
+
+    const confirmed = confirm(`Delete Week ${weekData.week}: ${weekData.title}?\n\nThis permanently removes its slides, vocabulary, quizzes, exams and student submissions.`);
+    if (!confirmed) return;
+
+    if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = null;
+    }
+    if (deleteButton) {
+        deleteButton.disabled = true;
+        deleteButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Deleting...</span>';
+    }
+
+    try {
+        if (window.supabaseClient && currentUser?.role === 'teacher') {
+            await waitForTeacherSave(deleteLearningWeekFromSupabase(courseId, weekData));
+        }
+        if (typeof markWeekDeleted === 'function') markWeekDeleted(courseId, weekData.week);
+        weeks.splice(weekIndex, 1);
+        lastSavedLearningSignatures.delete(`${courseId}:${weekData.week}`);
+        lastSavedAssessmentSignatures.delete(`${courseId}:${weekData.week}`);
+
+        const nextWeek = weeks[Math.min(weekIndex, weeks.length - 1)];
+        loadCourseToEditor();
+        if (weekSelect && nextWeek) weekSelect.value = String(nextWeek.week);
+        teacherSlideIndex = 0;
+        loadWeekToEditor();
+        if (typeof renderSubjectCards === 'function') renderSubjectCards();
+        alert(`Week ${weekData.week} was deleted successfully.`);
+    } catch (error) {
+        console.error('Week deletion failed:', error);
+        alert(`Week deletion failed: ${error.message}`);
+    } finally {
+        if (deleteButton) {
+            deleteButton.disabled = false;
+            deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i><span>Delete This Week</span>';
+        }
+    }
 }
 
 async function saveTeacherEdits(showPopup = false) {

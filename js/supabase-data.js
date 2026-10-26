@@ -2,6 +2,32 @@
 
 let supabaseLearningSaveChain = Promise.resolve();
 let supabaseAssessmentSaveChain = Promise.resolve();
+const deletedWeeksStorageKey = 'shu_deleted_course_weeks';
+
+function getDeletedWeekKeys() {
+    try {
+        const value = JSON.parse(localStorage.getItem(deletedWeeksStorageKey) || '[]');
+        return new Set(Array.isArray(value) ? value : []);
+    } catch (error) {
+        console.warn('Could not read deleted-week markers:', error);
+        return new Set();
+    }
+}
+
+function markWeekDeleted(courseId, weekNumber) {
+    try {
+        const keys = getDeletedWeekKeys();
+        keys.add(`${courseId}:${weekNumber}`);
+        localStorage.setItem(deletedWeeksStorageKey, JSON.stringify([...keys]));
+    } catch (error) {
+        console.warn('Could not store deleted-week marker:', error);
+    }
+}
+
+function wasWeekDeleted(courseIds, weekNumber) {
+    const keys = getDeletedWeekKeys();
+    return courseIds.filter(Boolean).some(courseId => keys.has(`${courseId}:${weekNumber}`));
+}
 
 async function loadSupabaseLearningContent() {
     if (!window.supabaseClient) return false;
@@ -68,13 +94,15 @@ async function loadSupabaseLearningContent() {
         const previousCourseId = previousCourseIdByTitle.get(course.title);
         const previousCourseWeeks = previousModules[previousCourseId] || [];
         if (!databaseWeeks.length) {
-            mappedModules[course.id] = previousCourseWeeks.map(week => ({
+            mappedModules[course.id] = previousCourseWeeks
+                .filter(week => !wasWeekDeleted([course.id, previousCourseId], week.week))
+                .map(week => ({
                 ...week,
                 slides: [...(week.slides || [])],
                 vocabs: (week.vocabs || []).map(item => ({ ...item })),
                 quizzes: (week.quizzes || []).map(item => ({ ...item })),
                 exam: week.exam ? { ...week.exam, questions: (week.exam.questions || []).map(item => ({ ...item })) } : { isOpen: false, durationMinutes: 60, questions: [], version: 1 }
-            }));
+                }));
             return;
         }
         const mappedDatabaseWeeks = databaseWeeks.map(week => {
@@ -131,6 +159,7 @@ async function loadSupabaseLearningContent() {
         const localOnlyWeeks = currentUser?.role === 'teacher'
             ? previousCourseWeeks.filter(localWeek =>
                 !databaseWeeks.some(databaseWeek => databaseWeek.week_number === localWeek.week)
+                && !wasWeekDeleted([course.id, previousCourseId], localWeek.week)
             ).map(week => ({
                 ...week,
                 slides: [...(week.slides || [])],
@@ -150,6 +179,26 @@ async function loadSupabaseLearningContent() {
     if (typeof primeTeacherAssessmentSaveSignatures === 'function') primeTeacherAssessmentSaveSignatures();
     if (typeof renderSubjectCards === 'function') renderSubjectCards();
     return true;
+}
+
+async function deleteLearningWeekFromSupabase(courseId, weekData) {
+    if (!window.supabaseClient || currentUser?.role !== 'teacher') {
+        throw new Error('Teacher login is required before deleting a week.');
+    }
+
+    const result = await window.supabaseClient
+        .from('course_weeks')
+        .delete()
+        .eq('course_id', courseId)
+        .eq('week_number', weekData.week)
+        .select('id');
+    if (result.error) throw result.error;
+
+    // A local-only week legitimately has no matching database row. A saved week
+    // must return a deleted id, otherwise do not pretend the cloud deletion worked.
+    if (weekData._supabaseId && !(result.data || []).length) {
+        throw new Error('The saved week was not deleted. Please check teacher delete permissions.');
+    }
 }
 
 function refreshCourseSelectOptions() {

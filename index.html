@@ -106,10 +106,14 @@
                     </div>
                 </div>
                 
-                <div class="flex items-center space-x-2">
+                <div class="flex flex-wrap items-center justify-end gap-2">
                     <button onclick="createNewWeekForCurrentCourse()" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center space-x-1">
                         <i class="fa-solid fa-plus"></i>
                         <span>Add New Week</span>
+                    </button>
+                    <button id="delete-week-button" onclick="deleteCurrentWeek()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center space-x-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>Delete This Week</span>
                     </button>
                     <button id="manual-save-button" onclick="saveTeacherEdits(true)" class="bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-600 disabled:cursor-wait text-white text-xs font-bold px-4 py-2 rounded-lg shadow-md transition flex items-center space-x-1">
                         <i class="fa-solid fa-check"></i>
@@ -586,8 +590,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-config.js"></script>
     <script src="js/data.js"></script>
-    <script src="js/supabase-data.js"></script>
-    <script src="js/teacher.js?v=20261020-save-speed-fix"></script>
+    <script src="js/supabase-data.js?v=20261026-delete-week"></script>
+    <script src="js/teacher.js?v=20261026-delete-week"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
