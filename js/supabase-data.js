@@ -484,6 +484,9 @@ async function loadExistingAssessmentResult(submission) {
 
 function formatAssessmentSubmissionError(error) {
     const message = String(error?.message || error || 'Unknown submission error');
+    if (/final_score/i.test(message) && /null value|not-null constraint/i.test(message)) {
+        return 'The scoring function needs Supabase update 21. Ask the administrator to run 21-fix-null-final-score.sql, then submit again.';
+    }
     if (/student_answers/i.test(message) && /permission denied|row-level security|policy/i.test(message)) {
         return 'Answer saving permission is not configured yet. The administrator must run Supabase update 18, then you can submit again.';
     }
