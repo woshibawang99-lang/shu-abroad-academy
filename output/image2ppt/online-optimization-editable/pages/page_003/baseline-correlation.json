@@ -1,0 +1,677 @@
+[
+  {
+    "font": "t1-gul-regular",
+    "text": "Before",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      98,
+      161,
+      149,
+      180
+    ],
+    "iou": 0.704,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "presenting",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      152,
+      161,
+      236,
+      180
+    ],
+    "iou": 0.807,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "convergence",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      269,
+      161,
+      368,
+      180
+    ],
+    "iou": 0.675,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "results,",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      371,
+      161,
+      428,
+      180
+    ],
+    "iou": 0.888,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "aggre-",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      527,
+      161,
+      578,
+      180
+    ],
+    "iou": 0.848,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "gated",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      183,
+      118,
+      201
+    ],
+    "iou": 0.718,
+    "dx": 1,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "proposed",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      215,
+      183,
+      289,
+      201
+    ],
+    "iou": 0.774,
+    "dx": 1,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "where",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      297,
+      124,
+      316
+    ],
+    "iou": 0.855,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "following",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      148,
+      443,
+      222,
+      461
+    ],
+    "iou": 0.759,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "part,",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      225,
+      443,
+      262,
+      461
+    ],
+    "iou": 0.885,
+    "dx": 1,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "convergence",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      404,
+      443,
+      502,
+      461
+    ],
+    "iou": 0.756,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "results",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      505,
+      443,
+      558,
+      461
+    ],
+    "iou": 0.718,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "paper.",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      108,
+      464,
+      158,
+      483
+    ],
+    "iou": 0.724,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "upper",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      221,
+      1050,
+      269,
+      1068
+    ],
+    "iou": 0.849,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "bound",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      272,
+      1050,
+      323,
+      1068
+    ],
+    "iou": 0.785,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "dynamic",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      346,
+      1050,
+      414,
+      1068
+    ],
+    "iou": 0.858,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "regret",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      417,
+      1050,
+      465,
+      1068
+    ],
+    "iou": 0.773,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular",
+    "text": "Theorem",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      489,
+      1050,
+      559,
+      1068
+    ],
+    "iou": 0.719,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "Automatica",
+    "size": 6.631100177764893,
+    "sourcebox": [
+      925,
+      71,
+      994,
+      86
+    ],
+    "iou": 0.685,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.2261
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "Xiong",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      157,
+      108,
+      201,
+      127
+    ],
+    "iou": 0.652,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "Under",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      301,
+      108,
+      348,
+      127
+    ],
+    "iou": 0.66,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": " Assumption",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      346,
+      108,
+      438,
+      127
+    ],
+    "iou": 0.649,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "Here,",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      321,
+      130,
+      361,
+      149
+    ],
+    "iou": 0.751,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "optimization",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      254,
+      507,
+      349,
+      526
+    ],
+    "iou": 0.747,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "problem",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      356,
+      507,
+      419,
+      526
+    ],
+    "iou": 0.788,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "online",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      531,
+      507,
+      578,
+      526
+    ],
+    "iou": 0.806,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "distributed",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      529,
+      155,
+      547
+    ],
+    "iou": 0.816,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "optimization",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      162,
+      529,
+      257,
+      547
+    ],
+    "iou": 0.766,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "algorithm",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      263,
+      529,
+      337,
+      547
+    ],
+    "iou": 0.653,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "where",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      142,
+      550,
+      189,
+      569
+    ],
+    "iou": 0.786,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "positive",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      235,
+      550,
+      294,
+      569
+    ],
+    "iou": 0.802,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "constant,",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      297,
+      550,
+      365,
+      569
+    ],
+    "iou": 0.654,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "suppose",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      368,
+      550,
+      428,
+      569
+    ],
+    "iou": 0.788,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": " Assumptions",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      461,
+      550,
+      560,
+      569
+    ],
+    "iou": 0.622,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "hold,",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      179,
+      574,
+      216,
+      592
+    ],
+    "iou": 0.75,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-regular-italic",
+    "text": "optimization",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      775,
+      108,
+      870,
+      127
+    ],
+    "iou": 0.792,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Lemma",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      108,
+      135,
+      127
+    ],
+    "iou": 0.861,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Theorem",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      507,
+      148,
+      526
+    ],
+    "iou": 0.788,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Remark",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      1050,
+      139,
+      1068
+    ],
+    "iou": 0.817,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Remark",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      74,
+      1172,
+      139,
+      1190
+    ],
+    "iou": 0.817,
+    "dx": 0,
+    "dy": 4,
+    "normalized": 0.2412
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Theorem",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      612,
+      108,
+      686,
+      127
+    ],
+    "iou": 0.771,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Remark",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      612,
+      510,
+      677,
+      529
+    ],
+    "iou": 0.865,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Remark",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      612,
+      775,
+      677,
+      793
+    ],
+    "iou": 0.865,
+    "dx": 0,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "Proofs",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      634,
+      1223,
+      688,
+      1242
+    ],
+    "iou": 0.846,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  },
+  {
+    "font": "t1-gul-bold",
+    "text": "results",
+    "size": 8.288900375366211,
+    "sourcebox": [
+      792,
+      1223,
+      849,
+      1242
+    ],
+    "iou": 0.788,
+    "dx": 1,
+    "dy": 3,
+    "normalized": 0.1809
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "schema_version": "image2ppt-region-decomposition-report-v1",
+  "passed": true,
+  "pages": [
+    {
+      "manifest": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_003\\manifest.json",
+      "passed": true,
+      "page_complexity": "structured",
+      "region_count": 4,
+      "regions": [
+        {
+          "id": "header",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 45,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "left",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 904,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "right",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 789,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "footer",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 1,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        }
+      ],
+      "summary": {
+        "manifest_objects": 1739,
+        "assigned_objects": 1739,
+        "protected_anchors": 0,
+        "compound_regions": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "summary": {
+    "pages": 1,
+    "regions": 4,
+    "compound_regions": 0
+  },
+  "errors": []
+}

@@ -1,0 +1,104 @@
+{
+  "page": 1,
+  "source_pdf_size": [
+    595.2760009765625,
+    793.7009887695312
+  ],
+  "source_pixels": [
+    1191,
+    1588
+  ],
+  "font_spans": {
+    "t1-gul-regular": 701,
+    "t1-uni-regular": 8,
+    "Dingbats": 2,
+    "MTSYN": 2,
+    "t1-gul-regular-italic": 32,
+    "t1-gul-regular-smallcaps": 19,
+    "t1-gul-symbol": 2,
+    "t1-gul-bold": 2
+  },
+  "embedded_images": 2,
+  "source_vectors": 32,
+  "annotations": [
+    {
+      "type": [
+        8,
+        "Highlight"
+      ],
+      "rect": [
+        197.75599670410156,
+        301.07098388671875,
+        560.4030151367188,
+        331.0979919433594
+      ],
+      "colors": {
+        "stroke": [
+          1.0,
+          0.8196110129356384,
+          0.0
+        ],
+        "fill": []
+      },
+      "opacity": 0.39999398589134216,
+      "vertices": [
+        [
+          310.3500061035156,
+          301.3909912109375
+        ],
+        [
+          557.6649780273438,
+          301.3909912109375
+        ],
+        [
+          310.3500061035156,
+          311.64898681640625
+        ],
+        [
+          557.6649780273438,
+          311.64898681640625
+        ],
+        [
+          200.49400329589844,
+          310.95599365234375
+        ],
+        [
+          557.6649780273438,
+          310.95599365234375
+        ],
+        [
+          200.49400329589844,
+          321.2139892578125
+        ],
+        [
+          557.6649780273438,
+          321.2139892578125
+        ],
+        [
+          200.49400329589844,
+          320.5199890136719
+        ],
+        [
+          236.32400512695312,
+          320.5199890136719
+        ],
+        [
+          200.49400329589844,
+          330.7779846191406
+        ],
+        [
+          236.32400512695312,
+          330.7779846191406
+        ]
+      ]
+    }
+  ],
+  "background": "native white with header gray panel",
+  "foreground": "two original embedded images publisher logo and journal cover plus source vector Crossmark badge; direct source route user approved",
+  "regions": [
+    "masthead and title metadata",
+    "article info and abstract",
+    "left body and footnotes",
+    "right body and footer"
+  ]
+}

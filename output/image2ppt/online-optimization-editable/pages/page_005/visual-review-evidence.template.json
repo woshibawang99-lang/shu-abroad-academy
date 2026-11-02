@@ -1,0 +1,19 @@
+{
+  "schema_version": "image2ppt-visual-review-evidence-v1",
+  "pages": [
+    {
+      "page_id": "page_005",
+      "source": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_005\\source.png",
+      "rendered": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_005\\render\\rendered.png",
+      "source_sha256": "03f0a3ee692dd1184ad0cb81a9e00e620fb6cf9a13c09c71b08c7c2ed15facba",
+      "rendered_sha256": "b1afaddecf0b2b93196cd5bdba66f3d434d0209c77413b4b2783ffc12f352ce7",
+      "reviewed": false,
+      "checks": {
+        "composition_layout": "",
+        "text_content": "",
+        "object_completeness": "",
+        "render_integrity": ""
+      }
+    }
+  ]
+}

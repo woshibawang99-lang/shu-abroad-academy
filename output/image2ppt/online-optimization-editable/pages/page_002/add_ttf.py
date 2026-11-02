@@ -1,0 +1,10 @@
+from pathlib import Path
+p=Path(r'D:/AAA-SZ/留学学科教育/output/image2ppt/online-optimization-editable/pages/page_002/convert_fonts.py');s=p.read_text(encoding='utf-8')
+s=s.replace('from fontTools.pens.boundsPen import BoundsPen','from fontTools.pens.boundsPen import BoundsPen\nfrom fontTools.pens.ttGlyphPen import TTGlyphPen\nfrom fontTools.pens.cu2quPen import Cu2QuPen')
+s=s.replace("cname='NSPDF-'+ref", "cname='PDFR_'+ref")
+s=s.replace("charstrings={};metrics={}; cmap={};entries=[]", "charstrings={};ttglyphs={};metrics={}; cmap={};entries=[]")
+s=s.replace("pen=T2CharStringPen(width,gset);rec.replay(pen);charstrings[gn]=pen.getCharString()", "pen=T2CharStringPen(width,gset);rec.replay(pen);charstrings[gn]=pen.getCharString()\n  tpen=TTGlyphPen(gset);qpen=Cu2QuPen(tpen,1.0,reverse_direction=True);rec.replay(qpen);ttglyphs[gn]=tpen.glyph()")
+s=s.replace("fb.setupPost();dest=out/(cname+'.otf');fb.save(str(dest))", "fb.setupPost();dest=out/(cname+'.otf');fb.save(str(dest))\n tfb=FontBuilder(1000,isTTF=True);tfb.setupGlyphOrder(order);tfb.setupCharacterMap(cmap);tfb.setupGlyf(ttglyphs);tfb.setupHorizontalMetrics(metrics);tfb.setupHorizontalHeader(ascent=asc,descent=desc)\n tfb.setupNameTable({'familyName':cname,'styleName':'Regular','uniqueFontIdentifier':cname,'fullName':cname,'psName':cname,'version':'Version 1.0'})\n tfb.setupOS2(sTypoAscender=asc,sTypoDescender=desc,usWinAscent=max(asc,0),usWinDescent=max(-desc,0),fsType=0);tfb.setupPost();tfb.setupMaxp();ttdest=out/(cname+'.ttf');tfb.save(str(ttdest))")
+s=s.replace("'path':str(dest),'xref'", "'path':str(ttdest),'otf_path':str(dest),'xref'")
+s=s.replace("'original_font_name':pdfname", "'original_font_name':pdfname,'pdfname':pdfname.split('+')[-1],'family':cname,'ascent':asc,'descent':desc")
+p.write_text(s,encoding='utf-8')

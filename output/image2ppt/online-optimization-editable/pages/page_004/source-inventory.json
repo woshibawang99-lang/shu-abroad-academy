@@ -1,0 +1,33 @@
+{
+  "page_pdf_size": [
+    595.2760009765625,
+    793.7009887695312
+  ],
+  "source_size_px": [
+    1191,
+    1588
+  ],
+  "text_spans": 1380,
+  "fonts": {
+    "t1-gul-regular-italic": 330,
+    "t1-gul-bold": 45,
+    "t1-gul-regular": 677,
+    "MTSYN": 170,
+    "RMTMI": 125,
+    "CMSY8": 5,
+    "CMSY6": 6,
+    "MTEX": 15,
+    "MSBM10": 7
+  },
+  "drawings": 40,
+  "image_count": 0,
+  "decision_background": "White native background",
+  "decision_foreground": "No foreground asset, no photographs or illustrations; black equation strokes are mathematical structure",
+  "semantic_regions": [
+    "running-header",
+    "left-lemma-algorithm",
+    "left-theorem-and-remarks",
+    "right-theorem-and-remarks",
+    "right-proof-definitions"
+  ]
+}

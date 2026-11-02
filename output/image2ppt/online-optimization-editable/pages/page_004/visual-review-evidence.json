@@ -1,0 +1,19 @@
+{
+  "schema_version": "image2ppt-visual-review-evidence-v1",
+  "pages": [
+    {
+      "page_id": "page_004",
+      "source": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_004\\source.png",
+      "rendered": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_004\\render\\rendered.png",
+      "source_sha256": "976f583523d06d5bacca51c628a00fc5668c13fd3eb2274a2d08c4906b72af72",
+      "rendered_sha256": "6b984faf01b17c4a6439c5839b36824923ccbc181ba829d7ef8059fd3d402649",
+      "reviewed": true,
+      "checks": {
+        "composition_layout": "Compared the complete source and actual PowerPoint render at 1191 by 1588 pixels. Running headers, two columns, theorem and remark boundaries, equation numbers 6 through 10, proof heading and page footer preserve source positions and line breaks.",
+        "text_content": "Serif body, bold theorem and remark labels, italic theorem statements and cyan citations match the source. The measured 3-pixel body baseline shift is corrected; no body paragraphs, equation labels or captions are missing or duplicated.",
+        "object_completeness": "Both sums in equation 10, scalable paired parentheses and square brackets in equations 7 and 9, all roots, fractions, blackboard R and calligraphic projection/set glyphs were compared against the source. The 40 fraction and overbar strokes remain native lines; 332 math glyphs are native source-outline polygons under the user-approved direct-PDF route.",
+        "render_integrity": "The actual PowerPoint render contains no missing-glyph squares or absent sums after source-outline conversion. Text is editable and math geometry is individually selectable; there is no full-page image, hidden duplicate text or raster formula substitute. Minor antialiasing differences do not alter content or layout."
+      }
+    }
+  ]
+}

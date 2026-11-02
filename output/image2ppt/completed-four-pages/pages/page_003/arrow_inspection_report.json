@@ -1,0 +1,14 @@
+{
+  "schema_version": "image2ppt-manifest-arrow-inspection-v1",
+  "passed": true,
+  "pptx": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_004\\page.pptx",
+  "errors": [],
+  "summary": {
+    "expected_arrows": 0,
+    "inspected_arrows": 0,
+    "connectors": 0,
+    "filled_arrows": 0,
+    "fragmented_or_missing": 0
+  },
+  "arrows": []
+}

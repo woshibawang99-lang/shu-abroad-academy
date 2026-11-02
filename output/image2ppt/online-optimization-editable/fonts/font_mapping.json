@@ -1,0 +1,3156 @@
+{
+  "Dingbats": {
+    "font_family": "PDFR_F107",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F107.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F107.otf",
+    "xref": 377,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 278
+      },
+      {
+        "gid": 1,
+        "glyph_name": "a36",
+        "pua": 57345,
+        "unicode": [
+          10025
+        ],
+        "advance": 823
+      }
+    ],
+    "original_font_name": "TVGGGO+Dingbats",
+    "pdfname": "Dingbats",
+    "family": "PDFR_F107",
+    "ascent": 708,
+    "descent": 0,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.7080000042915344,
+      "descender": 0.0
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-gul-regular-italic": {
+    "font_family": "PDFR_F153",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F153.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F153.otf",
+    "xref": 383,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "ampersand",
+        "pua": 57345,
+        "unicode": [
+          38
+        ],
+        "advance": 768
+      },
+      {
+        "gid": 2,
+        "glyph_name": "parenleft",
+        "pua": 57346,
+        "unicode": [
+          40
+        ],
+        "advance": 373
+      },
+      {
+        "gid": 3,
+        "glyph_name": "parenright",
+        "pua": 57347,
+        "unicode": [
+          41
+        ],
+        "advance": 377
+      },
+      {
+        "gid": 4,
+        "glyph_name": "comma",
+        "pua": 57348,
+        "unicode": [
+          44
+        ],
+        "advance": 227
+      },
+      {
+        "gid": 5,
+        "glyph_name": "hyphen",
+        "pua": 57349,
+        "unicode": [
+          45
+        ],
+        "advance": 408
+      },
+      {
+        "gid": 6,
+        "glyph_name": "period",
+        "pua": 57350,
+        "unicode": [
+          46
+        ],
+        "advance": 229
+      },
+      {
+        "gid": 7,
+        "glyph_name": "zero",
+        "pua": 57351,
+        "unicode": [
+          48
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 8,
+        "glyph_name": "one",
+        "pua": 57352,
+        "unicode": [
+          49
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 9,
+        "glyph_name": "two",
+        "pua": 57353,
+        "unicode": [
+          50
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 10,
+        "glyph_name": "three",
+        "pua": 57354,
+        "unicode": [
+          51
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 11,
+        "glyph_name": "four",
+        "pua": 57355,
+        "unicode": [
+          52
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 12,
+        "glyph_name": "five",
+        "pua": 57356,
+        "unicode": [
+          53
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 13,
+        "glyph_name": "six",
+        "pua": 57357,
+        "unicode": [
+          54
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 14,
+        "glyph_name": "seven",
+        "pua": 57358,
+        "unicode": [
+          55
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 15,
+        "glyph_name": "eight",
+        "pua": 57359,
+        "unicode": [
+          56
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 16,
+        "glyph_name": "nine",
+        "pua": 57360,
+        "unicode": [
+          57
+        ],
+        "advance": 553
+      },
+      {
+        "gid": 17,
+        "glyph_name": "colon",
+        "pua": 57361,
+        "unicode": [
+          58
+        ],
+        "advance": 316
+      },
+      {
+        "gid": 18,
+        "glyph_name": "A",
+        "pua": 57362,
+        "unicode": [
+          65
+        ],
+        "advance": 607
+      },
+      {
+        "gid": 19,
+        "glyph_name": "C",
+        "pua": 57363,
+        "unicode": [
+          67
+        ],
+        "advance": 577
+      },
+      {
+        "gid": 20,
+        "glyph_name": "D",
+        "pua": 57364,
+        "unicode": [
+          68
+        ],
+        "advance": 694
+      },
+      {
+        "gid": 21,
+        "glyph_name": "E",
+        "pua": 57365,
+        "unicode": [
+          69
+        ],
+        "advance": 539
+      },
+      {
+        "gid": 22,
+        "glyph_name": "F",
+        "pua": 57366,
+        "unicode": [
+          70
+        ],
+        "advance": 486
+      },
+      {
+        "gid": 23,
+        "glyph_name": "H",
+        "pua": 57367,
+        "unicode": [
+          72
+        ],
+        "advance": 715
+      },
+      {
+        "gid": 24,
+        "glyph_name": "I",
+        "pua": 57368,
+        "unicode": [
+          73
+        ],
+        "advance": 301
+      },
+      {
+        "gid": 25,
+        "glyph_name": "K",
+        "pua": 57369,
+        "unicode": [
+          75
+        ],
+        "advance": 616
+      },
+      {
+        "gid": 26,
+        "glyph_name": "L",
+        "pua": 57370,
+        "unicode": [
+          76
+        ],
+        "advance": 474
+      },
+      {
+        "gid": 27,
+        "glyph_name": "M",
+        "pua": 57371,
+        "unicode": [
+          77
+        ],
+        "advance": 890
+      },
+      {
+        "gid": 28,
+        "glyph_name": "N",
+        "pua": 57372,
+        "unicode": [
+          78
+        ],
+        "advance": 700
+      },
+      {
+        "gid": 29,
+        "glyph_name": "O",
+        "pua": 57373,
+        "unicode": [
+          79
+        ],
+        "advance": 682
+      },
+      {
+        "gid": 30,
+        "glyph_name": "P",
+        "pua": 57374,
+        "unicode": [
+          80
+        ],
+        "advance": 539
+      },
+      {
+        "gid": 31,
+        "glyph_name": "R",
+        "pua": 57375,
+        "unicode": [
+          82
+        ],
+        "advance": 587
+      },
+      {
+        "gid": 32,
+        "glyph_name": "S",
+        "pua": 57376,
+        "unicode": [
+          83
+        ],
+        "advance": 490
+      },
+      {
+        "gid": 33,
+        "glyph_name": "T",
+        "pua": 57377,
+        "unicode": [
+          84
+        ],
+        "advance": 518
+      },
+      {
+        "gid": 34,
+        "glyph_name": "U",
+        "pua": 57378,
+        "unicode": [
+          85
+        ],
+        "advance": 687
+      },
+      {
+        "gid": 35,
+        "glyph_name": "V",
+        "pua": 57379,
+        "unicode": [
+          86
+        ],
+        "advance": 609
+      },
+      {
+        "gid": 36,
+        "glyph_name": "W",
+        "pua": 57380,
+        "unicode": [
+          87
+        ],
+        "advance": 981
+      },
+      {
+        "gid": 37,
+        "glyph_name": "X",
+        "pua": 57381,
+        "unicode": [
+          88
+        ],
+        "advance": 605
+      },
+      {
+        "gid": 38,
+        "glyph_name": "Y",
+        "pua": 57382,
+        "unicode": [
+          89
+        ],
+        "advance": 569
+      },
+      {
+        "gid": 39,
+        "glyph_name": "a",
+        "pua": 57383,
+        "unicode": [
+          97
+        ],
+        "advance": 533
+      },
+      {
+        "gid": 40,
+        "glyph_name": "b",
+        "pua": 57384,
+        "unicode": [
+          98
+        ],
+        "advance": 543
+      },
+      {
+        "gid": 41,
+        "glyph_name": "c",
+        "pua": 57385,
+        "unicode": [
+          99
+        ],
+        "advance": 450
+      },
+      {
+        "gid": 42,
+        "glyph_name": "d",
+        "pua": 57386,
+        "unicode": [
+          100
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 43,
+        "glyph_name": "e",
+        "pua": 57387,
+        "unicode": [
+          101
+        ],
+        "advance": 480
+      },
+      {
+        "gid": 44,
+        "glyph_name": "f",
+        "pua": 57388,
+        "unicode": [
+          102
+        ],
+        "advance": 300
+      },
+      {
+        "gid": 45,
+        "glyph_name": "g",
+        "pua": 57389,
+        "unicode": [
+          103
+        ],
+        "advance": 514
+      },
+      {
+        "gid": 46,
+        "glyph_name": "h",
+        "pua": 57390,
+        "unicode": [
+          104
+        ],
+        "advance": 564
+      },
+      {
+        "gid": 47,
+        "glyph_name": "i",
+        "pua": 57391,
+        "unicode": [
+          105
+        ],
+        "advance": 286
+      },
+      {
+        "gid": 48,
+        "glyph_name": "j",
+        "pua": 57392,
+        "unicode": [
+          106
+        ],
+        "advance": 289
+      },
+      {
+        "gid": 49,
+        "glyph_name": "k",
+        "pua": 57393,
+        "unicode": [
+          107
+        ],
+        "advance": 520
+      },
+      {
+        "gid": 50,
+        "glyph_name": "l",
+        "pua": 57394,
+        "unicode": [
+          108
+        ],
+        "advance": 274
+      },
+      {
+        "gid": 51,
+        "glyph_name": "m",
+        "pua": 57395,
+        "unicode": [
+          109
+        ],
+        "advance": 864
+      },
+      {
+        "gid": 52,
+        "glyph_name": "n",
+        "pua": 57396,
+        "unicode": [
+          110
+        ],
+        "advance": 578
+      },
+      {
+        "gid": 53,
+        "glyph_name": "o",
+        "pua": 57397,
+        "unicode": [
+          111
+        ],
+        "advance": 533
+      },
+      {
+        "gid": 54,
+        "glyph_name": "p",
+        "pua": 57398,
+        "unicode": [
+          112
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 55,
+        "glyph_name": "q",
+        "pua": 57399,
+        "unicode": [
+          113
+        ],
+        "advance": 537
+      },
+      {
+        "gid": 56,
+        "glyph_name": "r",
+        "pua": 57400,
+        "unicode": [
+          114
+        ],
+        "advance": 397
+      },
+      {
+        "gid": 57,
+        "glyph_name": "s",
+        "pua": 57401,
+        "unicode": [
+          115
+        ],
+        "advance": 408
+      },
+      {
+        "gid": 58,
+        "glyph_name": "t",
+        "pua": 57402,
+        "unicode": [
+          116
+        ],
+        "advance": 354
+      },
+      {
+        "gid": 59,
+        "glyph_name": "u",
+        "pua": 57403,
+        "unicode": [
+          117
+        ],
+        "advance": 578
+      },
+      {
+        "gid": 60,
+        "glyph_name": "v",
+        "pua": 57404,
+        "unicode": [
+          118
+        ],
+        "advance": 517
+      },
+      {
+        "gid": 61,
+        "glyph_name": "w",
+        "pua": 57405,
+        "unicode": [
+          119
+        ],
+        "advance": 806
+      },
+      {
+        "gid": 62,
+        "glyph_name": "x",
+        "pua": 57406,
+        "unicode": [
+          120
+        ],
+        "advance": 491
+      },
+      {
+        "gid": 63,
+        "glyph_name": "y",
+        "pua": 57407,
+        "unicode": [
+          121
+        ],
+        "advance": 524
+      },
+      {
+        "gid": 64,
+        "glyph_name": "z",
+        "pua": 57408,
+        "unicode": [
+          122
+        ],
+        "advance": 448
+      }
+    ],
+    "original_font_name": "MKCCTP+t1-gul-regular-italic",
+    "pdfname": "t1-gul-regular-italic",
+    "family": "PDFR_F153",
+    "ascent": 767,
+    "descent": -211,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.7670000195503235,
+      "descender": -0.210999995470047
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-gul-bold": {
+    "font_family": "PDFR_F216",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F216.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F216.otf",
+    "xref": 394,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "period",
+        "pua": 57345,
+        "unicode": [
+          46
+        ],
+        "advance": 256
+      },
+      {
+        "gid": 2,
+        "glyph_name": "zero",
+        "pua": 57346,
+        "unicode": [
+          48
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 3,
+        "glyph_name": "one",
+        "pua": 57347,
+        "unicode": [
+          49
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 4,
+        "glyph_name": "two",
+        "pua": 57348,
+        "unicode": [
+          50
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 5,
+        "glyph_name": "three",
+        "pua": 57349,
+        "unicode": [
+          51
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 6,
+        "glyph_name": "four",
+        "pua": 57350,
+        "unicode": [
+          52
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 7,
+        "glyph_name": "five",
+        "pua": 57351,
+        "unicode": [
+          53
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 8,
+        "glyph_name": "six",
+        "pua": 57352,
+        "unicode": [
+          54
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 9,
+        "glyph_name": "seven",
+        "pua": 57353,
+        "unicode": [
+          55
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 10,
+        "glyph_name": "eight",
+        "pua": 57354,
+        "unicode": [
+          56
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 11,
+        "glyph_name": "nine",
+        "pua": 57355,
+        "unicode": [
+          57
+        ],
+        "advance": 582
+      },
+      {
+        "gid": 12,
+        "glyph_name": "colon",
+        "pua": 57356,
+        "unicode": [
+          58
+        ],
+        "advance": 310
+      },
+      {
+        "gid": 13,
+        "glyph_name": "A",
+        "pua": 57357,
+        "unicode": [
+          65
+        ],
+        "advance": 672
+      },
+      {
+        "gid": 14,
+        "glyph_name": "C",
+        "pua": 57358,
+        "unicode": [
+          67
+        ],
+        "advance": 604
+      },
+      {
+        "gid": 15,
+        "glyph_name": "D",
+        "pua": 57359,
+        "unicode": [
+          68
+        ],
+        "advance": 726
+      },
+      {
+        "gid": 16,
+        "glyph_name": "E",
+        "pua": 57360,
+        "unicode": [
+          69
+        ],
+        "advance": 602
+      },
+      {
+        "gid": 17,
+        "glyph_name": "F",
+        "pua": 57361,
+        "unicode": [
+          70
+        ],
+        "advance": 551
+      },
+      {
+        "gid": 18,
+        "glyph_name": "I",
+        "pua": 57362,
+        "unicode": [
+          73
+        ],
+        "advance": 346
+      },
+      {
+        "gid": 19,
+        "glyph_name": "L",
+        "pua": 57363,
+        "unicode": [
+          76
+        ],
+        "advance": 535
+      },
+      {
+        "gid": 20,
+        "glyph_name": "N",
+        "pua": 57364,
+        "unicode": [
+          78
+        ],
+        "advance": 736
+      },
+      {
+        "gid": 21,
+        "glyph_name": "O",
+        "pua": 57365,
+        "unicode": [
+          79
+        ],
+        "advance": 730
+      },
+      {
+        "gid": 22,
+        "glyph_name": "P",
+        "pua": 57366,
+        "unicode": [
+          80
+        ],
+        "advance": 627
+      },
+      {
+        "gid": 23,
+        "glyph_name": "R",
+        "pua": 57367,
+        "unicode": [
+          82
+        ],
+        "advance": 662
+      },
+      {
+        "gid": 24,
+        "glyph_name": "S",
+        "pua": 57368,
+        "unicode": [
+          83
+        ],
+        "advance": 528
+      },
+      {
+        "gid": 25,
+        "glyph_name": "T",
+        "pua": 57369,
+        "unicode": [
+          84
+        ],
+        "advance": 572
+      },
+      {
+        "gid": 26,
+        "glyph_name": "X",
+        "pua": 57370,
+        "unicode": [
+          88
+        ],
+        "advance": 701
+      },
+      {
+        "gid": 27,
+        "glyph_name": "Y",
+        "pua": 57371,
+        "unicode": [
+          89
+        ],
+        "advance": 635
+      },
+      {
+        "gid": 28,
+        "glyph_name": "a",
+        "pua": 57372,
+        "unicode": [
+          97
+        ],
+        "advance": 548
+      },
+      {
+        "gid": 29,
+        "glyph_name": "b",
+        "pua": 57373,
+        "unicode": [
+          98
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 30,
+        "glyph_name": "c",
+        "pua": 57374,
+        "unicode": [
+          99
+        ],
+        "advance": 499
+      },
+      {
+        "gid": 31,
+        "glyph_name": "d",
+        "pua": 57375,
+        "unicode": [
+          100
+        ],
+        "advance": 622
+      },
+      {
+        "gid": 32,
+        "glyph_name": "e",
+        "pua": 57376,
+        "unicode": [
+          101
+        ],
+        "advance": 541
+      },
+      {
+        "gid": 33,
+        "glyph_name": "f",
+        "pua": 57377,
+        "unicode": [
+          102
+        ],
+        "advance": 378
+      },
+      {
+        "gid": 34,
+        "glyph_name": "g",
+        "pua": 57378,
+        "unicode": [
+          103
+        ],
+        "advance": 566
+      },
+      {
+        "gid": 35,
+        "glyph_name": "h",
+        "pua": 57379,
+        "unicode": [
+          104
+        ],
+        "advance": 651
+      },
+      {
+        "gid": 36,
+        "glyph_name": "i",
+        "pua": 57380,
+        "unicode": [
+          105
+        ],
+        "advance": 326
+      },
+      {
+        "gid": 37,
+        "glyph_name": "k",
+        "pua": 57381,
+        "unicode": [
+          107
+        ],
+        "advance": 627
+      },
+      {
+        "gid": 38,
+        "glyph_name": "l",
+        "pua": 57382,
+        "unicode": [
+          108
+        ],
+        "advance": 325
+      },
+      {
+        "gid": 39,
+        "glyph_name": "m",
+        "pua": 57383,
+        "unicode": [
+          109
+        ],
+        "advance": 979
+      },
+      {
+        "gid": 40,
+        "glyph_name": "n",
+        "pua": 57384,
+        "unicode": [
+          110
+        ],
+        "advance": 653
+      },
+      {
+        "gid": 41,
+        "glyph_name": "o",
+        "pua": 57385,
+        "unicode": [
+          111
+        ],
+        "advance": 605
+      },
+      {
+        "gid": 42,
+        "glyph_name": "p",
+        "pua": 57386,
+        "unicode": [
+          112
+        ],
+        "advance": 618
+      },
+      {
+        "gid": 43,
+        "glyph_name": "q",
+        "pua": 57387,
+        "unicode": [
+          113
+        ],
+        "advance": 610
+      },
+      {
+        "gid": 44,
+        "glyph_name": "r",
+        "pua": 57388,
+        "unicode": [
+          114
+        ],
+        "advance": 452
+      },
+      {
+        "gid": 45,
+        "glyph_name": "s",
+        "pua": 57389,
+        "unicode": [
+          115
+        ],
+        "advance": 458
+      },
+      {
+        "gid": 46,
+        "glyph_name": "t",
+        "pua": 57390,
+        "unicode": [
+          116
+        ],
+        "advance": 398
+      },
+      {
+        "gid": 47,
+        "glyph_name": "u",
+        "pua": 57391,
+        "unicode": [
+          117
+        ],
+        "advance": 644
+      },
+      {
+        "gid": 48,
+        "glyph_name": "v",
+        "pua": 57392,
+        "unicode": [
+          118
+        ],
+        "advance": 547
+      },
+      {
+        "gid": 49,
+        "glyph_name": "x",
+        "pua": 57393,
+        "unicode": [
+          120
+        ],
+        "advance": 562
+      },
+      {
+        "gid": 50,
+        "glyph_name": "y",
+        "pua": 57394,
+        "unicode": [
+          121
+        ],
+        "advance": 544
+      },
+      {
+        "gid": 51,
+        "glyph_name": "z",
+        "pua": 57395,
+        "unicode": [
+          122
+        ],
+        "advance": 503
+      },
+      {
+        "gid": 52,
+        "glyph_name": "endash",
+        "pua": 57396,
+        "unicode": [
+          8211
+        ],
+        "advance": 583
+      }
+    ],
+    "original_font_name": "WAIGGX+t1-gul-bold",
+    "pdfname": "t1-gul-bold",
+    "family": "PDFR_F216",
+    "ascent": 779,
+    "descent": -211,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.7789999842643738,
+      "descender": -0.210999995470047
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "MTSYN": {
+    "font_family": "PDFR_F218",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F218.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F218.otf",
+    "xref": 379,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 333
+      },
+      {
+        "gid": 1,
+        "glyph_name": "periodcentered",
+        "pua": 57345,
+        "unicode": [
+          183
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 2,
+        "glyph_name": "multiply",
+        "pua": 57346,
+        "unicode": [
+          215
+        ],
+        "advance": 784
+      },
+      {
+        "gid": 3,
+        "glyph_name": "asteriskmath",
+        "pua": 57347,
+        "unicode": [
+          8727
+        ],
+        "advance": 521
+      },
+      {
+        "gid": 4,
+        "glyph_name": "reflexsubset",
+        "pua": 57348,
+        "unicode": [
+          8838
+        ],
+        "advance": 780
+      },
+      {
+        "gid": 5,
+        "glyph_name": "lessequal",
+        "pua": 57349,
+        "unicode": [
+          8804
+        ],
+        "advance": 754
+      },
+      {
+        "gid": 6,
+        "glyph_name": "greaterequal",
+        "pua": 57350,
+        "unicode": [
+          8805
+        ],
+        "advance": 754
+      },
+      {
+        "gid": 7,
+        "glyph_name": "arrowright",
+        "pua": 57351,
+        "unicode": [
+          8594
+        ],
+        "advance": 1099
+      },
+      {
+        "gid": 8,
+        "glyph_name": "infinity",
+        "pua": 57352,
+        "unicode": [
+          8734
+        ],
+        "advance": 1021
+      },
+      {
+        "gid": 9,
+        "glyph_name": "element",
+        "pua": 57353,
+        "unicode": [
+          8712
+        ],
+        "advance": 629
+      },
+      {
+        "gid": 10,
+        "glyph_name": "universal",
+        "pua": 57354,
+        "unicode": [
+          8704
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 11,
+        "glyph_name": "latticetop",
+        "pua": 57355,
+        "unicode": [
+          8868
+        ],
+        "advance": 780
+      },
+      {
+        "gid": 12,
+        "glyph_name": "plus",
+        "pua": 57356,
+        "unicode": [
+          43
+        ],
+        "advance": 780
+      },
+      {
+        "gid": 13,
+        "glyph_name": "equal",
+        "pua": 57357,
+        "unicode": [
+          61
+        ],
+        "advance": 780
+      },
+      {
+        "gid": 14,
+        "glyph_name": "circumflex",
+        "pua": 57358,
+        "unicode": [
+          710
+        ],
+        "advance": 333
+      },
+      {
+        "gid": 15,
+        "glyph_name": "bracketleft",
+        "pua": 57359,
+        "unicode": [
+          91
+        ],
+        "advance": 333
+      },
+      {
+        "gid": 16,
+        "glyph_name": "bracketright",
+        "pua": 57360,
+        "unicode": [
+          93
+        ],
+        "advance": 333
+      },
+      {
+        "gid": 17,
+        "glyph_name": "colon",
+        "pua": 57361,
+        "unicode": [
+          58
+        ],
+        "advance": 275
+      },
+      {
+        "gid": 18,
+        "glyph_name": "braceleft",
+        "pua": 57362,
+        "unicode": [
+          123
+        ],
+        "advance": 370
+      },
+      {
+        "gid": 19,
+        "glyph_name": "braceright",
+        "pua": 57363,
+        "unicode": [
+          125
+        ],
+        "advance": 370
+      },
+      {
+        "gid": 20,
+        "glyph_name": "bar",
+        "pua": 57364,
+        "unicode": [
+          124
+        ],
+        "advance": 286
+      },
+      {
+        "gid": 21,
+        "glyph_name": "bardbl",
+        "pua": 57365,
+        "unicode": [
+          8741
+        ],
+        "advance": 498
+      },
+      {
+        "gid": 22,
+        "glyph_name": "radical",
+        "pua": 57366,
+        "unicode": [
+          8730
+        ],
+        "advance": 846
+      },
+      {
+        "gid": 23,
+        "glyph_name": "nabla",
+        "pua": 57367,
+        "unicode": [
+          8711
+        ],
+        "advance": 701
+      },
+      {
+        "gid": 24,
+        "glyph_name": "minus",
+        "pua": 57368,
+        "unicode": [
+          8722
+        ],
+        "advance": 780
+      }
+    ],
+    "original_font_name": "CZKWWH+MTSYN",
+    "pdfname": "MTSYN",
+    "family": "PDFR_F218",
+    "ascent": 667,
+    "descent": -90,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.6669999957084656,
+      "descender": -0.09000000357627869
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-gul-regular-space": {
+    "font_family": "PDFR_F219",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F219.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F219.otf",
+    "xref": 395,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 250
+      },
+      {
+        "gid": 1,
+        "glyph_name": "space",
+        "pua": 57345,
+        "unicode": [
+          32
+        ],
+        "advance": 250
+      }
+    ],
+    "original_font_name": "HCCVXU+t1-gul-regular-space",
+    "pdfname": "t1-gul-regular-space",
+    "family": "PDFR_F219",
+    "ascent": 800,
+    "descent": -200,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.800000011920929,
+      "descender": -0.20000000298023224
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-gul-regular": {
+    "font_family": "PDFR_F43",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F43.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F43.otf",
+    "xref": 371,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "ampersand",
+        "pua": 57345,
+        "unicode": [
+          38
+        ],
+        "advance": 695
+      },
+      {
+        "gid": 2,
+        "glyph_name": "parenleft",
+        "pua": 57346,
+        "unicode": [
+          40
+        ],
+        "advance": 370
+      },
+      {
+        "gid": 3,
+        "glyph_name": "parenright",
+        "pua": 57347,
+        "unicode": [
+          41
+        ],
+        "advance": 369
+      },
+      {
+        "gid": 4,
+        "glyph_name": "comma",
+        "pua": 57348,
+        "unicode": [
+          44
+        ],
+        "advance": 234
+      },
+      {
+        "gid": 5,
+        "glyph_name": "hyphen",
+        "pua": 57349,
+        "unicode": [
+          45
+        ],
+        "advance": 411
+      },
+      {
+        "gid": 6,
+        "glyph_name": "period",
+        "pua": 57350,
+        "unicode": [
+          46
+        ],
+        "advance": 235
+      },
+      {
+        "gid": 7,
+        "glyph_name": "slash",
+        "pua": 57351,
+        "unicode": [
+          47
+        ],
+        "advance": 352
+      },
+      {
+        "gid": 8,
+        "glyph_name": "zero",
+        "pua": 57352,
+        "unicode": [
+          48
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 9,
+        "glyph_name": "one",
+        "pua": 57353,
+        "unicode": [
+          49
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 10,
+        "glyph_name": "two",
+        "pua": 57354,
+        "unicode": [
+          50
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 11,
+        "glyph_name": "three",
+        "pua": 57355,
+        "unicode": [
+          51
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 12,
+        "glyph_name": "four",
+        "pua": 57356,
+        "unicode": [
+          52
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 13,
+        "glyph_name": "five",
+        "pua": 57357,
+        "unicode": [
+          53
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 14,
+        "glyph_name": "six",
+        "pua": 57358,
+        "unicode": [
+          54
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 15,
+        "glyph_name": "seven",
+        "pua": 57359,
+        "unicode": [
+          55
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 16,
+        "glyph_name": "eight",
+        "pua": 57360,
+        "unicode": [
+          56
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 17,
+        "glyph_name": "nine",
+        "pua": 57361,
+        "unicode": [
+          57
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 18,
+        "glyph_name": "colon",
+        "pua": 57362,
+        "unicode": [
+          58
+        ],
+        "advance": 352
+      },
+      {
+        "gid": 19,
+        "glyph_name": "semicolon",
+        "pua": 57363,
+        "unicode": [
+          59
+        ],
+        "advance": 352
+      },
+      {
+        "gid": 20,
+        "glyph_name": "at",
+        "pua": 57364,
+        "unicode": [
+          64
+        ],
+        "advance": 784
+      },
+      {
+        "gid": 21,
+        "glyph_name": "A",
+        "pua": 57365,
+        "unicode": [
+          65
+        ],
+        "advance": 660
+      },
+      {
+        "gid": 22,
+        "glyph_name": "B",
+        "pua": 57366,
+        "unicode": [
+          66
+        ],
+        "advance": 604
+      },
+      {
+        "gid": 23,
+        "glyph_name": "C",
+        "pua": 57367,
+        "unicode": [
+          67
+        ],
+        "advance": 602
+      },
+      {
+        "gid": 24,
+        "glyph_name": "D",
+        "pua": 57368,
+        "unicode": [
+          68
+        ],
+        "advance": 717
+      },
+      {
+        "gid": 25,
+        "glyph_name": "E",
+        "pua": 57369,
+        "unicode": [
+          69
+        ],
+        "advance": 564
+      },
+      {
+        "gid": 26,
+        "glyph_name": "F",
+        "pua": 57370,
+        "unicode": [
+          70
+        ],
+        "advance": 509
+      },
+      {
+        "gid": 27,
+        "glyph_name": "G",
+        "pua": 57371,
+        "unicode": [
+          71
+        ],
+        "advance": 704
+      },
+      {
+        "gid": 28,
+        "glyph_name": "H",
+        "pua": 57372,
+        "unicode": [
+          72
+        ],
+        "advance": 746
+      },
+      {
+        "gid": 29,
+        "glyph_name": "I",
+        "pua": 57373,
+        "unicode": [
+          73
+        ],
+        "advance": 310
+      },
+      {
+        "gid": 30,
+        "glyph_name": "J",
+        "pua": 57374,
+        "unicode": [
+          74
+        ],
+        "advance": 312
+      },
+      {
+        "gid": 31,
+        "glyph_name": "K",
+        "pua": 57375,
+        "unicode": [
+          75
+        ],
+        "advance": 648
+      },
+      {
+        "gid": 32,
+        "glyph_name": "L",
+        "pua": 57376,
+        "unicode": [
+          76
+        ],
+        "advance": 499
+      },
+      {
+        "gid": 33,
+        "glyph_name": "M",
+        "pua": 57377,
+        "unicode": [
+          77
+        ],
+        "advance": 934
+      },
+      {
+        "gid": 34,
+        "glyph_name": "N",
+        "pua": 57378,
+        "unicode": [
+          78
+        ],
+        "advance": 737
+      },
+      {
+        "gid": 35,
+        "glyph_name": "O",
+        "pua": 57379,
+        "unicode": [
+          79
+        ],
+        "advance": 716
+      },
+      {
+        "gid": 36,
+        "glyph_name": "P",
+        "pua": 57380,
+        "unicode": [
+          80
+        ],
+        "advance": 564
+      },
+      {
+        "gid": 37,
+        "glyph_name": "Q",
+        "pua": 57381,
+        "unicode": [
+          81
+        ],
+        "advance": 716
+      },
+      {
+        "gid": 38,
+        "glyph_name": "R",
+        "pua": 57382,
+        "unicode": [
+          82
+        ],
+        "advance": 618
+      },
+      {
+        "gid": 39,
+        "glyph_name": "S",
+        "pua": 57383,
+        "unicode": [
+          83
+        ],
+        "advance": 526
+      },
+      {
+        "gid": 40,
+        "glyph_name": "T",
+        "pua": 57384,
+        "unicode": [
+          84
+        ],
+        "advance": 558
+      },
+      {
+        "gid": 41,
+        "glyph_name": "U",
+        "pua": 57385,
+        "unicode": [
+          85
+        ],
+        "advance": 716
+      },
+      {
+        "gid": 42,
+        "glyph_name": "V",
+        "pua": 57386,
+        "unicode": [
+          86
+        ],
+        "advance": 664
+      },
+      {
+        "gid": 43,
+        "glyph_name": "W",
+        "pua": 57387,
+        "unicode": [
+          87
+        ],
+        "advance": 1042
+      },
+      {
+        "gid": 44,
+        "glyph_name": "X",
+        "pua": 57388,
+        "unicode": [
+          88
+        ],
+        "advance": 668
+      },
+      {
+        "gid": 45,
+        "glyph_name": "Y",
+        "pua": 57389,
+        "unicode": [
+          89
+        ],
+        "advance": 618
+      },
+      {
+        "gid": 46,
+        "glyph_name": "Z",
+        "pua": 57390,
+        "unicode": [
+          90
+        ],
+        "advance": 565
+      },
+      {
+        "gid": 47,
+        "glyph_name": "bracketleft",
+        "pua": 57391,
+        "unicode": [
+          91
+        ],
+        "advance": 361
+      },
+      {
+        "gid": 48,
+        "glyph_name": "bracketright",
+        "pua": 57392,
+        "unicode": [
+          93
+        ],
+        "advance": 361
+      },
+      {
+        "gid": 49,
+        "glyph_name": "a",
+        "pua": 57393,
+        "unicode": [
+          97
+        ],
+        "advance": 518
+      },
+      {
+        "gid": 50,
+        "glyph_name": "b",
+        "pua": 57394,
+        "unicode": [
+          98
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 51,
+        "glyph_name": "c",
+        "pua": 57395,
+        "unicode": [
+          99
+        ],
+        "advance": 479
+      },
+      {
+        "gid": 52,
+        "glyph_name": "d",
+        "pua": 57396,
+        "unicode": [
+          100
+        ],
+        "advance": 595
+      },
+      {
+        "gid": 53,
+        "glyph_name": "e",
+        "pua": 57397,
+        "unicode": [
+          101
+        ],
+        "advance": 526
+      },
+      {
+        "gid": 54,
+        "glyph_name": "f",
+        "pua": 57398,
+        "unicode": [
+          102
+        ],
+        "advance": 333
+      },
+      {
+        "gid": 55,
+        "glyph_name": "g",
+        "pua": 57399,
+        "unicode": [
+          103
+        ],
+        "advance": 542
+      },
+      {
+        "gid": 56,
+        "glyph_name": "h",
+        "pua": 57400,
+        "unicode": [
+          104
+        ],
+        "advance": 606
+      },
+      {
+        "gid": 57,
+        "glyph_name": "i",
+        "pua": 57401,
+        "unicode": [
+          105
+        ],
+        "advance": 300
+      },
+      {
+        "gid": 58,
+        "glyph_name": "j",
+        "pua": 57402,
+        "unicode": [
+          106
+        ],
+        "advance": 306
+      },
+      {
+        "gid": 59,
+        "glyph_name": "k",
+        "pua": 57403,
+        "unicode": [
+          107
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 60,
+        "glyph_name": "l",
+        "pua": 57404,
+        "unicode": [
+          108
+        ],
+        "advance": 299
+      },
+      {
+        "gid": 61,
+        "glyph_name": "m",
+        "pua": 57405,
+        "unicode": [
+          109
+        ],
+        "advance": 927
+      },
+      {
+        "gid": 62,
+        "glyph_name": "n",
+        "pua": 57406,
+        "unicode": [
+          110
+        ],
+        "advance": 606
+      },
+      {
+        "gid": 63,
+        "glyph_name": "o",
+        "pua": 57407,
+        "unicode": [
+          111
+        ],
+        "advance": 567
+      },
+      {
+        "gid": 64,
+        "glyph_name": "p",
+        "pua": 57408,
+        "unicode": [
+          112
+        ],
+        "advance": 598
+      },
+      {
+        "gid": 65,
+        "glyph_name": "q",
+        "pua": 57409,
+        "unicode": [
+          113
+        ],
+        "advance": 586
+      },
+      {
+        "gid": 66,
+        "glyph_name": "r",
+        "pua": 57410,
+        "unicode": [
+          114
+        ],
+        "advance": 410
+      },
+      {
+        "gid": 67,
+        "glyph_name": "s",
+        "pua": 57411,
+        "unicode": [
+          115
+        ],
+        "advance": 446
+      },
+      {
+        "gid": 68,
+        "glyph_name": "t",
+        "pua": 57412,
+        "unicode": [
+          116
+        ],
+        "advance": 373
+      },
+      {
+        "gid": 69,
+        "glyph_name": "u",
+        "pua": 57413,
+        "unicode": [
+          117
+        ],
+        "advance": 601
+      },
+      {
+        "gid": 70,
+        "glyph_name": "v",
+        "pua": 57414,
+        "unicode": [
+          118
+        ],
+        "advance": 542
+      },
+      {
+        "gid": 71,
+        "glyph_name": "w",
+        "pua": 57415,
+        "unicode": [
+          119
+        ],
+        "advance": 859
+      },
+      {
+        "gid": 72,
+        "glyph_name": "x",
+        "pua": 57416,
+        "unicode": [
+          120
+        ],
+        "advance": 555
+      },
+      {
+        "gid": 73,
+        "glyph_name": "y",
+        "pua": 57417,
+        "unicode": [
+          121
+        ],
+        "advance": 548
+      },
+      {
+        "gid": 74,
+        "glyph_name": "z",
+        "pua": 57418,
+        "unicode": [
+          122
+        ],
+        "advance": 499
+      },
+      {
+        "gid": 75,
+        "glyph_name": "braceleft",
+        "pua": 57419,
+        "unicode": [
+          123
+        ],
+        "advance": 408
+      },
+      {
+        "gid": 76,
+        "glyph_name": "braceright",
+        "pua": 57420,
+        "unicode": [
+          125
+        ],
+        "advance": 408
+      },
+      {
+        "gid": 77,
+        "glyph_name": "cacute",
+        "pua": 57421,
+        "unicode": [
+          263
+        ],
+        "advance": 479
+      },
+      {
+        "gid": 78,
+        "glyph_name": "endash",
+        "pua": 57422,
+        "unicode": [
+          8211
+        ],
+        "advance": 579
+      },
+      {
+        "gid": 79,
+        "glyph_name": "quoteleft",
+        "pua": 57423,
+        "unicode": [
+          8216
+        ],
+        "advance": 235
+      },
+      {
+        "gid": 80,
+        "glyph_name": "quoteright",
+        "pua": 57424,
+        "unicode": [
+          8217
+        ],
+        "advance": 234
+      }
+    ],
+    "original_font_name": "MSKSFD+t1-gul-regular",
+    "pdfname": "t1-gul-regular",
+    "family": "PDFR_F43",
+    "ascent": 767,
+    "descent": -211,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.7670000195503235,
+      "descender": -0.210999995470047
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-gul-regular-smallcaps": {
+    "font_family": "PDFR_F73",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F73.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F73.otf",
+    "xref": 387,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "a",
+        "pua": 57345,
+        "unicode": [
+          97
+        ],
+        "advance": 550
+      },
+      {
+        "gid": 2,
+        "glyph_name": "b",
+        "pua": 57346,
+        "unicode": [
+          98
+        ],
+        "advance": 541
+      },
+      {
+        "gid": 3,
+        "glyph_name": "c",
+        "pua": 57347,
+        "unicode": [
+          99
+        ],
+        "advance": 528
+      },
+      {
+        "gid": 4,
+        "glyph_name": "e",
+        "pua": 57348,
+        "unicode": [
+          101
+        ],
+        "advance": 510
+      },
+      {
+        "gid": 5,
+        "glyph_name": "f",
+        "pua": 57349,
+        "unicode": [
+          102
+        ],
+        "advance": 476
+      },
+      {
+        "gid": 6,
+        "glyph_name": "i",
+        "pua": 57350,
+        "unicode": [
+          105
+        ],
+        "advance": 316
+      },
+      {
+        "gid": 7,
+        "glyph_name": "l",
+        "pua": 57351,
+        "unicode": [
+          108
+        ],
+        "advance": 455
+      },
+      {
+        "gid": 8,
+        "glyph_name": "n",
+        "pua": 57352,
+        "unicode": [
+          110
+        ],
+        "advance": 652
+      },
+      {
+        "gid": 9,
+        "glyph_name": "o",
+        "pua": 57353,
+        "unicode": [
+          111
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 10,
+        "glyph_name": "r",
+        "pua": 57354,
+        "unicode": [
+          114
+        ],
+        "advance": 562
+      },
+      {
+        "gid": 11,
+        "glyph_name": "s",
+        "pua": 57355,
+        "unicode": [
+          115
+        ],
+        "advance": 464
+      },
+      {
+        "gid": 12,
+        "glyph_name": "t",
+        "pua": 57356,
+        "unicode": [
+          116
+        ],
+        "advance": 479
+      }
+    ],
+    "original_font_name": "QDTHNW+t1-gul-regular-smallcaps",
+    "pdfname": "t1-gul-regular-smallcaps",
+    "family": "PDFR_F73",
+    "ascent": 564,
+    "descent": 0,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.5640000104904175,
+      "descender": 0.0
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-gul-symbol": {
+    "font_family": "PDFR_F74",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F74.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F74.otf",
+    "xref": 388,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "copyright",
+        "pua": 57345,
+        "unicode": [
+          169
+        ],
+        "advance": 790
+      }
+    ],
+    "original_font_name": "HWNAVD+t1-gul-symbol",
+    "pdfname": "t1-gul-symbol",
+    "family": "PDFR_F74",
+    "ascent": 800,
+    "descent": -200,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.800000011920929,
+      "descender": -0.20000000298023224
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "t1-uni-regular": {
+    "font_family": "PDFR_F75",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F75.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F75.otf",
+    "xref": 374,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "period",
+        "pua": 57345,
+        "unicode": [
+          46
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 2,
+        "glyph_name": "slash",
+        "pua": 57346,
+        "unicode": [
+          47
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 3,
+        "glyph_name": "colon",
+        "pua": 57347,
+        "unicode": [
+          58
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 4,
+        "glyph_name": "C",
+        "pua": 57348,
+        "unicode": [
+          67
+        ],
+        "advance": 667
+      },
+      {
+        "gid": 5,
+        "glyph_name": "D",
+        "pua": 57349,
+        "unicode": [
+          68
+        ],
+        "advance": 722
+      },
+      {
+        "gid": 6,
+        "glyph_name": "S",
+        "pua": 57350,
+        "unicode": [
+          83
+        ],
+        "advance": 667
+      },
+      {
+        "gid": 7,
+        "glyph_name": "a",
+        "pua": 57351,
+        "unicode": [
+          97
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 8,
+        "glyph_name": "b",
+        "pua": 57352,
+        "unicode": [
+          98
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 9,
+        "glyph_name": "c",
+        "pua": 57353,
+        "unicode": [
+          99
+        ],
+        "advance": 500
+      },
+      {
+        "gid": 10,
+        "glyph_name": "e",
+        "pua": 57354,
+        "unicode": [
+          101
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 11,
+        "glyph_name": "g",
+        "pua": 57355,
+        "unicode": [
+          103
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 12,
+        "glyph_name": "h",
+        "pua": 57356,
+        "unicode": [
+          104
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 13,
+        "glyph_name": "i",
+        "pua": 57357,
+        "unicode": [
+          105
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 14,
+        "glyph_name": "j",
+        "pua": 57358,
+        "unicode": [
+          106
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 15,
+        "glyph_name": "l",
+        "pua": 57359,
+        "unicode": [
+          108
+        ],
+        "advance": 278
+      },
+      {
+        "gid": 16,
+        "glyph_name": "m",
+        "pua": 57360,
+        "unicode": [
+          109
+        ],
+        "advance": 944
+      },
+      {
+        "gid": 17,
+        "glyph_name": "n",
+        "pua": 57361,
+        "unicode": [
+          110
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 18,
+        "glyph_name": "o",
+        "pua": 57362,
+        "unicode": [
+          111
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 19,
+        "glyph_name": "p",
+        "pua": 57363,
+        "unicode": [
+          112
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 20,
+        "glyph_name": "r",
+        "pua": 57364,
+        "unicode": [
+          114
+        ],
+        "advance": 389
+      },
+      {
+        "gid": 21,
+        "glyph_name": "s",
+        "pua": 57365,
+        "unicode": [
+          115
+        ],
+        "advance": 500
+      },
+      {
+        "gid": 22,
+        "glyph_name": "t",
+        "pua": 57366,
+        "unicode": [
+          116
+        ],
+        "advance": 333
+      },
+      {
+        "gid": 23,
+        "glyph_name": "u",
+        "pua": 57367,
+        "unicode": [
+          117
+        ],
+        "advance": 611
+      },
+      {
+        "gid": 24,
+        "glyph_name": "v",
+        "pua": 57368,
+        "unicode": [
+          118
+        ],
+        "advance": 556
+      },
+      {
+        "gid": 25,
+        "glyph_name": "w",
+        "pua": 57369,
+        "unicode": [
+          119
+        ],
+        "advance": 833
+      }
+    ],
+    "original_font_name": "USCGMP+t1-uni-regular",
+    "pdfname": "t1-uni-regular",
+    "family": "PDFR_F75",
+    "ascent": 727,
+    "descent": -190,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.7269999980926514,
+      "descender": -0.1899999976158142
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "MSBM10": {
+    "font_family": "PDFR_F190",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F190.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F190.otf",
+    "xref": 579,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "R",
+        "pua": 57345,
+        "unicode": [
+          82
+        ],
+        "advance": 722
+      },
+      {
+        "gid": 2,
+        "glyph_name": "Z",
+        "pua": 57346,
+        "unicode": [
+          90
+        ],
+        "advance": 666
+      }
+    ],
+    "original_font_name": "JVQUOH+MSBM10",
+    "pdfname": "MSBM10",
+    "family": "PDFR_F190",
+    "ascent": 464,
+    "descent": 0,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.46399998664855957,
+      "descender": 0.0
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "CMSY8": {
+    "font_family": "PDFR_F221",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F221.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F221.otf",
+    "xref": 580,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "E",
+        "pua": 57345,
+        "unicode": [
+          69
+        ],
+        "advance": 560
+      },
+      {
+        "gid": 2,
+        "glyph_name": "G",
+        "pua": 57346,
+        "unicode": [
+          71
+        ],
+        "advance": 630
+      },
+      {
+        "gid": 3,
+        "glyph_name": "N",
+        "pua": 57347,
+        "unicode": [
+          78
+        ],
+        "advance": 869
+      },
+      {
+        "gid": 4,
+        "glyph_name": "P",
+        "pua": 57348,
+        "unicode": [
+          80
+        ],
+        "advance": 743
+      },
+      {
+        "gid": 5,
+        "glyph_name": "V",
+        "pua": 57349,
+        "unicode": [
+          86
+        ],
+        "advance": 656
+      },
+      {
+        "gid": 6,
+        "glyph_name": "X",
+        "pua": 57350,
+        "unicode": [
+          88
+        ],
+        "advance": 756
+      }
+    ],
+    "original_font_name": "YLKAVZ+CMSY8",
+    "pdfname": "CMSY8",
+    "family": "PDFR_F221",
+    "ascent": 750,
+    "descent": -194,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.75,
+      "descender": -0.1940000057220459
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "CMSY6": {
+    "font_family": "PDFR_F222",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F222.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F222.otf",
+    "xref": 570,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "V",
+        "pua": 57345,
+        "unicode": [
+          86
+        ],
+        "advance": 785
+      },
+      {
+        "gid": 2,
+        "glyph_name": "X",
+        "pua": 57346,
+        "unicode": [
+          88
+        ],
+        "advance": 883
+      }
+    ],
+    "original_font_name": "VYIYUR+CMSY6",
+    "pdfname": "CMSY6",
+    "family": "PDFR_F222",
+    "ascent": 750,
+    "descent": -194,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.75,
+      "descender": -0.1940000057220459
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "MTEX": {
+    "font_family": "PDFR_F226",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F226.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F226.otf",
+    "xref": 569,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 333
+      },
+      {
+        "gid": 1,
+        "glyph_name": "parenrightbig",
+        "pua": 57345,
+        "unicode": [
+          41
+        ],
+        "advance": 403
+      },
+      {
+        "gid": 2,
+        "glyph_name": "parenleftbigg",
+        "pua": 57346,
+        "unicode": [
+          40
+        ],
+        "advance": 675
+      },
+      {
+        "gid": 3,
+        "glyph_name": "parenrightbigg",
+        "pua": 57347,
+        "unicode": [
+          41
+        ],
+        "advance": 675
+      },
+      {
+        "gid": 4,
+        "glyph_name": "bracketleftbigg",
+        "pua": 57348,
+        "unicode": [
+          91
+        ],
+        "advance": 545
+      },
+      {
+        "gid": 5,
+        "glyph_name": "bracketrightbigg",
+        "pua": 57349,
+        "unicode": [
+          93
+        ],
+        "advance": 545
+      },
+      {
+        "gid": 6,
+        "glyph_name": "parenlefttp",
+        "pua": 57350,
+        "unicode": [
+          9115
+        ],
+        "advance": 799
+      },
+      {
+        "gid": 7,
+        "glyph_name": "parenrighttp",
+        "pua": 57351,
+        "unicode": [
+          9118
+        ],
+        "advance": 799
+      },
+      {
+        "gid": 8,
+        "glyph_name": "parenleftbt",
+        "pua": 57352,
+        "unicode": [
+          9117
+        ],
+        "advance": 799
+      },
+      {
+        "gid": 9,
+        "glyph_name": "parenrightbt",
+        "pua": 57353,
+        "unicode": [
+          9120
+        ],
+        "advance": 799
+      },
+      {
+        "gid": 10,
+        "glyph_name": "parenleftex",
+        "pua": 57354,
+        "unicode": [
+          9116
+        ],
+        "advance": 799
+      },
+      {
+        "gid": 11,
+        "glyph_name": "parenrightex",
+        "pua": 57355,
+        "unicode": [
+          9119
+        ],
+        "advance": 799
+      },
+      {
+        "gid": 12,
+        "glyph_name": "summationtext",
+        "pua": 57356,
+        "unicode": [
+          8721
+        ],
+        "advance": 1045
+      },
+      {
+        "gid": 13,
+        "glyph_name": "summationdisplay",
+        "pua": 57357,
+        "unicode": [
+          8721
+        ],
+        "advance": 1415
+      },
+      {
+        "gid": 14,
+        "glyph_name": "parenleftbig",
+        "pua": 57358,
+        "unicode": [
+          40
+        ],
+        "advance": 403
+      }
+    ],
+    "original_font_name": "KKSBWX+MTEX",
+    "pdfname": "MTEX",
+    "family": "PDFR_F226",
+    "ascent": 46,
+    "descent": -600,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.04600000008940697,
+      "descender": -0.6000000238418579
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {
+      "3": {
+        "target_codepoint": 57347,
+        "source_codepoints": [
+          41
+        ],
+        "glyph_name": "parenrightbigg"
+      },
+      "13": {
+        "target_codepoint": 57357,
+        "source_codepoints": [
+          8721
+        ],
+        "glyph_name": "summationdisplay"
+      },
+      "14": {
+        "target_codepoint": 57358,
+        "source_codepoints": [
+          40
+        ],
+        "glyph_name": "parenleftbig"
+      }
+    }
+  },
+  "RMTMI": {
+    "font_family": "PDFR_F228",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F228.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F228.otf",
+    "xref": 571,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 333
+      },
+      {
+        "gid": 1,
+        "glyph_name": "alpha",
+        "pua": 57345,
+        "unicode": [
+          945
+        ],
+        "advance": 571
+      },
+      {
+        "gid": 2,
+        "glyph_name": "gamma",
+        "pua": 57346,
+        "unicode": [
+          947
+        ],
+        "advance": 502
+      },
+      {
+        "gid": 3,
+        "glyph_name": "epsilon1",
+        "pua": 57347,
+        "unicode": [
+          1013
+        ],
+        "advance": 437
+      },
+      {
+        "gid": 4,
+        "glyph_name": "mu",
+        "pua": 57348,
+        "unicode": [
+          181
+        ],
+        "advance": 686
+      },
+      {
+        "gid": 5,
+        "glyph_name": "xi",
+        "pua": 57349,
+        "unicode": [
+          958
+        ],
+        "advance": 426
+      },
+      {
+        "gid": 6,
+        "glyph_name": "sigma",
+        "pua": 57350,
+        "unicode": [
+          963
+        ],
+        "advance": 534
+      },
+      {
+        "gid": 7,
+        "glyph_name": "parenleft",
+        "pua": 57351,
+        "unicode": [
+          40
+        ],
+        "advance": 373
+      },
+      {
+        "gid": 8,
+        "glyph_name": "parenright",
+        "pua": 57352,
+        "unicode": [
+          41
+        ],
+        "advance": 373
+      },
+      {
+        "gid": 9,
+        "glyph_name": "period",
+        "pua": 57353,
+        "unicode": [
+          46
+        ],
+        "advance": 275
+      },
+      {
+        "gid": 10,
+        "glyph_name": "comma",
+        "pua": 57354,
+        "unicode": [
+          44
+        ],
+        "advance": 331
+      },
+      {
+        "gid": 11,
+        "glyph_name": "less",
+        "pua": 57355,
+        "unicode": [
+          60
+        ],
+        "advance": 780
+      },
+      {
+        "gid": 12,
+        "glyph_name": "slash",
+        "pua": 57356,
+        "unicode": [
+          47
+        ],
+        "advance": 470
+      },
+      {
+        "gid": 13,
+        "glyph_name": "greater",
+        "pua": 57357,
+        "unicode": [
+          62
+        ],
+        "advance": 780
+      },
+      {
+        "gid": 14,
+        "glyph_name": "star",
+        "pua": 57358,
+        "unicode": [
+          8902
+        ],
+        "advance": 472
+      },
+      {
+        "gid": 15,
+        "glyph_name": "lscript",
+        "pua": 57359,
+        "unicode": [
+          8467
+        ],
+        "advance": 468
+      },
+      {
+        "gid": 16,
+        "glyph_name": "v",
+        "pua": 57360,
+        "unicode": [
+          118
+        ],
+        "advance": 487
+      },
+      {
+        "gid": 17,
+        "glyph_name": "w",
+        "pua": 57361,
+        "unicode": [
+          119
+        ],
+        "advance": 735
+      },
+      {
+        "gid": 18,
+        "glyph_name": "Lambda",
+        "pua": 57362,
+        "unicode": [
+          923
+        ],
+        "advance": 796
+      }
+    ],
+    "original_font_name": "MUREHI+RMTMI",
+    "pdfname": "RMTMI",
+    "family": "PDFR_F228",
+    "ascent": 800,
+    "descent": -200,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.800000011920929,
+      "descender": -0.20000000298023224
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  },
+  "MSAM10": {
+    "font_family": "PDFR_F187",
+    "path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F187.ttf",
+    "otf_path": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\fonts\\PDFR_F187.otf",
+    "xref": 734,
+    "glyphs": [
+      {
+        "gid": 0,
+        "glyph_name": ".notdef",
+        "pua": 57344,
+        "unicode": [],
+        "advance": 500
+      },
+      {
+        "gid": 1,
+        "glyph_name": "defines",
+        "pua": 57345,
+        "unicode": [
+          8796
+        ],
+        "advance": 777
+      }
+    ],
+    "original_font_name": "CHEAYR+MSAM10",
+    "pdfname": "MSAM10",
+    "family": "PDFR_F187",
+    "ascent": 692,
+    "descent": 0,
+    "units_per_em": 1000,
+    "source_vertical_metrics": {
+      "ascender": 0.6919999718666077,
+      "descender": 0.0
+    },
+    "note": "Exact outlines converted from supplied PDF embedded Type1 subset. PUA code E000+original glyph id guarantees distinct big math variants. Unicode cmap also included where unambiguous. Not installed.",
+    "pua_replacements_by_source_gid": {}
+  }
+}

@@ -1,0 +1,14 @@
+Timestamp	Process	TID	Area	Category	EventID	Level	Message	Correlation
+10/27/2026 02:31:55.805	POWERPNT (0xB39C)	0xBCD0	Microsoft PowerPoint	Next user licensing	9g9kv	Monitorable	DoesDirectoryExist - Directory does not exist and will not be created {"Path":"C:\\Users\\Sweetie\\AppData\\Local\\Microsoft\\Office\\Licenses\\5\\Grace\\3"}	
+10/27/2026 02:31:58.279	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{1}"}	
+10/27/2026 02:31:58.281	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{2}"}	
+10/27/2026 02:31:58.283	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{3}"}	
+10/27/2026 02:31:58.283	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{4}"}	
+10/27/2026 02:31:58.295	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{5}"}	
+10/27/2026 02:31:58.297	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{6}"}	
+10/27/2026 02:31:58.297	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{7}"}	
+10/27/2026 02:31:58.303	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{8}"}	
+10/27/2026 02:31:58.305	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{9}"}	
+10/27/2026 02:31:58.309	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{10}"}	
+10/27/2026 02:31:58.309	POWERPNT (0xB39C)	0xD0DC	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{11}"}	
+10/27/2026 02:31:59.904	POWERPNT (0xB39C)	0x197C	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{11}"}	

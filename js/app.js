@@ -7,6 +7,7 @@ let currentWeek = 1;
 let studentSlideIndex = 0;
 let examTimerInterval = null;
 const pendingPracticeEssayFiles = {};
+let learningContentLoadToken = 0;
 
 window.onload = async function() {
     initCourseData();
@@ -24,7 +25,11 @@ window.onload = async function() {
     }
 
     if (data.session?.user) {
-        await loadSupabaseUser(data.session.user);
+        const loaded = await loadSupabaseUser(data.session.user);
+        if (loaded) {
+            applyUserSession();
+            refreshLearningContentAfterLogin();
+        }
     }
 };
 
@@ -48,14 +53,27 @@ async function loadSupabaseUser(authUser) {
         name: profile.full_name || authUser.email
     };
     currentRole = profile.role;
+    return true;
+}
+
+async function refreshLearningContentAfterLogin() {
+    const userId = currentUser?.id;
+    if (!userId) return;
+    const token = ++learningContentLoadToken;
+    const statusText = document.getElementById('autosave-text');
+    if (currentUser.role === 'teacher' && statusText) statusText.innerText = 'Loading course content...';
+
     try {
         await loadSupabaseLearningContent();
+        if (token !== learningContentLoadToken || currentUser?.id !== userId) return;
+        applyUserSession();
+        if (currentUser.role === 'teacher' && statusText) statusText.innerText = 'Auto-save Ready';
     } catch (contentError) {
+        if (token !== learningContentLoadToken || currentUser?.id !== userId) return;
         console.error('Unable to load Supabase learning content:', contentError.message);
+        if (currentUser.role === 'teacher' && statusText) statusText.innerText = 'Using local backup';
         alert('Signed in, but online course content could not be loaded. Local backup content will be shown.');
     }
-    applyUserSession();
-    return true;
 }
 
 function openLoginModal(role) {
@@ -173,8 +191,10 @@ async function handleAccountLogin(event) {
         await logout();
         alert(`This account is registered as ${actualRole}. Please use the correct login tab.`);
     } else {
+        applyUserSession();
         closeLoginModal();
         passwordInput.value = '';
+        refreshLearningContentAfterLogin();
     }
 
     if (submitBtn) submitBtn.disabled = false;
@@ -212,6 +232,7 @@ function applyUserSession() {
 }
 
 async function logout() {
+    learningContentLoadToken += 1;
     if (window.supabaseClient) await window.supabaseClient.auth.signOut();
     currentUser = null;
     

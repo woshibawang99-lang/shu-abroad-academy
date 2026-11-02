@@ -1,0 +1,24 @@
+{
+  "schema_version": "image2ppt-manifest-arrow-postprocess-v1",
+  "passed": true,
+  "pptx": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_003\\page.pptx",
+  "manifests": [
+    "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_003\\manifest.json"
+  ],
+  "operations": [],
+  "errors": [],
+  "preservation": {
+    "non_slide_parts_preserved": true,
+    "non_slide_part_count": 12,
+    "notes_parts_preserved": true,
+    "notes_part_count": 0
+  },
+  "input_sha256": "fa3ff20e90dfd5c9125ff8fb2cb7db064d55c1f02e15e893bf2a8b840858caac",
+  "output_sha256": "fa3ff20e90dfd5c9125ff8fb2cb7db064d55c1f02e15e893bf2a8b840858caac",
+  "summary": {
+    "slides": 1,
+    "profiled_arrows": 0,
+    "connectors": 0,
+    "filled_arrows": 0
+  }
+}

@@ -1,0 +1,12 @@
+from pathlib import Path
+p=Path(r'D:/AAA-SZ/留学学科教育/output/image2ppt/online-optimization-editable/pages/page_002/convert_fonts.py')
+s=p.read_text(encoding='utf-8')
+s=s.replace('import pathlib,json,collections,re','import pathlib,json,collections,re,argparse')
+s=s.replace("out=pathlib.Path(r'D:/AAA-SZ/留学学科教育/output/image2ppt/online-optimization-editable/pages/page_002/fonts')\ndoc=pymupdf.open(r'D:/AAA-SZ/2025_Online distributed optimization algorithm with dynamic regret analysis under unbalanced graphs.pdf')", "parser=argparse.ArgumentParser();parser.add_argument('--pdf',required=True);parser.add_argument('--out',required=True);args=parser.parse_args()\nout=pathlib.Path(args.out);out.mkdir(parents=True,exist_ok=True)\ndoc=pymupdf.open(args.pdf)")
+s=s.replace('actual=collections.defaultdict(lambda:collections.defaultdict(set))','actual=collections.defaultdict(lambda:collections.defaultdict(set));vertical={}')
+s=s.replace("for s in p.get_texttrace():\n  for u,gid,origin,bbox in s['chars']:actual[s['font']][gid].add(u)","for s in p.get_texttrace():\n  vertical[s['font']]={'ascender':s['ascender'],'descender':s['descender']}\n  for u,gid,origin,bbox in s['chars']:actual[s['font']][gid].add(u)")
+s=s.replace("for xref,ext,typ,pdfname,ref,enc,_ in doc[1].get_fonts(full=True):\n path=out/(ref+'.complete.pfa');", "fonts={x[0]:x for page in doc for x in page.get_fonts(full=True)}\nfor xref,ext,typ,pdfname,ref,enc,_ in fonts.values():\n base,ext,typ,data=doc.extract_font(xref)\n path=out/(ref+'.complete.pfa');path.write_bytes(data+b'\\n'+b'0'*512+b'\\ncleartomark\\n');")
+s=s.replace("fb.setupHorizontalMetrics(metrics);fb.setupHorizontalHeader(ascent=1000,descent=-300)","vm=vertical.get(pdfname.split('+')[-1],{'ascender':1,'descender':-0.3});asc=round(vm['ascender']*1000);desc=round(vm['descender']*1000)\n fb.setupHorizontalMetrics(metrics);fb.setupHorizontalHeader(ascent=asc,descent=desc)")
+s=s.replace('sTypoAscender=1000,sTypoDescender=-300,usWinAscent=1300,usWinDescent=600','sTypoAscender=asc,sTypoDescender=desc,usWinAscent=max(asc,0),usWinDescent=max(-desc,0)')
+s=s.replace("'units_per_em':1000,'note'", "'units_per_em':1000,'source_vertical_metrics':vm,'note'")
+p.write_text(s,encoding='utf-8')

@@ -1,0 +1,15 @@
+Timestamp	Process	TID	Area	Category	EventID	Level	Message	Correlation
+10/27/2026 02:31:05.089	POWERPNT (0x7560)	0xF95C	Microsoft PowerPoint	WebServiceApi	4qhrm	Medium	[ServiceRequest] Cache Data Found | [FileRequest] Succeed {"CacheKey":"https://officeclient.microsoft.com/config16/?rs=zh-CN&build=16.0.20527&telemetryRegion=GLOBAL&crev=3"}	DAED7F2B-3D47-4FF0-BC38-F254583F3998
+10/27/2026 02:31:05.092	POWERPNT (0x7560)	0xD654	Microsoft PowerPoint	Next user licensing	9g9kv	Monitorable	DoesDirectoryExist - Directory does not exist and will not be created {"Path":"C:\\Users\\Sweetie\\AppData\\Local\\Microsoft\\Office\\Licenses\\5\\Grace\\3"}	
+10/27/2026 02:31:08.560	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{1}"}	
+10/27/2026 02:31:08.565	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{2}"}	
+10/27/2026 02:31:08.570	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{3}"}	
+10/27/2026 02:31:08.570	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{4}"}	
+10/27/2026 02:31:08.595	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{5}"}	
+10/27/2026 02:31:08.600	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{6}"}	
+10/27/2026 02:31:08.600	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{7}"}	
+10/27/2026 02:31:08.613	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{8}"}	
+10/27/2026 02:31:08.618	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{9}"}	
+10/27/2026 02:31:08.622	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Disco	4vzbo	Medium	SHAM file does not exist, so we will not open it {"Path":"O:{10}"}	
+10/27/2026 02:31:08.623	POWERPNT (0x7560)	0x794C	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{11}"}	
+10/27/2026 02:31:10.430	POWERPNT (0x7560)	0xFD88	Microsoft PowerPoint	Syzygy	912b2	Medium	Destroying namespace. {"Path":"O:{11}"}	

@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "slides": 4,
+  "checks": [
+    {
+      "slide": 1,
+      "original_pdf_page": 2,
+      "identical_to_visually_reviewed_page": true,
+      "page_visual_qa_passed": true
+    },
+    {
+      "slide": 2,
+      "original_pdf_page": 3,
+      "identical_to_visually_reviewed_page": true,
+      "page_visual_qa_passed": true
+    },
+    {
+      "slide": 3,
+      "original_pdf_page": 4,
+      "identical_to_visually_reviewed_page": true,
+      "page_visual_qa_passed": true
+    },
+    {
+      "slide": 4,
+      "original_pdf_page": 5,
+      "identical_to_visually_reviewed_page": true,
+      "page_visual_qa_passed": true
+    }
+  ],
+  "verification": "Assembled slide content XML identical to the four previously visually reviewed PowerPoint pages; no desktop operation or new rendering performed.",
+  "file_sha256": "19ac37033205b085b3d4ca8111dcde904807603853db93217337ed60e27a36f0"
+}

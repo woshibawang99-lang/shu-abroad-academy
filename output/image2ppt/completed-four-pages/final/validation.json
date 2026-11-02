@@ -1,0 +1,16 @@
+{
+  "pptx": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\completed-four-pages\\final\\source_edited.pptx",
+  "deck_manifest": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\completed-four-pages\\deck_manifest.json",
+  "expected_pages": 4,
+  "slides": 4,
+  "page_manifests_missing": [],
+  "page_validation_missing": [],
+  "failed_page_validations": [],
+  "page_contract_violations": [],
+  "notes_expected": 0,
+  "notes_found": 0,
+  "notes_hash_mismatches": [],
+  "missing_parts": [],
+  "warnings": [],
+  "passed": true
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "image2ppt-visual-review-evidence-v1",
+  "pages": [
+    {
+      "page_id": "page_002",
+      "source": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_002\\source.png",
+      "rendered": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_002\\render\\rendered.png",
+      "source_sha256": "ae616667e9c1151f02bddc80debd7081074777db4142181c6d0b59441c909ff5",
+      "rendered_sha256": "a4463f8dc5f5f3895a57f9aebf1f6e66685643093e607e4c65210f90b1fbaef6",
+      "reviewed": true,
+      "checks": {
+        "composition_layout": "Compared the full 1191x1588 source and actual PowerPoint render. Both preserve the narrow two-column article layout, original margins and inter-column gap, header author/journal lines, right-column Problem formulation heading and bottom page number.",
+        "text_content": "Both columns retain the original prose and blue linked citations at the measured source positions. Body serifs and italic Notations label are reproduced with extracted PDF fonts. No clipping, reflow into adjacent lines, added summaries or missing paragraphs was seen.",
+        "object_completeness": "All inline regret bounds in the upper and middle columns are present, including square roots, sums, subscripts and superscripts. The displayed objective (1), its summation, index limits and constraints are aligned as in source. Mathematical glyph contours and seven source rules remain native independent shapes with source geometry.",
+        "render_integrity": "Actual powerpoint-com export was inspected, not the deterministic preview. The render has no source-page bitmap, duplicated text layer or missing math glyph blocks. White background, black prose and blue citations match source. Dense notation paragraph and objective remain legible at enlarged view."
+      }
+    }
+  ]
+}

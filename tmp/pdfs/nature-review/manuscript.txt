@@ -1,0 +1,716 @@
+=== PDF PAGE 1 ===
+                                                            Automatica 174 (2025) 112116
+
+
+                                            Contents lists available at ScienceDirect
+
+                              Automatica
+
+
+                                         journal homepage: www.elsevier.com/locate/automatica
+
+
+
+Online distributed optimization algorithm with dynamic regret
+analysis under unbalanced graphs✩
+Songquan Yao a, Siyu Xie b,∗, Tao Li a
+a School of Mathematical Sciences, East China Normal University, Shanghai 200241, China
+b School of Aeronautics and Astronautics, University of Electronic Science and Technology of China, Chengdu 611731, China
+
+
+a r t i c l e    i n f o             a b s t r a c t
+
+
+Article history:                    We consider online distributed convex optimization problems with a sum of locally dynamic loss func-
+Received 20 November 2023                      tions under unbalanced graphs. When optimizing the dynamic local loss function, every node tracks the
+Received in revised form 2 August 2024           time-varying global optimal solution by communicating with neighboring nodes via communication
+Accepted 20 November 2024                  networks in a cooperative way. We propose a novel online distributed Push–Pull algorithm and present
+Available online 20 January 2025
+                                               that the proposed online optimization algorithm can track the dynamic optimal solution with proper
+Keywords:                                    step sizes. We analyze the dynamic regret of the proposed algorithm in two cases where the global
+Dynamic regret                                   loss function is strongly convex and smooth, or is convex, smooth and Lipschitz. Our results illustrate
+Distributed optimization                         that the dynamic regret of the proposed online optimization algorithm can be sublinear, if the path
+Convex optimization                           length and the gradient variance are sublinear. At last, we demonstrate the property of the online
+Online learning                                 distributed optimization algorithm by two simulation examples.
+Online push–pull algorithm                © 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and
+                                                                                                                                    similar technologies.
+
+
+
+1. Introduction                                                  trend of big data era, online distributed optimization algorithms
+                                                                   are useful tools to deal with large-scale statistical tasks in the area
+   Nowadays, online distributed convex optimization problems     of artificial intelligence, finance, medicine, and so on.
+have obtained plenty of research attention in machine learning,        In general, online optimization algorithms can be classified
+large-scale statistical tasks, sensor networks, and so on, such     into two  categories,  i.e., online centralized ones and online
+as Fosson (2020). For example, with the rapid growth of the     distributed ones. Compared with the online centralized algo-
+number of images in image classification tasks, online distributed    rithms (Hazan, Agarwal, & Kale, 2007; Yi et al., 2021; Zinkevich,
+algorithms can be used to learn and track the computer’s ca-    August, 2003), distributed ones do not rely on a fusion center
+pability of classifying image in a timely manner, which is an       (i.e., receive every agent’s information using a central unit and
+effective tool to guarantee the accuracy of image classification   make a global estimation of the dynamic optimal solution), but
+after the computer learn massive quantity of images  (Li, Xie,     via a network topology, such that neighboring nodes can estimate
+& Li, 2023). Moreover, with the increasing demand of tracking    the optimal solution cooperatively by communications. In this
+moving targets, a helpful method to solve this problem is to use    manner, even if some nodes do not work, the estimation process
+multiple sensors to track the target in a cooperative way (Li et al.,     will not be influenced through communications. Also, when the
+2023). How to track the moving targets timely and effectively via     global loss function changes with time, dynamic regret is a useful
+the time-varying information collected by sensors is a key issue    metric that can be used to reflect the performances of online
+which needs to be solved. Since tracking moving targets in nature    optimization algorithms. Therefore, to conduct research on the
+may be interrupted at any time, online distributed algorithms can    dynamic regret analysis of online distributed algorithms is of
+be utilized to track moving targets and re-plan routes when en-     great significance.
+countering disturbances. Furthermore, with the emphasis on the      To  solve  the  online  distributed  optimization  problems,
+                                                                   researchers from all over the world have conducted a series of
+ ✩This work was funded by the National Natural Science Foundation of China    research works. For examples, Yi, Li, Xie, and Johansson (2020)
+under Grant No. 62261136550, and Sichuan Science and Technology Program    proposed an online  distributed primal–dual dynamic mirror
+under Grant No. 2025ZNSFSC1511. The material in this paper was not presented    descent algorithm with a  strongly connected and balanced
+at any conference. This paper was recommended for publication in revised form    communication network, and demonstrated that the upper bound
+by Associate Editor Sergio Grammatico under the direction of Editor Florian
+                                                                        of the static regret is sublinear for proper step sizes. Also, Hosseini,
+Dorfler.
+  ∗Corresponding author.                                       Chapman, and Mesbahi (2013) provided an online distributed
+     E-mail addresses:  52275500043@stu.ecnu.edu.cn (S. Yao),                  dual averaging algorithm with a balanced graph, and illustrated
+syxie@uestc.edu.cn (S. Xie), tli@math.ecnu.edu.cn (T. Li).                        that the upper bound of the static regret  is sublinear when
+
+
+https://doi.org/10.1016/j.automatica.2025.112116
+0005-1098/© 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+=== PDF PAGE 2 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+choosing a diminishing step size. Moreover, Zhang, Ravier, Za-     will be imposed on analyzing the dynamic regret of the pro-
+vlanos, and Tarokh (December, 2019) proposed an online gradient    posed online distributed algorithm. The main contributions of this
+tracking algorithm with a balanced graph and demonstrated that    paper can be summarized as follows. (i) This paper proposes a
+dynamic regret can be sublinear, and Akbari, Gharesifard, and    novel online distributed optimization algorithm that can learn
+Linder (2015) proposed an online distributed subgradient push-    the optimal solution continually. The innovation of our proposed
+sum algorithm with an unbalanced graph and showed that the    algorithm includes the following two aspects. We introduce the
+upper bound of the static regret is sublinear when choosing a    gradient value of the local loss function into the algorithm when
+specific diminishing step size, but  its dynamic regret cannot    time horizon are t and t + 1 to ensure that the nodes can track
+achieve  sublinear  property  while  choosing  a  constant  or    the dynamic optimal solution. Besides, we introduce a scaling
+diminishing step size.                                                  factor and choose adequate step sizes, and the dynamic regret
+   Furthermore, Zhang, Shi, Zhang, and Yuan (2023) proposed     of our proposed algorithm can be sublinear under comparatively
+an online distributed Frank–Wolfe algorithm with a balanced    weak assumptions, i.e., the loss function is convex, smooth, and
+graph, and proved that the upper bound of the dynamic regret     Lipschitz. (ii) This paper proves that the dynamic regret of the
+is sublinear when the global loss function is convex, smooth and    proposed algorithm can be controlled by two terms which are
+Lipschitz, where the step size is related to the loss variance.     relevant to the variation of the loss function under adequate
+                                                                assumptions,√        and the upper bound of the dynamic regret  isThe upper bound of the dynamic regret is O(√ T(1 + HT ) + DT ),
+where HT = ∑Tt=1 maxi∈V maxx∈X |fi,t+1(x) −fi,t(x)|, DT =    O(  T(1 + PT ) + VT ) if the loss function√      is strongly convex and
+∑Tt=1 maxi∈V maxx∈X ∥∇fi,t+1(x) − ∇fi,t(x)∥. Also, Shahrampour    smooth, and the upper bound is O(  T +PT ) if the loss function is
+                                                                 convex, smooth and Lipschitz. The definitions of PT and VT areand Jadbabaie (2017) proposed an online distributed mirror
+                                                                introduced in Section 3.  (iii) Compared with those online dis-
+descent algorithm with a balanced graph, and proved that its
+                                                                     tributed optimization algorithms under a balanced graph (Fosson,
+dynamic regret is sublinear when the loss function is convex and
+                                                             2020; Hosseini et al., 2013; Shahrampour & Jadbabaie, 2017), the
+Lipschitz.  The  upper  bound  of  the  dynamic  regret   is
+                                                               matrix theory and properties of unbalanced graphs are needed toO(√TCT/(1 −σ2(W))), where σ2(W) is the second largest singular
+                                                                      further analyze the dynamic regret of our proposed algorithm.
+of matrix W and CT = ∑Tt=1 ∥x⋆t+1 −Ax⋆t ∥. Here, matrix A is     Specifically, ‘‘unbalanced’’ refers to matrices R and C, which
+known in the network, and {x⋆t }Tt=1 is the minimizer sequence.    are row stochastic and column stochastic respectively in this
+Moreover, Yang and Chen (2020) proposed an online distributed                                                                    paper, and they are not doubly stochastic. The unbalancedness is
+projection subgradient algorithm under an unbalanced graph and                                                                        1+a     manifested by u and v, which are the left eigenvector of theproved that the upper bound of the dynamic regret is O(√ ST T  2  )    matrix R and the right eigenvector of the matrix C, respectively.
+with adequate step sizes when the loss function  is strongly   We use matrix theory to eliminate the difficulties brought by
+convex and the constraint set is closed, convex and bounded,    u and v in the regret analysis, which increases difficulty of our
+where ST = ∑T−1t=1 ∥x⋆t+1 −x⋆t ∥, and a ∈(0.5, 1).                        analysis.
+   To sum up, most of the existing literature on the online      The remainder of this paper is organized as follows. In Sec-
+distributed optimization problems are constrained by the fol-     tion 2, we formulate the problem and give the assumptions
+lowing aspects. (i) Some works only consider the static regret    needed for analyzing the dynamic regret. We propose an online
+analysis of the proposed algorithms, which cannot reflect the     distributed Push–Pull algorithm and provide results of dynamic
+algorithms’ capability of tracking global dynamic optimal solu-     regret analysis in Section 3, and we present the proofs of the
+tions.  (ii) The proposed online distributed algorithms lack the    main results in Section 4, respectively. At last, two numerical
+ability to learn continually, which means that their dynamic    experiments are used to verify the correctness of our results in
+regret cannot be sublinear. (iii) Most works focus on the case    Section 5, and conclusions are presented in Section 6.
+where the communication network is balanced.                         Notations: ∥ · ∥denotes the 2-norm of a matrix, ∥ · ∥F denotes
+   In order to overcome these constraints, this paper considers    the F-norm of a matrix, A⊤denotes the transpose of the matrix
+an online distributed optimization problem under an unbalanced     A, Rn denotes the n-dimensional Euclidean space, Rm×n denotes
+graph. Specifically, the proposed algorithm first conducts a step    the m × n-dimensional Euclidean space, I denotes the n-identity
+of weighted average, and then exploits a fixed step size to as-     matrix, 1 denotes a n-dimensional vector with all ones, and Mn
+sure that the algorithm can learn continually. Note that Zhang    denotes the set of all n × n matrix. Also, by bn =  O(rn), we
+                                                                                                                                             |bn|
+et al. (December, 2019) considered an online distributed algo-   mean that lim supn→∞  rn < ∞, where {bn, n ≥0} is a real
+rithm with no constraints, where the communication network is    number sequence, and {rn, n ≥0} is a positive number sequence.
+balanced and the loss function is strongly convex and smooth,    Moreover, PX (·) denotes the projection on constraint set X.
+and  it demonstrated that the proposed algorithm can achieve
+sublinear dynamic regret while step size is properly chosen. The     2. Problem formulation
+proposed algorithm in this paper fits more practical optimization
+problems compared with Zhang et al. (December, 2019), Yan,       Consider a communication network with n nodes, every node
+Sundaram, Vishwanathan, and Qi (2012), Zhang et  al. (2023),    has the capability of communication, calculation, and storing.
+and Shahrampour and Jadbabaie (2017).                        The online distributed optimization problem can be expressed as
+   This paper refers to the convergence analysis method in     follows:
+Pu, Shi, Xu, and Nedić (2020), and proves that the algorithm we                     n
+                                                                                                                              t = 0, 1, . . . , T,                     (1)proposed can achieve sublinear dynamic regret. In recent years,    minx∈X ft(x) := ∑ fi,t(x),
+researchers made much effort on proposing offline Push–Pull                    i=1
+based distributed optimization algorithms. Pu (December, 2020)    where fi,t(·) : X →R is the loss function of node i at time instant
+considered an offline robust Push–Pull algorithm, which can      t. Let x⋆t ∈arg minx∈X ft(x) be the optimal value at time instant t.
+converge to a neighborhood of the optimal solution in expecta-     We use a tuple G = (V, E) to describe the network structure,
+tion, and Xiong, Wu, You, and Xie (2022) proposed the Q-DGT    where V = {1, 2, . . . , n} is the set of nodes, and E ⊆V × V is the
+algorithm, which can handle the situation that the communica-     set of edges. Thus, (i, j) ∈E if and only if the ith agent can send
+tion bandwidth is limited. Since this paper considers the online    message directly to the jth agent. We define W = [wij]n×n ∈Rn×n
+convex optimization problem, higher demand on matrix analysis    as a weight matrix, where (i, j) ∈E if and only if wij > 0. Given
+
+                                                                   2
+
+=== PDF PAGE 3 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+a matrix M = [mij]n×n ∈Rn×n, the graph induced by matrix M is   Remark 1. This paper and Pu et al. (2020) studied different kinds
+noted as GM = (V, EM), where N = {1, 2, . . . , n}, and (j, i) ∈EM     of optimization problems. In Pu et al. (2020), researchers studied
+if and only if mij > 0.                                        an offline distributed optimization problem:
+   For the problem (1), we need the following assumptions.                          n
+                                                     min f (x) := ∑ fi(x).
+Assumption 1.  X  is the constraint set of problem (1), which     x∈Rp
+                                                                                              i=1
+is a compact, convex and bounded set. There exists a positive
+constant D, such that for any x ∈X, we have ∥x∥ ≤D.             However, this paper studies an online distributed optimization
+                                                             problem:
+Assumption 2.  There exists a positive constant M, such that for                     n
+any t ∈Z+, i ∈ {1, 2, . . . , n} and x ∈X, we have ∥∇fi,t(x)∥ ≤M.    min ft(x) := ∑ fi,t(x), t = 0, 1, . . . , T.
+                                                                  x∈X
+                                                                                              i=1
+Assumption 3.   For any t = 0, . . . , T,  i = 1, . . . , n, fi,t(x) is
+                                                          The main difference between these two problems is that the
+L-smooth, i.e., there is a positive constant L, such that
+                                                                           local loss functions in an offline distributed optimization problem
+∥∇fi,t(x) − ∇fi,t(y)∥ ≤L∥x −y∥,  ∀x, y ∈X.                   (2)      is time-invariant, but an online optimization problem considers
+Assumption 4.  For any t = 0, . . . , T, i = 1, . . . , n, fi,t(x) is µ-    time-variant local loss functions. Our proposed algorithm has two
+strongly convex, i.e., there is a positive constant µ > 0, such that     differences compared with Pu et al. (2020): (1) The auxiliary vari-
+for x, y ∈X, we have                                               able yi,t in our proposed algorithm involves information about the
+                      µ                              gradient of time-varying loss functions, which is ∇fi,t(xi,t), whilefi,t (y) −fi,t (x) ≥ ∇fi,t (x)T (y −x) +  ∥x −y∥2.               (3)
+                              2                                in that of Pu et al. (2020), it is ∇fi(xi,t). (2) This paper introduces
+                                                               a scaling factor a, where 0 < a ≤1, so that our proposedAssumption 5.  Every fi,t(·) is convex, i.e., for all x, y ∈X, we
+                                                                algorithm can be utilized to solve optimization problems withhave
+                                                                 convex, Lipschitz and smooth time-varying loss functions, and not
+fi,t(y) ≥fi,t(x) + ∇fi,t(x)⊤(y −x).                                     limited to strong convex and smooth functions.
+   Since node  i can only observe  fi,t(·) at time  t, nodes may                                                                     ∇Ft(x) is defined by
+communicate with each other via two communication networks
+GR and GC. Every node exploits its local information and the    ∇Ft(x) = [∇f1,t(x1), ∇f2,t(x2), . . . , ∇fn,t(xn)]⊤∈Rn×p,
+information obtained from neighbors to estimate the optimal
+value x⋆t+1 with an estimation xi,t+1. Based on it, this process will    where x =  [x1, x2, . . . , xn]⊤ ∈  Rn×p. The dynamic regret is
+cause the corresponding cost fi,t+1(xi,t+1). We expect to design a    not only related to the running time of an online optimization
+distributed online optimization algorithm to enable every node’s     algorithm, but also related to the variance of the loss functions,
+state variable  xi,t can track the dynamic optimal value x⋆t . We      it can be reflected by the path length and gradient variance,
+evaluate the property of an online optimization algorithm mainly    which are denoted by PT = ∑T−1t=0 ∥x⋆t+1 −ax⋆t ∥, and VT =
+through the static regret and the dynamic regret, then we give   ∑T−1t=0 supx ∥∇Ft+1(x) − ∇Ft(x)∥, respectively. Here, 0 < a ≤1.
+their definitions as follows:
+Definition 1.  Let {xi,t}Tt=0 be the state variable of a given on-   Remark 2. Generally speaking, PT and VT may not have a certain
+line optimization algorithm, then  its static regret  is RegsT  ≜     correlation, since the difference between them may be large for
+∑Ni=1 ∑Tt=0 ( ft ( xi,t ) −ft (x⋆)), where x⋆= arg minx∈X ∑Tt=0 ft (x)     different loss functions. For example, for some dynamic quadratic
+∈X.                                                                   functions, when PT is small, VT can be large, then VT is dominated
+                                                                        in the result, which should be underlined.
+Definition 2.  Let {xi,t}Tt=0 be the state variable of a given on-                                                                    For the analysis of the above algorithm, we also need the
+line optimization algorithm, then its dynamic regret is RegdT ≜                                                                   following assumptions on the matrices R and C.
+∑Ni=1 ∑Tt=0 ( ft ( xi,t ) −ft (x⋆t )) , where x⋆t = arg minx∈X ft (x) ∈X.
+3. Online distributed push–pull algorithm and its convergence    Assumption 6.   Given R =  [rij]n×n ∈Rn×n, C =  [cij]n×n ∈
+results                                                           Rn×n, GR and GC are induced by R and C, and the communication
+                                                                    topologies GR and GC are strongly connected, respectively. Be-
+   The online distributed Push–Pull algorithm is given as follows     sides, [rij]n×n is a row-stochastic matrix and [cij]n×n is a column-
+and summarized in Algorithm 1:                                     stochastic matrix, i.e., ∑nj=1 rij = 1, ∑ni=1 cij = 1, ∀i ∈V.
+            n
+   yi,t = ∑ cijyj,t−1 + ∇fi,t(xi,t) − ∇fi,t−1(xi,t−1)
+          j=1                                          Remark 3.  Since our proposed algorithm has special commu-
+    ∈Rp,                                                     (4)     nication principles, we need to introduce two graphs to express
+                   n                                                 the communication between agents. Thus, we use two matrices R
+         [                        ]
+                         ∈Rp,                        (5)    and C to introduce corresponding graphs. The critical principle isxi,t+1 = PX            a ∑ rij(xj,t −αyj,t)
+                                                                given as follows: node i in the graph GR receives its in-neighbor j’s
+                 j=1
+                                                                 information xj,t −αyj,t at time t, i.e., the so-called ‘‘pull’’ process.
+where 0 < a ≤1 is a scaling factor, α is the step-size, with α > 0.    Then, node i sends its local information yi,t at time t to its out-
+                                                               neighbor ℓin the graph GC, and node ℓreceives the information,Algorithm 1 Online Push-Pull
+                                                         which is the so-called ‘‘push’’ process. Note that the graph GR and
+Initialization: Arbitrarily initialize  xi,0 ∈ X and  let  yi,0 =    the graph GC can be the same.
+∇fi,0(xi,0) for each i ∈V.
+ 1: for t = 0, 1, · · · do
+ 2:    Update yi,t and xi,t+1 via (4) and (5).                 Lemma 1 (Xie, You, Tempo, Song, & Wu, 2018). Under Assumption 6,
+ 3: end for                                                            there exist two vectors u, v ∈Rd, for matrices R and C such that
+ 4: return {xi,t}.                                         u⊤R = u⊤, Cv = v , u⊤1 = v⊤1 = n, ui, vi > 0.
+
+
+                                                                   3
+
+=== PDF PAGE 4 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+Lemma 2 (Xiong et al., 2022). Under Assumption 6, ∥Rt−1u⊤/n∥ ≤   Theorem 2.  For the optimization problem (1), and the online dis-
+Λγ t and ∥Ct −v⊤1/n∥ ≤Λγ t. Here, Λ > 0 and γ ∈(0, 1).           tributed optimization algorithm (4) and (5), suppose that Assumptions 1,
+                                                                                 2, 5 and 6 hold, 0 < a < 1, α = √c   , where c is a positive constant,
+   Before presenting the convergence results, we give the aggre-                                                 T
+                                                  we have
+gated form of the proposed algorithm:
+                                                               RegdTyt = Cyt−1 + ∇Ft(xt) − ∇Ft−1(xt−1),                           (6)
+         [         ]                                                                  T (
+xt+1 = PX n  aR(xt −αyt)  ,                                     (7)   ≤nM ∑ nΛD/(1 −aγ )
+                                                                                 t=0
+where                                                  2Λ + 1 −γ
+                                     + Λαn2MT
+xt = [x1,t, x2,t, . . . , xn,t]⊤∈Rn×p,                                                (1 −γ )(1 −aγ )
+                                                              1   (T−1yt = [y1,t, y2,t, . . . , yn,t]⊤∈Rn×p,                                     +                        ∑ ∥x⋆t+1 −ax⋆t ∥
+PX n(zt) = [PX (z1,t), . . . , PX (zn,t)]⊤∈Rn×p,                   (8)        (1 −a)n  t=0
+                                                   2Λ + 1 −γ  √           ))
+for any zt = [z1,t, . . . , zn,t]⊤∈Rn×p.                  + αnMT       +  n∥u∥∥x0 −1(x⋆0)⊤∥     .           (10)
+   In the following part, we give the main convergence results of              1 −γ
+this paper.
+
+Theorem 1.  For the optimization problem (1), and the online   Remark 6. From (10), we can see that when the loss function
+distributed optimization algorithm (4) and (5) with a = 1 and      is convex, smooth and Lipschitz, both PT and VT have a big
+α = √c   , where c is a positive constant, suppose that Assumptions 1,    impact on the upper bound of the dynamic regret. When our
+        T
+2, 3, 4, and 6 hold, we have                                      assumptions on the loss function are the same as Zhang et al.
+RegdT                                                                 (2023), our upper bound is better than Zhang et al. (2023) when      √                                                         PT = O(DT ) (e.g., if the loss function is a time-varying quadratic
+    1 [√   n∥u∥∥x0 −1(x⋆0)⊤∥                               convex function); When our assumptions on the loss function are≤        T
+   u⊤v             2c                                              similar to Shahrampour and Jadbabaie (2017), our upper bound
+            + 1 −γ )         Λ(2Λ + 1 −γ )             is √better than Shahrampour and Jadbabaie (2017) when PT =+ ∥u∥√nΛDnM(2Λ      + 2D√ nnM                       O(  T). (e.g.,  if the loss function is some kind of time-varying
+                (1 −γ )2                      (1 −γ )2
+                                                                   quadratic convex function)
+              1       ΛD+ 4D2L√ nΛ     + nDL
+             (1 −γ )2      1 −γ
+                                                   Remark 7.  For examples, the online distributed Frank Wolfe  (             2Λ + 1 −γ+  (1 + ∥u∥√ nΛ)(nM               )2                             algorithm proposed by Zhang et  al. (2023) uses the gradient
+     2                1 −γ                                    tracking technology to track the variable  ∇Ft(ˆxi,t), instead of
+        nΛ2            2Λ + 1 −γ                             ∇Ft(xi,t). Then, the centralized Frank Wolfe algorithm is proposed+ (4DL√   + 2u⊤vDLnΛ)nM                                                                     to track the time-varying global optimal solution. According to     (1 −γ )2                  1 −γ
+          2Λ + 1 −γ ) √                                  the operation mechanism of the centralized Frank Wolfe algo-
++ u⊤vΛn2DLM               c  T                                  rithm, the decision variable  ˆxi,t can track time-varying optimal
+                1 −γ                                             solutions well. Although  xi,t can also track time-varying opti-     √              √
+  ( 2nD  T     2Λ + 1 −γ )     nΛ  ]                mal solutions, the dynamic regret will be correspondingly larger.
++      + n2M               PT +       VT   .            (9)     Also, the auxiliary variable yi,t in our paper precisely estimates         c           1 −γ         1 −γ
+                                                                                     ∇ft(xi,t), so xi,t can track the time-varying optimal solution more
+                                                                        accurately. The online distributed mirror descent algorithm pro-
+                                                           posed by Shahrampour and Jadbabaie (2017) involves the Breg-
+Remark 4. By the upper bound of dynamic regret in Theorem 1,   man divergence, resulting in related errors and an increase in the
+we can adjust the step size to reduce the running time of the    dynamic regret. In addition, according to the analysis of linear
+proposed algorithm according to the required accumulative error,    minimization steps, each ˆxi,t tracks the local time-varying optimal
+the information about the loss functions and optimal solutions.      solution x∗i,t ∈arg minx∈X fi,t(x), which also causes errors and
+                                                                    leads to an increase in the dynamic regret. Thus, the performance
+                                                                        of our proposed algorithm can be better than these proposed
+Remark 5. From (9) in the proof of Theorem 1, we can see that     algorithms.
+when the loss function is strongly convex and smooth, both PT
+and VT have an effect on the upper bound of the dynamic regret.                                                                             4. Proofs of the main results
+If the global loss function ft(·) varies slowly, and PT,√VT have small
+upper bounds. Note that if PT  is smaller than O(  T) and VT  is                                                                          In this section, we study the properties of dynamic regret of
+smaller than O(T), then the bound is sublinear. However, if the                                                              our proposed algorithm. Define
+optimal solution x⋆t fluctuates drastically, PT or VT may be bigger         1
+than O(T), then the proposed algorithm cannot ensure a sublin-      xt : =  u⊤xt ∈R1×p,
+                                                              n
+ear bound. In other words, under some extreme cases, online
+                                                              1
+optimization problems cannot be solved. When our assumptions      yt : =  1⊤yt ∈R1×p,
+                                                              non the loss function are the same as Yang and Chen (2020),
+                                                              1
+our upper bound is better than Yang and Chen (2020) when      gt : =  1⊤∇Ft(1xt) ∈R1×p,
+VT = O(PT )(e.g., if the loss function is some class of time-varying         n
+                                                           [                                                                      ]quadratic convex function).                                                                                         ξt : = PX n                                                                                   aR(xt −αyt)                                                                              −aR(xt −αyt),
+
+
+                                                                   4
+
+=== PDF PAGE 5 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+ϵt : = ξt −aRαyt.                                  Lemma 4.    For the optimization problem  (1), and the online
+                                                                          distributed optimization algorithm (4) and (5), when a = 1, suppose
+                                                                        that Assumptions 2, 3 and 6 hold, we have
+4.1. Proof of Theorem 1
+                                                              ∥u⊤(v1⊤∇Ft(xt)/n −yt)∥
+
+Lemma 3.    For the optimization problem  (1), and the online                                                                                                                                                                                 t                                    ≤√ nnM 2Λ + 1 −γ Λγ
+distributed optimization algorithm (4) and (5), when a = 1, suppose             1 −γ
+that Assumptions 2 and 6 hold, we have                                            t+1                                    √
+        2Λ + 1 −γ                                      +  nΛ ∑ γ t+1−l sup                                                                                           ∥∇Fl(x) − ∇Fl−1(x)∥                               ,                                   (11)∥ξt∥ ≤αnM                                                                                                                             x             1 −γ                                                                     l=1
+                                                                                                  t−1                    t−1      2Λ + 1 −γ               + 2√ nΛ2LD(t + 1)γ∥xt −1xt∥ ≤ΛDγ  + ΛαnM                ,                (12)
+                                 (1 −γ )2                           2Λ + 1 −γ
+                                      + 2Λ2αnM                ,
+and                                                                                 (1 −γ )3
+                      2Λ + 1 −γ
+                                                           ,            (13)    where u and v are defined in Lemma 1.∥xt −xt−1∥ ≤2ΛDγ t−2 + 2ΛαnM
+                                    (1 −γ )2
+
+where α is the step size of our proposed algorithm, Λ and γ are the
+                                                                   Proof. For (6), we havenumbers defined in Lemma 2.
+                                                                v1⊤[yt − ∇Ft(xt)] = v1⊤[yt−1∇Ft−1(xt−1)]
+Proof. Defining st+1 = ∇Ft+1(xt+1) − ∇Ft(xt), we rewrite (6) as            = v1⊤[y0 − ∇F0(x0)] = 0.
+follows:
+                                                                     Therefore,
+yt+1 = Cyt + st+1.                                                              v1⊤∇Ft(xt) −yt = v1⊤yt −yt.                             (18)
+Then, we have
+                  t+1                                             According to (12), we have
+yt+1 = Ct+1y0 + ∑ Ct+1−lsl.                               (14)                                                              v1⊤yt = v1⊤y0 − t∑ v1⊤sl.                                (19)
+                    l=1
+                                                                                                      l=1
+From yi,0 = ∇fi,0(xi,0) and sl = ∇Fl(xl) − ∇Fl−1(xl−1), we know
+that                                                                       Left multiplying u⊤on the both sides of (18), and according to
+∥yt+1∥ ≤ t∑ ∥Ct−l −Ct−l+1∥∥∇Fl(xl)∥                               (14)u⊤(v1⊤∇Ft(xt)/nand (19), we have−yt)
+           l=0                                                                                        t+1
+     + ∥∇Ft+1(xt+1)∥,                                 (15)  = −u⊤(Ct −v1⊤/n)y0 + ∑ u⊤(Ct+1−l −v1⊤/n)sl.
+√where C0 := I. According to Assumption 2, we have ∥∇Ft(xt)∥2Λ+1−γ≤                                    l=1
+                                                                  Thus, we have  nM. Then, by Lemma 2, we know that ∥yt+1∥ ≤√ nM  1−γ     .
+From      the convexity                       of X                                                                       −yt)∥
+       ∈X. Therefore,                          ∥ξt∥                       and ≤√Assumptionnα∥yt∥and6, wewe canknowget (11)that      ∥u⊤(v1⊤∇Ft(xt)/n∑j=1 rijxj,t                                                  2Λ + 1 −γfrom (15). From (7), we have                     ≤√ nnM            ∥Ct −v1⊤/n∥
+                                                                  1 −γ
+xt+1 = Rxt + ϵt                                                                   t+1
+                                    √              (
+   = Rt+1x0 + t∑ Rl−1ϵt+1−l.                             (16)    +  n ∑l=1 ∥Ct+1−l −v1⊤/n∥  L∥xl −xl−1∥
+                    l=1                                               )
+                                      + sup ∥∇Fl(x) − ∇Fl−1(x)∥   .Multiplying 1u⊤/n on both sides of (7), we have                                     x
+     1        11xt =  1u⊤x1 +  t∑ 1u⊤ϵt+1−l.                           (17)    By Lemmas 2 and 3, we can get the conclusion.
+     n        n
+                       l=1
+
+By (16) and (17), we know that                                             Lemma 5.    For the optimization problem  (1), and the online
+  ∥xt −1xt∥                                                             distributed optimization algorithm (4) and (5), when a = 1, suppose
+                                                                        that Assumptions 1, 2 and 6 hold, we have
+                                                                                    n≤∥Rt −1u⊤/n∥∥x1∥ + Λ t∑ ∥Rl−1 −1u⊤/n∥∥ϵt+1−l∥
+                     ∑ ui∥xi,t+1 −x⋆t+1∥2                              l=1
+                                                                                   i=1
+                                                                                    n≤ΛDγ t + Λ t∑ γ l−1∥ϵt+1−l∥
+                                      ≤ ∑ ui∥xi,t −x⋆t ∥2 + 4nD∥x⋆t+1 −x⋆t ∥               l=1
+                                                                                   i=1           2Λ + 1 −γ
+                                                                                                                        n      n                                     ,≤ΛDγ t + ΛαnM                                                    2Λ + 1 −γ                                                                           [                   (1 −γ )2                                      + α2(nM                                                                                                                 )2 −2α                             ∑ ui( ∑ rijxj,t −xt, yi,t)
+                                                                    1 −γwhere the last inequality follows from Lemmas 1 and 2, then we                                            i=1    j=1
+obtain (12). Besides, when we let t to be t −1 in (16) and using                       n                 n
+Lemma 2, it yields (13).                          + (xt −x⋆t , ∑ uiyi,t −u⊤v ∑ ∇fi,t(xi,t))
+                                                                                                i=1               i=1
+
+                                                                   5
+
+=== PDF PAGE 6 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+                      n
+                                                                   Proof. Recalling Assumption 4, we have
+ + u⊤v(xt −x⋆t , ∑ (∇fi,t(xi,t) − ∇fi,t(xt)))
+                     i=1                                                                (xt −x⋆t , ∇fi,t(xt))
+                      n                                          µ
+                                    ]                       ≥fi,t(xt) −fi,t(x⋆t ) +   ∥xt −x⋆t ∥2.                            (21)
+ + u⊤v(xt −x⋆t , ∑ ∇fi,t(xt)) + 6nD∥x⋆t+1 −x⋆t ∥                                 2
+                     i=1                                       By Lemma 5 and (21), we know that
+          2Λ + 1 −γ                                                         n + 2αn2√ nM                            ∥x⋆t+1 −x⋆t ∥,                        u⊤v ∑[fi,t(xt) −fi,t(x⋆t )]               1 −γ
+                                                                                       i=1
+where ui is the ith component of vector u.                                          n
+                                  ≤1 ∑ ui[∥xi,t −x⋆t ∥2 − ∥xi,t+1 −x⋆t+1∥2]
+                                                       2α
+Proof.  By (5), Assumption 1, the fact  xi,t ∈X, x⋆t ∈X and            i=1
+Lemma 3, we have                                         α   2Λ + 1 −γ        n      n
+    n                                    +  (nM               )2 − ∑ ui( ∑ rijxj,t −xt, yi,t)
+ ∑ ui∥xi,t+1 −x⋆t+1∥2                                          2      1 −γ          i=1    j=1
+   i=1                                                                                            n                 n
+    n       n                                              −(xt −x⋆t , ∑ uiyi,t −u⊤v ∑ ∇fi,t(xi,t))
+≤ ∑ ui∥ ∑ rijxj,t −x⋆t+1 −αyi,t∥2                                                         i=1               i=1
+   i=1     j=1                                                                                        n
+                                                       −u⊤v(xt −x⋆t , ∑(∇fi,t(xi,t) − ∇fi,t(xt)))    n                 2Λ + 1 −γ
+≤ ∑ ui∥xi,t −x⋆t+1∥2 + α2(nM               )2                                                 i=1                           1 −γ
+   i=1                                                            2nD∥x⋆t+1 −x⋆t ∥     2Λ + 1 −γ
+           n        n                            +         + n2M            ∥x⋆t −x⋆t+1∥        (                      )                    α              1 −γ
+ −2α ∑ ui  ( ∑ rijxj,t −x⋆t , yi,t) + (x⋆t −x⋆t+1, yi,t)                              t+1                                    √
+          i=1      j=1                            +  nΛ ∑ γ t+1−l sup ∥∇Fl(x) − ∇Fl−1(x)∥.               (22)
+    n                                                                                                                       x
+≤ ∑ ui∥xi,t −x⋆t ∥2 + 4nD∥x⋆t+1 −x⋆t ∥                                                  l=1                                                               Taking the summation from t = 1 to T, from Assumption 1,
+   i=1
+                                        n      n                    Lemmas 3 and 4, we get
+        2Λ + 1 −γ      [                                                   T + α2(nM               )2 −2α ∑ ui( ∑ rijxj,t −xt, yi,t)
+            1 −γ                     ∑[ft(xt) −ft(x⋆t )]                                      i=1    j=1
+                  n                 n                                          t=0  √
+ + (xt −x⋆t , ∑ uiyi,t −u⊤v ∑ ∇fi,t(xi,t))           ≤1  [   n∥u∥∥x0 −1(x⋆0)⊤∥
+                 i=1               i=1                              u⊤v          2α
+                      n                                       + 1 −γ )         Λ(2Λ + 1 −γ )                                                    ∥u∥√ nΛDnM(2Λ      + 2D√ nnM + u⊤v(xt −x⋆t , ∑ (∇fi,t(xi,t) − ∇fi,t(xt)))               +                                                                                      (1 −γ )2                      (1 −γ )2
+                     i=1
+                      n                     ]            + 4D2L√ nΛ   1
+ + u⊤v(xt −x⋆t , ∑ ∇fi,t(xt)) + 6nD∥x⋆t+1 −x⋆t ∥                                    (1 −γ )2
+                     i=1                                (             2Λ + 1 −γ                                      +   (1 + ∥u∥√ nΛ)(nM               )2
+          2Λ + 1 −γ                                         2                1 −γ + 2αn2√ nM            ∥x⋆t+1 −x⋆t ∥.
+               1 −γ                                           nΛ2            2Λ + 1 −γ )                                      + (4DL√   + 2u⊤vDLnΛ)nM            αT
+                                                                           (1 −γ )2                  1 −γ
+                                                     √
+                                             ( 2nD     2Λ + 1 −γ )     nΛ
+Lemma 6.    For the optimization problem  (1), and the online    +    + n2M               PT +       VT.             (23)
+distributed optimization algorithm (4) and (5), when a = 1, suppose         α          1 −γ         1 −γ
+that Assumptions 1, 2, 4 and 6 hold, we have
+    T                                                                 Here, we give the proof of Theorem 1, where we use the
+ ∑[ft(xt) −ft(x⋆t )]                                               conclusion of Lemmas 3 and 6.
+   t=0  √                                                        Proof. From Assumptions 1, 3, Lemmas 3, 6, and Definition 2, we
+                                                  know that≤1  [   n∥u∥∥x0 −1(x⋆0)⊤∥
+  u⊤v          2α                                                                          T    n
+             + 1 −γ )         Λ(2Λ + 1 −γ )        RegdT = ∑ ∑ ft(xi,t) −ft(x⋆t ) + ∥u∥√ nΛDnM(2Λ      + 2D√ nnM
+                  (1 −γ )2                      (1 −γ )2                     t=0 i=1
+               1                                                                             T    n                      T + 4D2L√nΛ                                     ≤L ∑ ∑ ∥xi,t −xt∥2 + ∑[ft(xt) −ft(x⋆t )]               (1 −γ )2                                           2
+                                                                                   t=0 i=1                t=0
+   (             2Λ + 1 −γ +  (1 + ∥u∥√ nΛ)(nM               )2                      [√ n∥u∥∥x0 −1(x⋆0)⊤∥      2                1 −γ                 ≤1                                                            u⊤v        2α
+         nΛ2                      2Λ + 1 −γ ) + (4DL√         + 2u⊤vDLnΛ)nM                                      αT              + ∥u∥√nΛDnM(2Λ + 1 −γ )       (1 −γ )2                  1 −γ                                                                                            (1 −γ )2                   √
+   ( 2nD     2Λ + 1 −γ )     nΛ                               Λ(2Λ + 1 −γ ) +    + n2M               PT +       VT.             (20)       + 2D√ nnM
+      α          1 −γ         1 −γ                                                (1 −γ )2
+
+                                                                   6
+
+=== PDF PAGE 7 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+                                                                                     n                    1                      ΛD                                                               2Λ + 1 −γ                + nDL    + 4D2L√ nΛ                                      ≤ ∑                                                                                           ui∥axi,t −x⋆t+1∥ + αnM                                 )2                             1                    (1 −γ                     −γ                                                                                   1 −γ
+
+                                                                                       n    +      ( (1 + ∥u∥√ nΛ)(nM 2Λ + 1 −γ )2                               i=1
+           2                1 −γ               ≤a ∑ ui∥xi,t −x⋆t ∥ + ∥x⋆t+1 −ax⋆t ∥
+             nΛ2            2Λ + 1 −γ                          i=1    + (4DL√   + 2u⊤vDLnΛ)nM
+            (1 −γ )2                  1 −γ             + αnM 2Λ + 1 −γ .                                     (29)
+               2Λ + 1 −γ )                                     1 −γ
+    + u⊤vΛn2DLM           αT
+                     1 −γ                             From Assumption 5, we have
+                      √
+                             nΛ      ( 2nD                2Λ + 1 −γ )                                       ]                                                                                               ft(xi,t) −ft(x⋆t ) ≤ ∇ft(xi,t)⊤(xi,t −x⋆t ).                        (30)    +         + n2M                                                                                 .      (24)                                        PT +                                                VT
+          α          1 −γ         1 −γ
+                                                        By Assumption 2 and (30), we have
+The proof is completed.
+                                                                                               ft(xi,t) −ft(x⋆t ) ≤ ∥∇ft(xi,t)∥∥xi,t −x⋆t ∥
+                                                                                                       n
+4.2. Proof of Theorem 2
+                                            = ∥ ∑ ∇fj,t(xi,t)∥∥xi,t −x⋆t ∥
+                                                                                                     j=1
+Lemma 7.    For the optimization problem  (1), and the online
+distributed optimization algorithm (4) and (5), when 0 < a < 1,                ≤nM∥xi,t −x⋆t ∥.                             (31)
+suppose that Assumptions 1, 2 and 6 hold, we have
+        2Λ + 1 −γ                                   From (31), Lemma 7 and Definition 2, we have
+∥ξt∥ ≤αnM                ,                                   (25)                  T    n
+             1 −γ
+                                                               RegdT = ∑ ∑ ft(xi,t) −ft(x⋆t )
+and                                                                              t=0 i=1
+                      2Λ + 1 −γ                                               T    n
+∥xt −1xt∥ ≤ΛD(aγ )t + ΛαnM                             (26)                                (1 −γ )(1 −aγ ).              ≤nM ∑ ∑ ∥xi,t −x⋆t ∥
+                                                                                      t=0 i=1
+                                                                                                          T    n (             )
+Proof. The proof of (25) is the same as that of Lemma 3, we omit     ≤nM ∑ ∑  ∥xi,t −xt∥ + ∥xt −x⋆t ∥
+it here. From (7), we have                                                          t=0 i=1
+                                                                                                                         n
+                                                                                                          T (√                                                                        )                                                                                                                                  uixt+1 = aRxt + ϵt                                        ≤nM ∑                                                                                    n∥xt −1xt∥F + ∑                                                                                                                                                  ∥xi,t −x⋆t ∥
+                                                                                        n
+                                                                                      t=0                       i=1   = at+1Rt+1x0 + t∑ al−1Rl−1ϵt+1−l.                     (27)                      T                      n
+                                                                      )                                                   (                                                                                                                              ui                         l=1                           ≤nM ∑                                                                                                                                                                                   .           (32)                                                                                  n∥xt −1xt∥ + ∑                                                                                                                                              ∥xi,t −x⋆t ∥
+                                                                                     nMultiplying 1u⊤/n on both sides of (7), we have                                  t=0                    i=1
+       at+1                1                                                               Taking summation from t = 0 to T −1 on both sides of (29), by
+1xt =             t∑ 1u⊤al−1ϵt+1−l.                    (28)         1u⊤x0 +
+       n         n                                        Assumption 1, we have
+                          l=1
+                                                                                                       T    n
+By (27) and (28), we know that                                       (1 −a) ∑ ∑ ui∥xi,t −x⋆t ∥
+  ∥xt −1xt∥                                                                      t=0 i=1
+≤at+1∥Rt −1u⊤/n∥∥x0∥                                             T−1
+                                      ≤ ∑ ∥x⋆t+1 −ax⋆t ∥
+                                                                            t=0 + Λ t∑ al−1∥Rl−1 −1u⊤/n∥∥ϵt+1−l∥                                                                   n
+                                                    2Λ + 1 −γ
+         l=1                                + αnMT                                                  + ∑ ui∥xi,0 −x⋆0∥                                                                    1 −γ
+                                                                                                               i=1≤ΛD(aγ )t + Λ t∑(aγ )l−1∥ϵt+1−l∥                                    T−1
+                  l=1                            ≤ ∑ ∥x⋆t+1 −ax⋆t ∥              2Λ + 1 −γ
+≤ΛD(aγ )t + ΛαnM                                                       t=0                    (1 −γ )(1 −aγ ),                            2Λ + 1 −γ
+                                      + αnMT       + ∥u∥∥x0 −1(x⋆t )⊤∥Fwhere the last inequality follows from Lemmas 1 and 2, then we               1 −γ
+obtain (26).                                                         T−1
+   Here, we give the proof of Theorem 2, which uses the conclu-   ≤ ∑ ∥x⋆t+1 −ax⋆t ∥
+sion in Lemmas 1 and 7.                                                  t=0
+                                                    2Λ + 1 −γ  √
+                                      + αnMT                                                  +  n∥u∥∥x0 −1(x⋆t )⊤∥.            (33)Proof.  According to online distributed optimization algorithm                                                                    1 −γ
+(4), (5), Lemmas 1 and 7, we have
+     n                                                    By Lemma 7, (32) and (33), we know that
+ ∑ ui∥xi,t+1 −x⋆t+1∥                                                                            T (
+    i=1                                                          RegdT ≤nM ∑ nΛD/(1 −aγ )
+     n       n                                                                        t=0
+≤ ∑ ui∥ ∑ arijxj,t −x⋆t+1 −αyi,t∥                      + Λαn2MT  2Λ + 1 −γ
+    i=1     j=1                                                                           (1 −γ )(1 −aγ )
+
+                                                                   7
+
+=== PDF PAGE 8 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+           1   (T−1
+    +   ∑ ∥x⋆t+1 −ax⋆t ∥           (1 −a)n
+                      t=0
+           2Λ + 1 −γ  √           ))
+    + αnMT       +  n∥u∥∥x0 −1(x⋆0)⊤∥     .                1 −γ
+
+The proof is completed.
+
+
+5. Numerical simulation
+
+
+   In this section, we use two numerical experiments to verify
+our theoretical results.
+
+
+Example 1. Consider the following online convex optimization
+problem for localization in sensor networks:
+       n                                                                                       Fig. 1. The communication network topology used in two experiments when
+       1
+min ∑           (Pix −qi,t)2,   t = 1, 2, . . . , T,                             n = 5.
+x∈X    2
+     i=1
+where X = {x ∈R| −1 ≤x ≤1}. Considering a communication
+network with n sensors, each sensor i ∈ {1, . . . , n} receives an
+observation scalar qi,t at time slot t. In this model, we assume
+the actual value s =  0.0095 is not available to sensors and
+qi,t = ai,ts + bi,t, where ai,t and bi,t are randomly generated from
+a uniform distribution on [0,2] and [-0.01,0.01] respectively. We
+also have Pi = 1, i ∈ {1, . . . , n} which is the expectation of ai,t.
+The communication topology is induced by matrix R and C, when
+      ⎛  0.2   0.2  0.2   0.2   0.2 ⎞
+             0    0.5  0.5   0    0
+n = 5, R =    0    0   0.5   0    0.5      .
+             0    0.5   0    0.5   0                       ⎜⎜⎜⎝                                                               ⎟⎟⎟⎠
+             0.25   0    0   0.25  0.5
+
+    It  is easy to verify that R meets R1 =  1,  i.e., R  is row-
+stochastic. Take C = R⊤, it is easy to see that 1⊤C = 1⊤, i.e., C is
+column-stochastic.                                                                      Fig. 2. Performances of proposed algorithm under different step sizes in the
+   The communication network topology used in this experiment       first experiment.
+is shown in Fig. 1. From Fig. 2, we know that when α = 0.02, the
+average dynamic regret is bigger than that of 0.04, and both of
+them converge to 0. Fig. 3 shows the tracking performances when
+α = 0.04, cooperation between sensors result in consensus, and
+the consensus value is 0.0095. Fig. 4 shows the average dynamic
+regret of proposed algorithm and its centralized counterpart, and
+we can see that difference between them are small. As the time
+horizon T is large, two curves are close to each other. When n =
+    ⎛  0.1   0.3  0.2   0.2   0.2   0 ⎞
+          0    0.5  0.4   0    0   0.1
+          0    0   0.5   0    0.5   06, R =                                                                                   , C = R⊤. From
+          0    0.5   0    0.5   0    0
+          0.25   0    0   0.25  0.5   0                        ⎜⎜⎜⎜⎜⎝                                                                                                                ⎟⎟⎟⎟⎟⎠
+          0    0    0    0.5   0   0.5
+Fig. 5, we know that when n is larger, the average dynamic regret
+is also larger, which corresponds to the result in Theorem 1.
+Fig. 6 shows that proposed algorithm outperforms Yang and Chen
+(2020) while setting our step size to be 0.025, while the step size      Fig. 3. Sensors’ state estimation versus time for two of the sensors in the first
+                                                                                experiment.
+of Yang and Chen (2020) is set to be 0.002.
+
+
+Example 2. In the second numerical experiment, we consider the
+following online convex optimization problem:                              Fig. 7 shows the average dynamic regret of proposed algo-
+         n
+    1                                                               rithm, we can find that the average dynamic regret of pro-min ∑ Pi∥x −qi,t∥2,   t = 1, 2, . . . , T,
+x∈X 2        i=1                                                   posed algorithm is decreasing continuously and  it is close to
+                                                        0 finally. Fig. 8 shows the average dynamic regret of proposed
+where X = {x ∈R2|∥x∥ ≤2}. We assume the actual value x⋆t is
+not available to sensors, where x⋆t+1 = ax⋆t + vt, a = 0.95, P1 =    algorithm and its centralized counterpart, and we can see that
+0, P2 = P3 = P4 = P5 = 1. qi,t = x⋆t + bi,t and every component     difference between them are small too. As the time horizon T
+of bi,t and vt is randomly generated from [−0.01, 0.01].                 is large, two curves are close to each other. When n = 7, R =
+
+                                                                   8
+
+=== PDF PAGE 9 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+
+
+
+
+Fig. 4. Performances of proposed algorithm and its centralized counterpart in            Fig. 7. Performance of proposed algorithm in the second experiment.
+the first experiment.
+
+
+
+
+
+                                                                                                Fig. 8. Performances of proposed algorithm and its centralized counterpart in
+Fig. 5. Performances of proposed algorithm when n  is different in the  first
+                                                                                 the second experiment.
+experiment.
+
+
+
+
+
+                                                                                                Fig. 9. Performances of proposed algorithm when n is different in the second
+Fig. 6. Performances of proposed algorithm and Yang and Chen (2020) in the
+                                                                                experiment.
+first experiment.
+
+
+⎛  0.1   0.3  0.2   0.2   0.2   0    0 ⎞                           Fig. 10 shows that proposed algorithm outperforms Yang and
+    0    0.5  0.4   0    0   0.1   0                      Chen (2020) while setting our step size to be 0.025, while the
+    0    0   0.5   0    0.4   0   0.1                         step size of Yang and Chen (2020) is set to be 0.002.
+    0    0.5   0    0.5   0    0    0        , C =  R⊤. From
+   0.25   0    0   0.25  0.5   0    0                              6. Conclusion⎜⎜⎜⎜⎜⎜⎝  0    0    0    0.5   0   0.5   0        ⎟⎟⎟⎟⎟⎟⎠
+    0    0    0    0    0.5   0   0.5                              In this paper, we proposed a novel online distributed opti-
+Fig. 9, we know that when n is larger, the average dynamic regret    mization algorithm under unbalanced directed graphs, which is
+is also larger, which corresponds to the result in Theorem 2.    based on an offline Push–Pull algorithm. Also, we proved that
+
+                                                                   9
+
+=== PDF PAGE 10 ===
+S. Yao, S. Xie and T. Li                                                                                                          Automatica 174 (2025) 112116
+
+
+                                                                                 Yang, Q., & Chen, G. (2020). Online distributed constrained optimization over
+                                                                                       general unbalanced digraphs. In 2020 Chinese control and decision conference
+                                                                                              (pp. 5671–5676). Hefei, China.
+                                                                                                          Yi, X., Li, X., Xie, L., & Johansson, K. H. (2020). Distributed online convex opti-
+                                                                                   mization with time-varying coupled inequality constraints. IEEE Transactions
+                                                                            on Signal Processing, 68, 731–746.
+                                                                                                          Yi,  X.,  Li,  X., Yang,  T., Xie,  L., Chai,  T., & Johansson, K. (2021). Regret and
+                                                                                  cumulative constraint violation analysis for online convex optimization with
+                                                                                    long term constraints. In International conference on machine learning (pp.
+                                                                               11998–12008). Vienna, Austria.
+                                                                               Zhang,  Y., Ravier, R.  J., Zavlanos, M. M., & Tarokh, V. (December, 2019). A
+                                                                                           distributed online convex optimization algorithm with improved dynamic
+                                                                                                  regret. In 2019 IEEE 58th conference on decision and control (pp. 2449–2454).
+                                                                                             Nice, France.
+                                                                               Zhang, W., Shi, Y., Zhang, B., & Yuan, D. (2023). Dynamic regret of distributed
+                                                                                        online frank-wolfe convex optimization. arXiv preprint arXiv:2302.00663.
+                                                                                      Zinkevich, M. (August, 2003). Online convex programming and generalized in-
+                                                                                               finitesimal gradient ascent. In Proceedings of the 20th international conference
+                                                                            on machine learning (pp. 928–936). Washington, D. C., USA.
+
+Fig. 10. Performances of proposed algorithm and Yang and Chen (2020) in the
+second experiment.
+                                                                                       Songquan Yao was born in Jiangsu, China, in 1999. He
+                                                                                                           received the B. S. degree at Shanghai University of En-
+                                                                                                            gineering Science, Shanghai, China, in 2021. And he is
+the dynamic regret of our proposed algorithm is sublinear when                               currently working towards his Ph.D. degree at School of
+the path length and the gradient variance are also sublinear,                           Mathematical Sciences of East China Normal University,
+                                                                                                          Shanghai, China. His current research interests include
+and we used two numerical experiments to verify our theo-                             multi-agent networks and distributed optimization.
+retical results. Future work can be dedicated to tightening the
+upper bound of dynamic regret of online optimization algorithms;
+considering online distributed optimization problems with lim-
+ited communication data rates, where we can apply quantization
+scheme to them; extending our research on Riemannian online                             Siyu Xie received the B.S. degree in information and
+                                                                                              computing science (systems control) from Beihang Uni-
+distributed convex optimization, which has more applications
+                                                                                                                     versity in 2013, and Ph.D. degree in control theory
+in realistic; and thinking about online distributed optimization                          from Academy of Mathematics and Systems Science,
+problem when loss function is nonconvex.                                                      Chinese Academy of Sciences in 2018. She was a post-
+                                                                                                              doctoral fellow from 2019 to 2022 at the Department
+References                                                                                                      of Electrical and Computer Engineering, Wayne State
+                                                                                                                   University, USA. She  is currently a Professor in the
+                                                                                                       School of Aeronautics and Astronautics with University
+Akbari,  M.,  Gharesifard,  B., &  Linder,  T.  (2015).  Distributed online convex                                of Electronic Science and Technology of China. She
+    optimization on time-varying directed graphs. IEEE Transactions on Control                              received the IEEE CSS Beijing Chapter Young Author
+    of Network Systems, 4(3), 417–428.                                                 Prize in 2015, China National Scholarship for graduate students in 2017, the
+Fosson,  S. M. (2020). Centralized and distributed online learning for sparse      President Scholarship of Chinese Academy of Sciences in 2018, and Excellent
+    time-varying optimization. IEEE Transactions on Automatic  Control, 66(6),      Doctoral dissertation of Chinese Academy of Sciences in 2019. Her research in-
+   2542–2557.                                                                           terests include networked systems, distributed optimization problems for power
+Hazan, E., Agarwal, A., & Kale, S. (2007). Logarithmic regret algorithms for online     systems, distributed adaptive filters, identification, and distributed control.
+   convex optimization. Machine Learning, 69, 169–192.
+Hosseini, S., Chapman, A., & Mesbahi, M. (2013). Online distributed optimization
+    via dual averaging. In 52nd IEEE conference on decision and control (pp.                         Tao Li received the B.E. degree in automation from
+   1484–1489). Florence, Italy.                                                                      Nankai  University,  Tianjin, China,  in 2004, and the
+Li, X., Xie, L., & Li, N. (2023). A survey on distributed online optimization and                               Ph.D. degree in systems theory from the Academy of
+    online games. Annual Reviews in Control, 56, Article 100904.                                        Mathematics and Systems Science, Chinese Academy of
+Pu,  S. (December, 2020). A robust gradient tracking method for distributed                                Sciences, Beijing, China, in 2009. Since January 2017, he
+    optimization over directed networks. In 2020 59th IEEE conference on decision                            has been with East China Normal University, Shanghai,
+   and control (pp. 2335–2341). Jeju Island, Republic of Korea.                                               China, where he  is currently a  Professor, the Vice
+Pu,  S.,  Shi, W., Xu,  J., & Nedić, A. (2020). Push–pull gradient methods for                               Director of the Key Laboratory of Mathematics and
+    distributed optimization in networks. IEEE Transactions on Automatic Control,                             Engineering Applications, Ministry of Education, China,
+    66(1), 1–16.                                                                               and an affiliated faculty of the Institute of Mathemat-
+Shahrampour,  S., & Jadbabaie, A. (2017). Distributed online optimization in                                    ical Sciences of New York University at Shanghai. His
+   dynamic environments using mirror descent. IEEE Transactions on Automatic      current research interests include stochastic systems, cyber–physical multiagent
+    Control, 63(3), 714–725.                                                        systems, distributed algorithms, and game theory. Dr. Li was a recipient of
+Xie, P., You, K., Tempo, R., Song, S., & Wu, C. (2018). Distributed convex opti-     the 28th Zhang Siying Outstanding Youth Paper Award in 2016, and the Best
+    mization with inequality constraints over time-varying unbalanced digraphs.     Paper Award of the 7th Asian Control Conference in 2009. He received the 2009
+    IEEE Transactions on Automatic Control, 63(12), 4331–4337.                     Singapore Millennium Foundation Research Fellowship and the 2010 Australian
+Xiong, Y., Wu, L., You, K., & Xie, L. (2022). Quantized distributed gradient tracking     Endeavor Research Fellowship. He was entitled Dongfang Distinguished Professor
+    algorithm with linear convergence in directed networks. IEEE Transactions on     by Shanghai Municipality in 2012, and received the Excellent Young Scholar
+    Automatic Control, 68(9), 5638–5645.                                     Fund from NSFC in 2015. He was twice elected to the Chang Jiang Scholars
+Yan, F., Sundaram, S., Vishwanathan, S., & Qi, Y. (2012). Distributed autonomous     Program, Ministry of Education, China (Youth Scholar in 2018 and Distinguished
+    online learning: Regrets and intrinsic privacy-preserving properties. IEEE      Professor in 2023). He now serves as Associate Editors for several journals,
+    Transactions on Knowledge and Data Engineering, 25(11), 2483–2493.             including Systems and Control Letters, IFAC Nonlinear Analysis: Hybrid Systems,
+                                                                       and SCIENCE CHINA Information Sciences.
+
+
+
+
+
+                                                                   10

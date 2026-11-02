@@ -1,0 +1,26 @@
+{
+  "schema_version": "image2ppt-render-qa-v1",
+  "status": "error",
+  "renderer": "powerpoint-com",
+  "pptx": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\page.pptx",
+  "out_dir": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\render",
+  "rendered_png": null,
+  "rendered_slides": [],
+  "source_image": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\source.png",
+  "raw": {
+    "status": "error",
+    "renderer": "powerpoint-com",
+    "backend": "powerpoint-export-png",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "New-Object : Retrieving the COM class factory for component with CLSID {91493441-5A91-11CF-8700-00AA0060263B} failed du\ne to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILUR\nE)).\nAt line:1 char:63\n+ ... k=$null;try{$app=New-Object -ComObject PowerPoint.Application;$deck=$ ...\n+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : ResourceUnavailable: (:) [New-Object], COMException\n    + FullyQualifiedErrorId : NoCOMClassIdentified,Microsoft.PowerShell.Commands.NewObjectCommand\n \n",
+    "command": [
+      "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "-NoProfile",
+      "-NonInteractive",
+      "-Command",
+      "$ErrorActionPreference='Stop';$app=$null;$deck=$null;try{$app=New-Object -ComObject PowerPoint.Application;$deck=$app.Presentations.Open('D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\page.pptx',$true,$true,$false);$deck.Export('D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\render','PNG')}finally{if($null -ne $deck){try{$deck.Close()}catch{};try{[System.Runtime.InteropServices.Marshal]::ReleaseComObject($deck)|Out-Null}catch{};$deck=$null};if($null -ne $app){try{$app.Quit()}catch{};try{[System.Runtime.InteropServices.Marshal]::ReleaseComObject($app)|Out-Null}catch{};$app=$null}}"
+    ],
+    "slides": []
+  }
+}

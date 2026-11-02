@@ -1,0 +1,631 @@
+=== PDF PAGE 1 ===
+                                                            Automatica 175 (2025) 112200
+
+
+                                            Contents lists available at ScienceDirect
+
+                              Automatica
+
+
+                                         journal homepage: www.elsevier.com/locate/automatica
+
+
+Brief Paper
+
+Distributed online path-length-independent algorithm for
+noncooperative games over unbalanced digraphs✩
+
+Zhenhua Deng
+
+School of Automation, Central South University, Changsha, 410075, China
+
+
+a r t i c l e    i n f o             a b s t r a c t
+
+
+Article history:                                  This paper studies online noncooperative games with dynamic regrets. Existing online noncooper-
+Received 11 March 2024                          ative games rely on the sublinear growth of the path-length of Nash equilibrium sequences when
+Received in revised form 12 September 2024        considering dynamic regrets, which implies that their cost functions cannot be rapidly time-varying.
+Accepted 7 January 2025                      Moreover, most of related results depend on undirected communication graphs. However, in many
+Available online 11 February 2025
+                                            engineering practices, the cost functions may change greatly over time and the communication graphs
+Keywords:                           may be directed. Here our problem involves rapidly time-varying cost functions, i.e., the path-length
+Noncooperative games                            of Nash equilibrium sequences at least linearly grows, and the interaction topologies are unbalanced
+Online games                                  digraphs. In order to make decisions online without regrets, we develop a distributed algorithm based
+Nash equilibrium                         on multi-step mirror descents. Under the algorithm, sublinear dynamic regret bounds are established.
+Multi-agent systems                      More importantly, the dynamic regrets are independent of the path-length of Nash equilibrium
+Distributed algorithms                         sequences, compared with existing results. Finally, the simulation results validate the effectiveness
+                                                 of our algorithm, and demonstrate that our algorithm has better performance than other related
+                                              algorithms.
+                              © 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and
+                                                                                                                                    similar technologies.
+
+
+
+1. Introduction                                                        constraints. Deng (2021) and Tan, Fang, Wang, and Lü (2023)
+                                                                   exploited dynamic average-based algorithms for NGs with equal-
+   Noncooperative games (NGs) of multi-agent systems have re-     ity coupling constraints. Bianchi and Grammatico (2021) and
+ceived a surge of interest in recent years, owing to their wide    Deng, Liu, and Chen (2022) proposed seeking algorithms with
+applications in various fields, such as sensor networks (Lou, Hong,    primal–dual gradient dynamics for NGs with inequality coupling
+Xie, Shi, & Johansson, 2016), smart grids (Deng & Luo, 2024),     constraints. Deng (2022) and Zhu, Yu, Wen, and Chen (2021)
+social networks (Ghaderi & Srikant, 2014). In NGs, the goal of    developed seeking algorithms via dynamic average consensus
+each player is to select a suitable decision to selfishly minimize     for NGs over weight-balanced and -unbalanced digraphs, respec-
+its own cost function, which relies on its own decision as well as     tively. Pang and Hu (2022) presented gradient-free algorithms for
+the decisions of all other players. Consequently, Nash Equilibrium   NGs with unknown cost functions, and Wang and Başar (2024)
+(NE) is a desirable decision for the players, which characterizes    came up with protection-based algorithms for NGs with differ-
+the state that no player can gain more benefits by deviating from     ential privacy. Furthermore, Tatarenko, Shi, and Nedić (2021)
+the equilibrium unilaterally (see Facchinei & Kanzow, 2010; Fele    developed Nesterov-type acceleration algorithms for NGs with
+& Margellos, 2021; Zeng, Chen, Liang, & Hong, 2019).               geometric seeking rate.
+   Over the past decade, significant progress has been made in      The NGs mentioned above typically required that the cost
+distributed NE seeking algorithm design. For example, Gadjov     functions are fixed and time-invariant. However, environments
+                                                                   are dynamic and time-varying in many fields, such as radio re-and Pavel (2023) and Zhang, Liang, Wang, and  Ji (2020) pro-
+                                                                source allocation (Maskery, Krishnamurthy, & Zhao, 2009), robustposed passivity-based and consensus-based algorithms for un-
+                                                                         portfolio selection (Goldfarb & Iyengar, 2003), battery energyconstrained NGs, respectively. Tan (2024) and Zeng et al. (2019)
+                                                     management (Shi, Ye, Gao & Yu, 2023) and wind power gridsdesigned projection-based algorithms for NGs with local feasible
+                                                                    (You, Hadley, Shankar, & Liu, 2016). This dynamic nature often
+                                                                         results in the change of cost functions over time. Besides, the al-
+ ✩This work was supported in part by the Hunan Provincial Natural Science    gorithms designed for static NGs are unworkable under dynamic
+Foundation of China under Grant 2024JJ4067 and the Natural Science Foundation    environments. Consequently,  it is essential to study NGs with
+of Changsha under Grant kq2402224. The material in this paper was presented at
+None. This paper was recommended for publication in revised form by Associate    time-varying cost functions, which are generally referred to as
+Editor Kostas Margellos under the direction of Editor Christos G. Cassandras.      online NGs. Nevertheless, there are few results about this kind
+     E-mail address:  zhdeng@amss.ac.cn.                                      of game so far.
+
+
+https://doi.org/10.1016/j.automatica.2025.112200
+0005-1098/© 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+=== PDF PAGE 2 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+   All existing results for online problems with dynamic regrets,    the standard Euclidean norm of vector x. ∥X∥, ∥X∥1 and ∥X∥∞are
+including online games (Deng & Zuo, 2024; Lu,  Li, & Wang,    the spectral norm, l1-norm and l∞-norm of matrix X, respectively.
+2021) and online optimization problems (Bernstein, Dall’Anese,     col(x1, . . . , xn) := [xT1, . . . , xTn]T . xi is the ith element of vector x. 1n
+& Simonetto, 2019; Chen, Ling, & Giannakis, 2017; Eshraghi &     (0n) is the column vector of n ones (zeros). In is an n × n identity
+Liang, 2022; Hall & Willett, 2015; Li, Li, Yu, Zhu and Yu, 2021;     matrix. For a vector or matrix M, the transpose of M is denoted
+Shahrampour & Jadbabaie, 2018; Yuan, Hong, Ho, & Xu, 2021),    by MT . For a vector v ∈Rn, [v]+ = max{v , 0}. [x] denotes the
+require the path-length of NE sequences or optimal decision     biggest integer not exceeding x ∈R+. h1 = O(h2) means that h1
+sequences to grow sublinearly, which is an indispensable precon-      is a linear function of h2.
+dition to establish sublinear dynamic regrets. However, the hy-
+pothesis of the sublinear growth of path-length is hard to hold for      2.2. Graph theory (see Godsil & Royle, 2001)
+online NGs with large fluctuation in the cost function sequences,
+which further causes the invalidity of existing online algorithms.     A graph is denoted by G := {V, E}, where V = {1, . . . , N} is
+Obviously, it is of great significance to design distributed path-    the node set and E ∈V × V is the edge set. (i, j) is an edge of
+length-independent algorithms, under which online NGs with     G, i.e., (i, j) ∈E, if node j could send some information to node
+rapidly time-varying cost functions are solvable.                                      i. The adjacency matrix is defined as A := [ aij ]N×N, where  aij
+   Communication networks play a crucial role in distributed      is the weighting of (i, j). Particularly, aij > 0 if (i, j) ∈E, and
+algorithm design and analysis. In most of existing works on                                                                                                        aij = 0, otherwise. Denote diin = ∑Nj=1 aij and diout = ∑Nj=1 aji as
+online NGs, the communication networks are undirected graphs.                                                                 the weighted in-degree and out-degree of node i, respectively. A
+As everyone knows, digraphs, especially unbalanced digraphs, are                                                                digraph is weight-unbalanced, if ∃i ∈V, diin̸ = diout. A digraph is
+more common and easier to implement in engineering practice,     said to be strongly connected, if there exists a path from one node
+in comparison with undirected graphs (see Liang, Zeng, Chen,     to any others. The Laplacian matrix of G is L := Din −A, where
+& Hong, 2020). Moreover, it has been proved that an algorithm     Din = diag{d1in, . . . , dNin} ∈RN×N. Obviously, L1N = 0N always
+designed under undirected graphs may be ineffective for the case     holds.
+over digraphs (see Gharesifard & Cortés, 2014).
+   The main contributions of this paper are summarized as fol-      2.3. Variational analysis (see Rockafellar & Wets, 2004)
+lows:
+                                                   A function f  : Rm →R is convex, if for any x, y ∈Rm and
+    1. We study online NGs over unbalanced digraphs in this                                                  α ∈ [0, 1],
+      paper. The cost functions in our problem are time-varying,
+     and are unknown before decisions are made, different from       f (αx + (1 −α)y) ≤αf (x) + (1 −α)f (y).
+      well-studied static NGs, such as Deng (2021), Gadjov and
+                                                   A function f  : Rm →R is β-strongly convex (β > 0), if for
+      Pavel (2023), Tan (2024), Wang and Başar (2024), Zhang
+                                                          any x, y ∈Rm,
+       et al. (2020) and Zeng et al. (2019). Moreover, our problem
+                                                                                1
+      contains               rapidly                     time-varying                                     cost                                        functions                                                 as                                                   well as
+                                                     un-       f (y) ≥f (x) + ∇f (x)T (y −x) + 2β∥y −x∥2.      balanced                digraphs,                          in comparison                                   with                                              existing                                                    online                                                     NGs,
+      including Deng and Zuo (2024) and Lu et al. (2021). Mainly     A map f  : Rm →Rm is θ-Lipschitz continuous (θ > 0), if for
+     due to the rapidly time-varying cost functions, existing    any x, y ∈Rm,
+     methods cannot solve our problem.                              ∥f (x) −f (y)∥≤θ∥x −y∥.
+    2. We design a distributed online learning algorithm to make
+      no-regret decisions. Noteworthily, all existing online algo-     A map f  : Rm →Rm is γ -strongly monotone (γ > 0), if for
+      rithms are dependent on the path-length of NE sequences    any x, y ∈Rm,
+      or optimal decision sequences. Besides, as pointed out                                                                           (x −y)T (f (x) −f (y)) ≥γ ∥x −y∥2.
+     by Li, Qu and Li (2021), it is not easy to develop online
+      algorithms with sublinear dynamic regrets, let alone path-
+                                                                             3. Problem formulation      length-independent algorithms. We prove that under our
+      algorithm, not only the decisions made by the players are
+                                                                   Consider an online NG of N players over time horizon T ∈N+,
+     no regrets, but also the dynamic regrets are independent
+                                                      whose communication topology is an unbalanced digraph G. In
+       of the path-length of NE sequences.
+                                                                 the given time horizon T, there exists a cost function sequence
+   The paper is organized as follows. Section 2 introduces pre-       {fi,t(xi,t, x−i,t)}Tt=1 for player i, which is revealed gradually, where
+liminary knowledge. Section 3 presents problem formulation.      x−i,t = col(x1,t, . . . , xi−1,t, xi+1,t, . . . , xN,t) denotes the decisions
+Section 4 details our theoretical results, including algorithm de-     of all players except player  i. At time t ∈ {1, . . . , T}, only after
+sign and performance analysis. Section 5 applies our result to    player i makes a decision xi,t ∈Rd from its decision set Ωi ⊂Rd, it
+online electricity market games, and compares our algorithm     receives its cost fi,t(xi,t, x−i,t). In brief, player i faces the following
+with other related algorithms. Section 6 gives the conclusion.       problem at time t:
+                                                      min  fi,t(xi,t, x−i,t)
+2. Preliminaries                                                                       xi,t∈Rd                                                            (1)
+                                                                                           s.t. xi,t ∈Ωi.
+   In this section, some basic knowledge and the notations used
+in this paper are introduced.                                    The NE of NG (1) at time t is defined as follows (see Facchinei
+                                               & Kanzow, 2010; Zeng et al., 2019):
+2.1. Notations
+                                                                  Definition 1.  A strategy profile x∗t = col(x∗1,t, . . . , x∗N,t) ∈Ωis a
+  R (R+) is the set of (positive) real numbers. N+ and Z are   NE of the NG (1) at time t if
+the sets of positive integers and natural numbers, respectively. Rn      fi,t(x∗i,t, x∗−i,t) ≤fi,t(xi,t, x∗−i,t), ∀xi,t : (xi,t, x∗−i,t) ∈Ω, i ∈Vdenotes the n-dimensional Euclidean space. ⊗and × denote the
+Kronecker product and the Cartesian product, respectively. ∥x∥is    where Ω= Ω1 × · · · × ΩN.
+
+                                                                   2
+
+=== PDF PAGE 3 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+   According to Theorem 3.9 in Facchinei and Pang (2010), the         (iv) The pseudo-gradient Ft(xt) is µ-strongly monotone,  i.e.,
+NE x∗t is also a solution of the following inequality:                     (Ft(xt) −Ft(yt))T (xt −yt) ≥µ∥xt −yt∥2.
+(Ft(x∗t ))T (x −x∗t ) ≥0, ∀x ∈Ω
+where Ft(·) : Ω→RNd is defined as                           Assumption 3.  The unbalanced digraph G is strongly connected.
+                                                              Assumptions 1–2 are typical and are commonly observed in
+Ft(xt) = col(∇f1,t(x1,t, x−1,t), . . . , ∇fN,t(xN,t, x−N,t))                                                  many online problems, such as Chen et  al. (2017), Deng and
+with ∇fi,t(xi,t, x−i,t) :=  ∂fi,t (xi,t,x−i,t ) for simplicity.                 Zuo (2024), Liu et al. (2024), Lu et al. (2021), Shahrampour and
+                                              ∂xi,t                                     Jadbabaie (2018), Yuan et al. (2021) and Zuo and Deng (2023).
+   In online NGs, the goal of player i ∈V is to make a series of    Assumption 1 indicates that the radius of the convex set Ωi is
+decisions such that its dynamic regret, which is defined as follows    bounded, i.e., there exists a positive constant r such that
+(see Deng & Zuo, 2024; Lu et al., 2021; Zuo & Deng, 2023), is
+minimized as much as possible.                                 ∥x −y∥ ≤r, ∀x, y ∈Ω.                                        (3)
+               T                                                          Further,  it can be deduced from Assumptions 1 and 2 that
+Regi(T) = ∑(fi,t(xi,t, x∗−i,t) −fi,t(x∗i,t, x∗−i,t))                     (2)      ∥∇fi,t(xi,t, x−i,t)∥ ≤Cf , which was used extensively in numerous
+           t=1                                                   works, such as Deng and Zuo (2024), Liu et al. (2024), Lu et al.
+where x∗t is the NE of game (1) at time t.                            (2021), Wang and Nedić (2024) and Zuo and Deng (2023).
+   For a given online NG, the smaller the value of the regret (2)
+is, the better the online decision-making is. An online decision-   Remark 4.  The path-length in existing online works is defined
+making is no regrets, if limT→∞Regi(T)/T = 0, which means that    as follows:
+the average regret approaches zero as time goes on.                               T
+                                                                       vT = ∑ x∗t+1 −x∗t 
+Remark 1.  Static regrets (see Cao & Başar, 2021; Liu, Zhao, &           t=1
+Yin, 2024; Xiong, Xu, You, Liu, & Wu, 2020; Yi et al., 2023) and                                                       where x∗t  is the NE of online games or the optimal decision of
+dynamic regrets (see Bernstein et al., 2019; Deng & Zuo, 2024;                                                                   online optimization problems at time t. It is apparent that the
+Eshraghi & Liang, 2022; Hall & Willett, 2015; Lu et al., 2021; Yuan                                                                 value of vT  is related to the time horizon T and the distance
+et al., 2021) were widely used to evaluate online decision-making                                                         between adjacent NE/optimal decisions.
+processes,  i.e., to assess online algorithms. Obviously, dynamic                                                            The dynamic regrets of existing results are usually in the form
+regrets can more precisely evaluate the performance of online                               1                                                                        of O(T b√vT ), where  2 < b <  1, such as Chen et al. (2017),
+algorithms, compared with static regrets, because they compare
+                                                      Deng and Zuo (2024), Hall and Willett (2015), Yuan et al. (2021),
+the real-time decision sequences generated by online algorithms
+                                                         and Zuo and Deng (2023). Obviously, existing results rely on
+with the time-varying NE sequences/optimal decision sequences.
+                                                                 the sublinearly growing vT with respect to T, to make no-regretTherefore, here we consider dynamic regrets. Moreover, unlike
+                                                                        decisions.static regrets, it is not easy to establish a sublinear dynamic regret
+                                                 When the environments are fast-changing, the cost functionsbound (see Li, Qu et al., 2021 and references therein). By the way,
+                                                                       also vary greatly over time, which leads to the large fluctuationssublinear bounds imply that the bounds grow at a rate slower
+                                                                        in the NE sequences. For this case, vT may increase significantlythan any rate proportional to the time horizon T.
+                                                             with the growth of T, which further results that existing on-
+                                                                           line methods cannot make no-regret decisions, since vT may be
+Remark 2. When the cost functions of players only depend on     greater than or equal to O(T).
+their own decisions as the same as optimization problems, the        Therefore, in this paper, we address distributed online NGs
+evaluation index (2) degrades into the dynamic regret indexes    with rapidly time-varying cost functions. In other words, here
+used in distributed online optimization problems (see Yuan et al.,    there is no requirement on the NE sequences and the dynamic
+2021). Hence, the method proposed in this paper can be easily     regrets in our result have no connection with vT .
+extended to distributed online optimization problems.
+
+                                                   Remark 5. The majority of existing studies on online games rely
+Remark 3. The problem (1) becomes traditional offline NE seek-    on undirected graphs with doubly stochastic adjacency matrices,
+ing problems like Deng (2021, 2022), Deng et al. (2022), Tan et al.    while our problem involves unbalanced digraphs, which are ex-
+(2023), Wang and Başar (2024), Zhang et al. (2020), when the cost    tensions of undirected graphs. The undirected graphs with doubly
+functions are fixed and time-invariant. Consequently, the method     stochastic adjacency matrices possess some specific properties,
+of this paper also can solve those offline NE seeking problems.      such as AT = A, A1N = 1TNA = 1N and the positive semidefinite-
+   Next, some assumptions are listed, which were widely used in    ness of matrix L. These properties are crucial prerequisites for the
+the online problems.                                          performance analysis of existing online algorithms. Nevertheless,
+                                                                  these properties do not hold for unbalanced digraphs. Conse-
+Assumption 1.   The nonempty convex set Ωi  is closed and     quently, the unbalance in communication graphs presents more
+compacted.                                                        challenges in the design and analysis of distributed algorithms
+                                                              than undirected graphs.
+
+                                                            The objective of this paper is to develop a distributed online
+Assumption 2.  The cost function satisfies the following condi-
+                                                                algorithm for the NG (1), under which the decision sequences
+tions:
+                                                   made by players are no regrets and the dynamic regret (2) is
+    (i)  fi,t(xi,t, x−i,t) is differentiable in xt and convex in  xi,t for                                                             independent of the path-length of NE sequences.
+every fixed x−i,t.
+    (ii) ∇fi,t(xi,t, x−i,t) is Lipschitz continuous with regard to x−i,t,                                                                             4. Main results
+i.e., ∥∇fi,t(xi,t, x−i,t) − ∇fi,t(xi,t, y−i,t)∥ ≤l2∥x−i,t −y−i,t∥.
+    (iii) ∇fi,t(xi,t, x−i,t) is n+1-time differentiable with regard to t                                                                       This section presents a distributed online algorithm for NG (1)                                                                        ∂n+2fi,t (xi,t,x−i,t )
+and the n+1th order derivative is zero, i.e.,        = 0.      and analyzes its performance.                                                                       ∂xi,t∂tn+1
+
+                                                                   3
+
+=== PDF PAGE 4 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+4.1. Distributed algorithm design                                      (2024), Shi, Wen and Yu (2023), Sun, Xu, and Ren (2023) and
+                                                               Zheng, Liu, and Wang (2024).
+   In this subsection, we propose a distributed online path-        In Algorithm 1, zki,t and yki,t are designed as the primary and
+length-independent algorithm  (i.e., Algorithm 1) for players to    secondary pre-decisions, respectively, and the secondary pre-
+make no-regret decisions for online NG (1).                         decision yki,t is to amend the primary pre-decision zki,t. The variable
+                                                                                                              ˆykij,t is introduced to estimate the secondary pre-decisions of otherAlgorithm 1: Distributed Online Path-Length-Independent
+Algorithm                                                          players such that  ∇ˆfi,t(·) is much closer to ∇fi,t(·). The actual
+   for t = 1, 2, . . . , T do                                           decision xi,t is the average of some of the secondary pre-decisions.
+     Choose y0i,t, ˆy0ij,t ∈Ωi with i, j ∈V
+                                                                                   4.2. Performance analysis
+      for k = 1, 2, . . . , m do
+
+                                                                          In this subsection, we analyze the dynamic regrets of Algo-
+                                                                                       1.                                                                    i,t  , ˆyk−1−i,t), y⟩                    rithm            zki,t = arg miny∈Ωi{αt⟨∇ˆfi,t(yk−1                                                                         Let
+                1
+         +               2∥y −yk−1i,t  ∥2}                        (4a)         zkt = col(zk1,t, . . . , zkN,t)
+            yki,t =(1 −αt)yk−1i,t + αtzki,t                     (4b)
+                                                                         ykt = col(yk1,t, . . . , ykN,t)                            N
+              (
+                 ˆykij,t =ˆyk−1ij,t −  k1 ∑ ais(ˆyk−1ij,t −ˆyk−1sj,t )
+                              s=1                                                            ˆyki,t = col(ˆyki1,t, . . . , ˆykiN,t)
+                      )
+         + k2aij(ˆyk−1ij,t −yk−1j,t  )                      (4c)
+                                                                                                              ˆykt = col(ˆyk1,t, . . . , ˆykN,t)
+     end
+
+                      m
+                1
+            xi,t =     m  ∑ yk−1i,t                         (5)        x∗t = col(x∗1,t, . . . , x∗N,t)
+       m − [ 2 ] + 1 k=[ m2 ]
+
+  end                                 Λ = diag{a11, a12, . . . , a1N, . . . , aN1, aN2 . . . , aNN}.
+
+   The variables in Algorithm 1 are defined as follows:              Then (4b) and (4c) can be rewritten as
+
+                                                                                                                                     (6a)ˆyk−1−i,t = col(ˆyk−1i1,t , . . . , ˆyk−1ii−1,t, ˆyk−1ii+1,t, . . . , ˆyk−1iN,t )                           ykt =(1 −αt)yk−1t  + αtzkt
+                       n                                                                                                              ˆykt =((IN2 −k1(L ⊗IN) −k2Λ) ⊗Id)ˆyk−1t                   1      (τ)
+∇ˆfi,t(yk−1i,t  , ˆyk−1−i,t) = ∑ τ!∇tfi,t−1(yk−1                                                                    i,t  , ˆyk−1−i,t)                + k2(Λ ⊗Id)(1N ⊗yk−1t    ).                              (6b)                  τ=0
+     (τ)                 ∂τ+1fi,t−1(yk−1i,t  , ˆyk−1−i,t)                             Before presenting our main results, two necessary lemmas are
+∇tfi,t−1(yk−1i,t  , ˆyk−1−i,t) =                                             given as follows.
+                          ∂yk−1i,t  ∂tτ
+           1      d+out            1                  Lemma 1.   For any matrix M ∈RN×N, the inequality ∥M∥ ≤
+0 < k1 <            ,     < k2 <                                                    √∥M∥1∥M∥∞holds.        η+ + d+in   η−k1       η+ + d+in
+η+ = max{aij}, η−= min{aij|aij > 0}
+                                                                   Proof.  It is well-known that ∥MT∥1 = ∥M∥∞for any matrix M.
+d+in = max{diin},  d+out = max{diout}                                    Besides, let x be the eigenvector that corresponds to the maxi-
+αt ∈R+ is a non-increasing stepsize, and m ∈N+ is an algorithm   mum eigenvalue of matrix MT M, i.e., MT Mx = λmax(MT M)x =
+parameter.                                            ∥M∥22x. Hence, it follows that
+                                                         ∥(∥M∥22x)∥1 = ∥MT Mx∥1
+Remark 6.  In Algorithm 1, there is the multiple use of mirror
+                                             ≤ ∥MT∥1∥M∥1∥x∥1 = ∥M∥∞∥M∥1∥x∥1descents at each time  slot, and hence, the method  is called
+multi-step mirror descents.                                  and further,
+                                                    ∥M∥22∥x∥1 = ∥(∥M∥22x)∥1 ≤ ∥M∥∞∥M∥1∥x∥1.
+Remark 7.  For online NGs or online optimization problems,
+player  i does not know its cost function  fi,t(·) at time t until                                                                        Therefore, we have ∥M∥22 ≤ ∥M∥∞∥M∥1. □
+the player makes a decision xi,t. As a consequence, the pseudo-
+gradient ∇fi,t(·) cannot be employed to make an appropriate       Denote ekt = col(ek1,t, . . . , ekN,t), where eki,t = col(eki1,t, . . . , ekiN,t)
+decision at time slot t. In order to make decisions as close to    and ekij,t = ˆykij,t −ykj,t. We have the following lemma about ekt with
+the time-varying NE as possible, we use ∇ˆfi,t(·) to estimate the    the help of Lemma 1.
+pseudo-gradient ∇fi,t(·) at time slot t, and in ∇ˆfi,t(·), only the
+information of cost functions at time t −1 is utilized. Besides, the   Lemma 2.  Under Assumptions 1 and 3, ekt satisfies the following
+derivatives of cost functions with respect to time are also broadly     inequality
+utilized in the algorithm design for time-varying optimization           √      k−1
+problems and time-varying NGs, such as Fazlyab, Paternain, Pre-     ∥ekt ∥ ≤λk∥e0t ∥ +  Nrαt ∑ λs                                  (7)
+ciado, and Ribeiro (2018), Hong, Yu, Jiang, and Wang (2023),                                s=0
+Poveda, Krstić, and Başar (2022), Shen, Chen, Zeng, and Chen                                                            where λ := √∥M∥1∥M∥∞∈(0, 1) with M = IN2 −k1(L⊗IN)−k2Λ.
+                                                                   4
+
+=== PDF PAGE 5 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+Proof. By the definition of ekt , we have                           ≤αt⟨x∗i,t −yk−1i,t  , ∇fi,t(yk−1i,t  ) − ∇fi,t(x∗t )⟩
+ekt =ˆykt −1N ⊗ykt                             + αtl2r∥ek−1i,t ∥ + 1     i,t −yk−1i,t  ∥2 + 1 C2f α2t                 (12)                                                                             2∥zk           2   =((IN2 −k1(L ⊗IN) −k2Λ) ⊗Id)ek−1t  + 1N ⊗(ykt −yk−1t    ).
+                                                       where yk−1t  = (yk−1i,t  , yk−1−i,t) and x∗t =  (x∗i,t, x∗−i,t). Here the first
+    It results from (4a) that zkt ∈Ω, ∀k ∈ {1, . . . , m}. Further,     inequality holds for Cauchy–Schwarz inequality, Assumption 2(ii)
+because y0t ∈Ω, with (4b), we have ykt ∈Ω, ∀k ∈ {1, .√. . , m}.    and the optimality condition of x∗i,t. Besides, the Young’s inequal-Then, by (3) and (6a), we have ∥1N ⊗(ykt −yk−1t   )∥ ≤   Nrαt.
+                                                                                ity is used to obtain the last inequality.
+According to the conditions of parameters k1 and k2, we have
+∥M∥1 < 1 and ∥M∥∞< 1. Subsequently, it follows from Lemma 1        Substituting (12) into (11), we get
+that ∥M∥ ≤λ and              λ ∈(0, 1). Therefore, we have                      ∥x∗i,t −zki,t∥2         √
+∥ekt ∥ ≤λ∥ek−1t  ∥ +  Nrαt                                    ≤∥x∗i,t −yk−1i,t  ∥2 + 2αtl2r∥ek−1i,t ∥ + C2f α2t
+which implies that (7) in Lemma 2 holds. □              + 2αt⟨x∗i,t −yk−1i,t  , ∇fi,t(yk−1t   ) − ∇fi,t(x∗t )⟩.                  (13)
+   Based on the above lemmas, the following result is yielded.
+
+Theorem 1.  Suppose Assumptions 1–3 hold. Under the Algorithm      By (4b), it can be derived that
+1, the regret (2) satisfies the following condition:
+                                                                  ∥x∗i,t −yki,t∥2 ≤(1 −αt)∥x∗i,t −yk−1i,t  ∥2 + αt∥x∗i,t −zki,t∥2       (14)
+                      T      (                  1    1     )
+              +                         (                 + αt)T   .Regi(T) ≤O √∑                                                       where the convexity of Euclidean distance functions is utilized.               m               mα2t                 t=1
+                                                           By  substituting  (13)  into  (14) and summing over   i  ∈
+                                                                       {1, . . . , N}, the following inequalities are yielded:
+Proof.    By  Assumption   2(iii),  the  Taylor  expansion  of    µ∥yk−1t  −x∗t ∥2 ≤⟨yk−1t  −x∗t , Ft(yk−1t   ) −Ft(x∗t )⟩
+∇fi,t(yk−1i,t  , ˆyk−1−i,t)  with  respect  to   t   is  ∇fi,t(yk−1i,t  , ˆyk−1−i,t)  =                          N
+                (τ)
+                          ∑        ∇t fi,t−1(yk−1                               i,t  ,ˆyk−1−i,t )                                     ≤1                                                                                                (∥x∗i,t −yk−1i,t  ∥2 − ∥x∗i,t −yki,t∥2)                                          . Then  it follows from the definition of∑nτ=0                   τ!                                                                        2α2t                                                                                                         i=1
+∇ˆfi,t(yk−1i,t  , ˆyk−1−i,t) that                                  √           1
+                                                                                                                                                                                         t  ∥ +                                                                                            C2f Nαt                 (15)∇ˆfi,t(yk−1i,t  , ˆyk−1−i,t) − ∇fi,t(yk−1i,t  , ˆyk−1−i,t) = 0.                        (8)            +   Nl2r∥ek−1                                                                                     2
+
+                                                                                                                                          i=1 ∥ek−1i,t ∥ ≤   Denote hi,t(y) = αt⟨∇ˆfi,t(yk−1i,t  , ˆyk−1−i,t), y⟩ + 12∥y −yk−1i,t  ∥2. Note    where√     the strong monotonicity of Ft(x) and ∑N
+                                                              N∥ek−1t  ∥are used to get the  first and second inequalities,that zki,t = arg miny∈Ωi hi,t(y), and then, based on the optimality
+condition of zki,t, one can obtain that ∀y ∈Ωi,                         respectively.
+∇hi,t(zki,t)T (y −zki,t) ≥0.                                         (9)       Based on (5),N  it can be deducedm that
+                                                                            1
+                                                                           ∥xt −x∗t ∥2 = ∑ ∥     m  ∑ yk−1i,t −x∗i,t∥2
+   Then it can be deduced from (8) and (9) that ∀y ∈Ωi,                              i=1 m − [ 2 ] + 1 k=[ m2 ]
+  αt⟨∇fi,t(yk−1i,t  , ˆyk−1−i,t), zki,t −y⟩                                                1      m
+                                            ≤                            ∑ ∥yk−1t  −x∗t ∥2                                                                    m
+≤⟨zki,t −yk−1i,t  , y −zki,t⟩                                 m − [ 2 ] + 1 k=[ m2 ]
+=1  −yk−1i,t  ∥2 −1  −zki,t∥2 −1     i,t −yk−1i,t  ∥2.           (10)  2∥y          2∥y          2∥zk                       ≤2 ∑m ∥yk−1t  −x∗t ∥2.                           (16)
+                                             m
+                                                                                      k=1
+   Taking y = x∗i,t in (10), the following inequality is yielded.
+∥x∗i,t −zki,t∥2 ≤∥x∗i,t −yk−1i,t  ∥2 − ∥zki,t −yk−1i,t  ∥2                                  √ On the strength of (7), ˆy0t ∈Ωand ∥e0t ∥ = ∥ˆy0t −1N ⊗y0t ∥ ≤
+        + 2αt⟨∇fi,t(yk−1i,t  , ˆyk−1−i,t), x∗i,t −zki,t⟩.             (11)                                                                  Nr, it is easy√to obtain √that                                                       m
+                                                                    Nr  m  Nrαt
+                    ∑ ∥ek−1t  ∥ ≤    +               .                           (17)
+   For the last term on the right hand side of (11), we have          k=1         1 −λ    1 −λ
+  αt⟨∇fi,t(yk−1i,t  , ˆyk−1−i,t), x∗i,t −zki,t⟩
+=αt⟨x∗i,t −yk−1i,t  , ∇fi,t(yk−1t   ) − ∇fi,t(x∗t )⟩                                Hence, with (15) andN   (16), we have
+ + αt⟨x∗i,t −yk−1i,t  , ∇fi,t(yk−1i,t  , ˆyk−1−i,t) − ∇fi,t(yk−1i,t  , yk−1−i,t)⟩              µ∥xt −x∗t ∥2 ≤ 1                          ∑(∥x∗i,t −y0i,t∥2 − ∥x∗i,t −ymi,t∥2)
+                                                            mα2t                                                                                                       i=1 + αt⟨x∗i,t −yk−1i,t  , ∇fi,t(x∗t )⟩                                           √                                                                           m
+ + αt⟨yk−1i,t −zki,t, ∇fi,t(yk−1i,t  , ˆyk−1−i,t) − ∇fi,t(yk−1i,t  , yk−1−i,t)⟩                + 2  Nl2r ∑ ∥ek−1t  ∥ + C2f Nαt
+                                                 m
+ + αt⟨yk−1i,t −zki,t, ∇fi,t(yk−1i,t  , yk−1−i,t)⟩                                                             k=1
+≤αt⟨x∗i,t −yk−1i,t  , ∇fi,t(yk−1t   ) − ∇fi,t(x∗t )⟩                              ≤Nr2 + 2Nl2r2 +(NC2f + 2Nl2r2 )αt            (18)
+                                                                                                                                                                     t  m(1−λ)       1−λ + αtl2∥x∗i,t −zk−1i,t  ∥∥ˆyk−1−i,t −yk−1−i,t∥                                   mα2
+ + αt∥yk−1i,t −zki,t∥∥∇fi,t(yk−1i,t  , ˆyk−1−i,t)∥                          where (17) is used to obtain the last inequality.
+
+                                                                   5
+
+=== PDF PAGE 6 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+   By the convexity of the cost functions, it is apparent that
+
+               T
+Regi(T) = ∑ fi,t(xi,t, x∗−i,t) −fi,t(x∗i,t, x∗−i,t)
+           t=1
+
+               T
+    ≤ ∑ ∇fi(xi,t, x∗−i,t)T (xi,t −x∗i,t)
+           t=1
+         T     
+     ≤Cf √T ∑ ∥xt −x∗t ∥2                                                                       Fig. 1. The unbalanced communication network.
+                  t=1
+
+Further, based on (18), Theorem 1 is obtained. □
+
+                                                       on the path-length of NE sequences, and the path-length must be
+Remark 8. As stated in Remark 4, existing algorithms for online     sublinear growth with respect to T. Algorithm 1 removes the re-
+games and online optimization problems rely on slowly chang-    quirement on the path-length; (ii) the communication topologies
+ing dynamic environments when considering dynamic regrets,     in Lu et al. (2021) are connected undirected graphs, which are
+reflected in the dependence of dynamic regrets on the sublinear     special cases of unbalanced digraphs of this paper.
+growth of the path-length of NE sequences. The sublinear growth
+of the path-length results that the cost function sequences cannot
+                                                   Remark 12.  According to the inequality (18), the distance be-
+fluctuate greatly over time, otherwise the sublinear growth is not
+                                                        tween the decision xt and the NE x∗t satisfies the condition ∥xt −satisfied. In contrast, it is shown in Theorem 1 that our method                   c                             1              1
+                                                                                                                                                                             ta with 0 < a < 2,removes the strong dependence of dynamic regret bounds on                                                                        x∗t ∥2 ≤ ta , when we choose m ≥ α3T and αt =
+the path-length of NE sequences. Accordingly, our method can    where c is a positive constant. Thus, as time goes on, the decision
+solve online games with relatively rapidly time-varying cost func-      xt approaches x∗t .
+tions, i.e., the cases with at least linearly growing path-length.
+By the way, in this paper, ‘‘varying cost function sequences’’     5. Simulations
+means that cost functions are time-varying, and ‘‘greatly varying
+cost function sequences’’ implies that not only cost functions are        In this section, online electricity market games are introduced
+time-varying but also the path-length at least grows linearly.        to verify the effectiveness of our algorithm. Besides, a compar-
+                                                                    ison of algorithms is given to highlight the superiority of our
+                                                                    algorithm.Remark 9.  Theorem 1 indicates that the bound of regret (2)
+rests with the algorithm parameters αt and m. According to the
+                                                                                   5.1. Effectiveness validation of the proposed algorithmexpression of the regret bound, it is clear that no-regret decisions
+can be made and sublinear dynamic regrets can be obtained,
+                                                            The electricity market games of twelve power companies arewhen we choose the parameters αt and m appropriately such that
+Regi(T) ≤O(T b) holds with 0 < b < 1.                             considered here. For power companies, their cost functions are
+                                                                       greatly affected by environments, and therefore, electricity mar-
+                                                                   ket games of power companies are typical online games. For each
+Corollary 1.  Suppose Assumptions 1–3 hold. Under Algorithm 1    power company, it faces the following problem (see Deng & Zuo,
+             1with m ≥                          , αt = ta1 and 0 < a < 2, the regret (2) is bounded by    2024; Hobbs & Pang, 2007).            α3                 T
+Regi(T) ≤O(T 1−a2 ).                                                                      Pi,t∈RJi,t(Pi,t,min         P−i,t)                                                                                                                                (20)
+                                                                                          s.t. Pi,t ∈ [PminGi  , PmaxGi  ]                         1                                 1Proof.  Since m ≥        , it can be deduced that    ≤αt and
+                        α3T                          mα2t             where Ji,t is the cost function of company i at time t, in M$; Pi,t
+ 1
+m ≤α3t , which, according to Theorem 1, imply                            is the generated power of company  i at time t, in MW h; the
+      (    T  )                                        generated power Pi,t cannot exceed the corresponding minimum                                                               output power Pmin                                                                        and maximum output power Pmax                                                                                                                                                                                                                                                 . Particularly,                                                            (19)                                                                                                                             Gi                                                                                                                                                                               GiRegi(T) ≤O √T ∑ αt   .
+                                                                 the cost function Ji,t is                   t=1
+                      1                                                                        Ji,t(Pi,t, P−i,t) = ci,t(Pi,t) −pi,t(Pi,t, P−i,t)Pi,t
+Substituting αt = ta into (19), we have
+  T                                                      where ci,t(Pi,t) and pi,t(Pi,t, P−i,t) are the production cost and the      ∫T
+∑ t−a ≤    t−adt ≤O(T 1−a)                                           electricity price, respectively, both of which change with time.
+t=1          1                                                                            pi,t(Pi,t, P−i,t) =  τi,t − 121 ∑Nk=1 Pk,t with τi,t = 60t and ci,t(Pi,t)
+which indicates that Corollary 1 holds. □                                  is (see Li, Yu, Huang, & He, 2018)
+                                                                                                ci,t(Pi,t) = αi,t + βi,tPi,t + γi,t(Pi,t)2
+Remark 10. T              1−a2  is sublinear with T, i.e., limT→∞T 1−a2 /T = 0,                                                       where αi,t, βi,t and γi,t are the time-varying parameters of com-
+given that 0 < a < 2. Consequently, in Corollary 1, we establish
+                                                         pany i. All the parameters of twelve power companies are given
+sublinear dynamic regrets, that is, limT→∞Regi(T)/T = 0, which                                                                        in Table 1, and their communication topology  is unbalanced,
+is independent of the path-length of NE sequences.
+                                                                 depicted by Fig. 1.
+                                                                    For the electricity market game (20), Fig. 2 portrays its path-
+Remark 11.  Deng and Zuo (2024) and Lu et  al. (2021) also    length ∑Tt=1 x∗t+1 −x∗t . By Fig. 2, it is clear that the path-length
+investigated online games, and the key differences between this    grows linearly.
+paper and Deng and Zuo (2024) and Lu et al. (2021) are as follows:         Fig. 3 shows the simulation results of Algorithm 1 with k1 =
+(i) the algorithms of Deng and Zuo (2024) and Lu et al. (2021) rely     0.1, k2 = 0.25, αt = 1/√t, m = 3000, where Figs. 3(a) and 3(b)
+
+                                                                   6
+
+=== PDF PAGE 7 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+
+Table 1
+Parameter settings.
+ Company                                     αi,t                                      βi,t                                        γi,t                            PminGi                           PmaxGi
+ 1                            6                           11t                           0.8                      18                       34 000
+ 2                            9                           19t                           0.5                      20                       50 000
+ 3                            2                           16t                           0.7                      15                       39 000
+ 4                            4                           14t                           0.5                      23                       66 000
+ 5                            8                           17t                           1.4                      5                        62 000
+ 6                            5                           20t                           1.2                      8                        47 000
+ 7                            10                          13t                           0.7                      17                       43 000
+ 8                            8                           19t                           0.9                      10                       55 000
+ 9                            5                             9t                             0.8                      20                       52 000
+ 10                           7                           16t                           1.3                      8                        48 000
+ 11                           8                           15t                           1.1                      9                        39 000
+ 12                           7                           12t                           0.8                      16                       50 000
+
+
+
+
+
+                                                                     Fig. 2. The path-length ∑Tt=1 x∗t+1 −x∗t .
+
+
+
+
+
+                                                                  Fig. 3. The simulation results of our algorithm.
+
+describe the average dynamic regret Regi(t)/t and the trajectories       Take the algorithms of Deng and Zuo (2024) and Lu et al.
+of decision errors, respectively.                                   (2021) as examples, since Deng and Zuo (2024) and Lu et al.
+    It can be observed from Fig. 3 that Regi(t)/t approaches zero as    (2021) also studied online noncooperative games. The simulation
+time tends to infinity even though the path-length grows linearly,     results of the online electricity market game (20) under the algo-
+which implies that the decisions made by power companies are    rithms of Deng and Zuo (2024) and Lu et al. (2021) are displayed
+no regrets, and hence verifies the effectiveness of our algorithm.     in Figs. 4 and 5, respectively. Detailedly, Figs. 4(a) and 5(a) reveal
+                                                                 the average dynamic regret Regi/t, and Figs. 4(b) and 5(b) exhibit
+                                                                 the trajectories of decision errors.
+5.2. Comparison with other related algorithms                                                                      Obviously, Figs. 4(a) and 5(a) indicate that under the algo-
+                                                                rithms of Deng and Zuo (2024) and Lu et al. (2021), the average
+   To further illustrate the performance of our algorithm, we    dynamic regrets cannot converge to zero. This is caused by the
+compare our algorithm with other related algorithms in this     fact that the decisions generated by these algorithms cannot
+subsection.                                                          track the NE sequences well, as can be seen from Figs. 4(b) and
+
+                                                                   7
+
+=== PDF PAGE 8 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+
+
+
+
+                                                      Fig. 4. The simulation results of algorithm of Deng and Zuo (2024).
+
+
+
+
+
+                                                         Fig. 5. The simulation results of algorithm of Lu et al. (2021).
+
+
+5(b). Therefore, we can conclude that the path-length-dependent      Bianchi, M., & Grammatico, S. (2021). Continuous-time fully distributed general-
+algorithms of Deng and Zuo (2024) and Lu et al. (2021) can-         ized Nash equilibrium seeking for multi-integrator agents. Automatica, 129,
+not be applied to the problem where the path-length of NE          Article 109660.
+                                                                                    Cao, X., & Başar, T. (2021). Decentralized online convex optimization based on
+sequences grows linearly, i.e., where the cost functions change
+                                                                                           signs of relative states. Automatica, 129, Article 109676.
+rapidly over time. By contrast, our algorithm can deal with this     Chen,  T., Ling, Q., & Giannakis, G. B. (2017). An online convex optimization
+kind of problem.                                                             approach to proactive network resource  allocation. IEEE Transactions on
+                                                                                               Signal Processing, 65(24), 6350–6364.
+6. Conclusion                                                             Deng, Z. (2021). Distributed generalized Nash equilibrium seeking algorithm for
+                                                                        nonsmooth aggregative games. Automatica, 132, Article 109794.
+   In this paper, we have investigated distributed online NGs over     Deng, Z. (2022). Distributed Nash equilibrium seeking for aggregative games
+                                                                               with second-order nonlinear players. Automatica, 135, Article 109980.
+unbalanced digraphs, where the players are subject to heteroge-     Deng,  Z.,  Liu,  Y., & Chen,  T. (2022). Generalized Nash equilibrium seeking
+neous convex set constraints. To seek the NE sequences of the         algorithm design for distributed constrained noncooperative games with
+online NGs, we have proposed a distributed online algorithm.         second-order players. Automatica, 141, Article 110317.
+Furthermore, we have proved that the dynamic regret under     Deng, Z., & Luo,  J. (2024). Distributed algorithm for nonsmooth multi-coalition
+the algorithm not only has sublinear bounds, but also can avoid        games and  its application in electricity markets. Automatica, 161, Article
+                                                                                111494.
+the influence of the path-length of NE sequences, which implies
+                                                                             Deng, Z., & Zuo, X. (2024). Distributed online learning algorithm for noncooper-
+that our algorithm can solve online games with relatively rapidly          ative games over unbalanced digraphs. IEEE Transactions on Neural Networks
+time-varying cost functions, even the communication networks        and Learning Systems, 35(11), 15846–15856.
+are directed and unbalanced. The example of online electric-      Eshraghi, N., & Liang, B. (2022). Dynamic regret of online mirror descent for
+ity market games have illustrated that our algorithm can solve          relatively smooth convex cost functions. IEEE Control Systems  Letters,  6,
+some online games that cannot be addressed by existing online        2395–2400.
+                                                                                         Facchinei,  F., & Kanzow,  C. (2010). Generalized Nash equilibrium problems.
+algorithms.                                                                                     Annals of Operations Research, 175(1), 177–211.
+                                                                                         Facchinei, F., & Pang, J.-S. (2010). Nash equilibria: the variational approach. In
+References                                                                    Convex optimization in signal processing and communications (pp. 443–493).
+                                                                            Cambridge University Press.
+Bernstein, A., Dall’Anese, E., & Simonetto, A. (2019). Online primal-dual methods      Fazlyab, M., Paternain,  S., Preciado, V. M., & Ribeiro, A. (2018). Prediction-
+   with measurement feedback  for time-varying convex optimization. IEEE          correction interior-point method for time-varying convex optimization. IEEE
+    Transactions on Signal Processing, 67(8), 1978–1991.                                   Transactions on Automatic Control, 63(7), 1973–1986.
+
+
+                                                                   8
+
+=== PDF PAGE 9 ===
+Z. Deng                                                                                                                       Automatica 175 (2025) 112200
+
+
+Fele, F., & Margellos, K. (2021). Probably approximately correct Nash equilibrium      Shi,  X., Wen,  G., &  Yu,  X.  (2023).  Finite-time convergent  algorithms  for
+    learning. IEEE Transactions on Automatic Control, 66(9), 4238–4245.                  time-varying  distributed  optimization.  IEEE  Control  Systems  Letters,  7,
+Gadjov, D., & Pavel, L. (2023). On the exact convergence to Nash equilibrium        3223–3228.
+    in hypomonotone regimes under full and partial-decision information. IEEE      Shi, J., Ye, Z., Gao, H. O., & Yu, N. (2023). Lyapunov optimization in online battery
+    Transactions on Automatic Control, 68(8), 4539–4553.                              energy storage system control for commercial buildings. IEEE Transactions on
+Ghaderi,  J., & Srikant, R. (2014). Opinion dynamics in social networks with         Smart Grid, 14(1), 328–340.
+   stubborn agents: Equilibrium and convergence  rate. Automatica,  50(12),     Sun, S., Xu, J., & Ren, W. (2023). Distributed continuous-time algorithms for time-
+   3209–3215.                                                                       varying constrained convex optimization. IEEE Transactions on Automatic
+Gharesifard,  B., & Cortés,  J. (2014). Distributed continuous-time convex op-          Control, 68(7), 3931–3946.
+                                                                                     Tan, S. (2024). A timestamp-based projected gradient play for distributed Nash    timization on weight-balanced  digraphs. IEEE  Transactions on Automatic
+                                                                                      equilibrium seeking in monotone games. Automatica, 160, Article 111419.
+    Control.
+                                                                                     Tan,  S., Fang,  Z., Wang,  Y., & Lü,  J. (2023). Consensus-based multipopulation
+Godsil,  C., & Royle, G. F. (2001). Algebraic graph theory. New York, NY, USA:
+                                                                   game dynamics for distributed Nash equilibria seeking and optimization. IEEE
+    Springer.
+                                                                                           Transactions on Systems, Man, and Cybernetics: Systems, 53(2), 813–823.
+Goldfarb,  D., &  Iyengar,  G.  (2003).  Robust  portfolio  selection  problems.
+                                                                                   Tatarenko,  T., Shi, W., & Nedić, A. (2021). Geometric convergence of gradient
+   Mathematics of Operations Research, 28(1), 1–38.
+                                                                                      play algorithms for distributed Nash equilibrium seeking. IEEE Transactions
+Hall,  E.  C., & Willett, R. M. (2015). Online convex optimization in dynamic        on Automatic Control, 66(11), 5342–5353.
+    environments.  IEEE  Journal  of  Selected  Topics  in  Signal  Processing,  9(4),     Wang, Y., & Başar, T. (2024). Ensuring both accurate convergence and differential
+   647–662.                                                                           privacy in Nash equilibrium seeking on directed graphs. IEEE Transactions on
+Hobbs, B.  F., & Pang,  J.-S. (2007). Nash-Cournot equilibria in electric power         Automatic Control, 69(8), 5478–5485.
+   markets with piecewise  linear demand functions and  joint  constraints.     Wang,  Y., & Nedić, A. (2024). Tailoring gradient methods for  differentially-
+    Operations Research, 55(1), 113–127.                                                  private  distributed optimization. IEEE  Transactions on Automatic  Control,
+Hong, H., Yu, W., Jiang, G.-P., & Wang, H. (2023). Fixed-time algorithms for time-          69(2), 872–887.
+    varying convex optimization. IEEE Transactions on Circuits and Systems  II:      Xiong, Y., Xu,  J., You, K., Liu,  J., & Wu, L. (2020). Privacy-preserving distributed
+    Express Briefs, 70(2), 616–620.                                                       online optimization over unbalanced digraphs via subgradient rescaling. IEEE
+Li,  J., Li, C., Yu, W., Zhu, X., & Yu, X. (2021). Distributed online bandit learning          Transactions on Control of Network Systems, 7(3), 1366–1378.
+    in dynamic environments over unbalanced digraphs. IEEE Transactions on       Yi, X., Li, X., Yang, T., Xie, L., Chai, T., & Johansson, K. H. (2023). Regret and cumu-
+   Network Science and Engineering, 8(4), 3034–3047.                                       lative constraint violation analysis for distributed online constrained convex
+Li, Y., Qu, G., & Li, N. (2021). Online optimization with predictions and switching          optimization. IEEE Transactions on Automatic Control, 68(5), 2875–2890.
+    costs:  Fast algorithms and the fundamental  limit. IEEE  Transactions on     You, S., Hadley, S. W., Shankar, M., & Liu, Y. (2016). Co-optimizing generation
+    Automatic Control, 66(10), 4761–4768.                                       and transmission expansion with wind power in large-scale power grids-
+Li, C., Yu, X., Huang,  T., & He, X. (2018). Distributed optimal consensus over        Implementation in the US Eastern Interconnection. Electric Power Systems
+                                                                                            Research, 133, 209–218.
+    resource  allocation network and  its application to dynamical economic
+                                                                               Yuan, D., Hong, Y., Ho, D. W. C., & Xu, S. (2021). Distributed mirror descent for
+    dispatch. IEEE Transactions on Neural Networks and Learning Systems, 29(6),
+                                                                                        online composite optimization. IEEE Transactions on Automatic Control, 66(2),
+   2407–2418.
+                                                                               714–729.
+Liang, S., Zeng, X., Chen, G., & Hong, Y. (2020). Distributed sub-optimal resource
+                                                                                  Zeng, X., Chen,  J., Liang,  S., & Hong, Y. (2019). Generalized Nash equilibrium
+    allocation via a projected form of singular perturbation. Automatica, 121,
+                                                                                     seeking strategy for distributed nonsmooth multi-cluster game. Automatica,
+    Article 109180.                                                                                          103, 20–26.
+Liu, Y., Zhao, W., & Yin, G. (2024). Forgetting-factor regrets for online convex     Zhang,  Y., Liang,  S., Wang,  X., &  Ji, H. (2020). Distributed Nash equilibrium
+    optimization. IEEE Transactions on Automatic Control, 69(8), 5034–5048.             seeking  for aggregative games with nonlinear dynamics under external
+Lou, Y., Hong, Y., Xie, L., Shi, G., & Johansson, K. H. (2016). Nash equilibrium com-          disturbances. IEEE Transactions on Cybernetics, 50(12), 4876–4885.
+    putation in subnetwork zero-sum games with switching communications.     Zheng, Y., Liu, Q., & Wang,  J. (2024). A specified-time convergent multiagent
+    IEEE Transactions on Automatic Control, 61(10), 2920–2935.                       system for distributed optimization with a time-varying objective function.
+Lu,  K.,  Li,  G., & Wang,  L. (2021). Online distributed algorithms for seeking         IEEE Transactions on Automatic Control, 69(2), 1257–1264.
+    generalized Nash equilibria in dynamic environments. IEEE Transactions on     Zhu, Y., Yu, W., Wen, G., & Chen, G. (2021). Distributed Nash equilibrium seeking
+    Automatic Control, 66(5), 2289–2296.                                                   in an aggregative game on a directed graph. IEEE Transactions on Automatic
+Maskery, M., Krishnamurthy,  V., & Zhao, Q. (2009). Decentralized dynamic          Control, 66(6), 2746–2753.
+   spectrum access for cognitive radios: cooperative design of a non-cooperative     Zuo, X., & Deng, Z. (2023). Distributed online learning algorithms for aggregative
+   game. IEEE Transactions on Communications, 57(2), 459–469.                    games over time-varying unbalanced digraphs. In Proceedings of the 62nd IEEE
+Pang, Y., & Hu, G. (2022). Nash equilibrium seeking in N-coalition games via a          conference on decision and control (pp. 2278–2283). Singapore, Singapore.
+    gradient-free method. Automatica, 136, Article 110013.
+Poveda,  J.  I., Krstić, M., & Başar, T. (2022). Fixed-time seeking and tracking of
+                                                                                      Zhenhua Deng received the  B.S. degree in automa-
+    time-varying Nash equilibria in noncooperative games. In Proceedings of 2022
+                                                                                                                  tion from Dalian Maritime University, Dalian, China, in
+   American control conference (pp. 794–799). Atlanta, USA.
+                                                                                                       2011, the M.S. degree in control science and engineer-
+Rockafellar, R. T., & Wets, R. J.-B. (2004). Variational analysis. Berlin, Germany:
+                                                                                                             ing from Central South University, Changsha, China,
+    Springer.
+                                                                                                                    in 2014, and the Ph.D. degree in operational research
+Shahrampour,  S., & Jadbabaie, A. (2018). Distributed online optimization in
+                                                                                           and cybernetics from University of Chinese Academy of
+   dynamic environments using mirror descent. IEEE Transactions on Automatic                                Sciences, Beijing, China, in 2017.
+    Control, 63(3), 714–725.                                                                 He is currently an associate professor with Central
+Shen, Y., Chen, C., Zeng, X., & Chen, W. (2024). Distributed algorithm for time-                           South University. His current research interests include
+    varying convex optimization with fixed-time convergence. In Proceedings                             multi-agent systems,  distributed optimization, game
+    of the 18th international conference on control & automation (pp. 314–318).                               theory, smart grids, and UAVs.
+    Reykjavík, Iceland.
+
+
+
+
+
+                                                                   9

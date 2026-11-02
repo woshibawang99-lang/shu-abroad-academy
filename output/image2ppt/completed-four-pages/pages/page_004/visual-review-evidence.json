@@ -1,0 +1,19 @@
+{
+  "schema_version": "image2ppt-visual-review-evidence-v1",
+  "pages": [
+    {
+      "page_id": "page_005",
+      "source": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_005\\source.png",
+      "rendered": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_005\\render\\rendered.png",
+      "source_sha256": "03f0a3ee692dd1184ad0cb81a9e00e620fb6cf9a13c09c71b08c7c2ed15facba",
+      "rendered_sha256": "b1afaddecf0b2b93196cd5bdba66f3d434d0209c77413b4b2783ffc12f352ce7",
+      "reviewed": true,
+      "checks": {
+        "composition_layout": "Source and actual PowerPoint render preserve the two proof columns, epsilon definition at upper left, section 4.1 and Lemma 3 in left column, Lemma 4 in upper right and beginning of Lemma 5 in lower right. Header and bottom page number 5 align with source margins.",
+        "text_content": "Original explanatory prose, italic lemma assumptions, bold Proof labels and cyan cross references remain editable and follow the same line breaks. The source statements and even their original mathematical notation are retained verbatim, with no editorial correction or summarization.",
+        "object_completeness": "Inspected equations 11 through 19 in enlarged actual render against source. Fraction bars, square roots, summation limits, norm bars, transpose signs, gradient symbols, subscript indices and continued inequality brackets are present at the original locations. All 454 mathematical glyphs and 24 source line drawings remain independent native vector objects.",
+        "render_integrity": "The reviewed image comes from powerpoint-com export. No full-page bitmap, duplicated source text, missing mathematical glyph or clipped last-line continuation appears. Right-column Lemma 5 intentionally continues below this page exactly as in the PDF; black equations, blue links and white background retain source appearance."
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "run_id": "online-optimization-editable",
+  "page_id": "page_001",
+  "page_index": 1,
+  "page_dir": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001",
+  "source_image": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\source.png",
+  "source_size_px": {
+    "width": 1191,
+    "height": 1588
+  },
+  "slide": {
+    "width": 12.40625,
+    "height": 16.541666666666668,
+    "size_mode": "source",
+    "px_per_inch": 96
+  },
+  "content_box": {
+    "left": 0,
+    "top": 0.0,
+    "width": 12.40625,
+    "height": 16.541666666666668,
+    "fit": "contain"
+  },
+  "max_concurrent_pages": 3,
+  "allowed_write_scope": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001",
+  "forbidden_paths": [
+    "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\deck_manifest.json",
+    "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\page_jobs.json",
+    "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\notes_manifest.json",
+    "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\final",
+    "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\input"
+  ],
+  "required_outputs": {
+    "manifest": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\manifest.json",
+    "imagegen_jobs": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\imagegen-jobs.json",
+    "page_pptx": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\page.pptx",
+    "preview": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\preview.png",
+    "contact_sheet": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\split_assets_contact.png",
+    "validation": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\validation.json",
+    "page_result": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\page_result.json"
+  },
+  "image_backend": {
+    "backend_id": "builtin-imagegen",
+    "tool_name": "image_gen.imagegen",
+    "tool_call": "image_gen.imagegen",
+    "fallback_command": "image2ppt image generate/edit",
+    "runtime_home": "C:\\Users\\Sweetie\\.codex\\skills\\nature-image2ppt",
+    "model": null,
+    "requires_openai_api_key": false,
+    "mode_policy": "generate-or-edit-per-asset",
+    "chroma_key_helper": "image2ppt image process-sheet",
+    "input_context_policy": "generation needs prompt; for editing inspect every local input with view_image first, then pass prompt plus absolute local paths in referenced_image_paths",
+    "save_path_policy": "accept only an explicit output_hint or local path returned by image_gen.imagegen, verify it exists, import the selected output, and never scan for the newest file",
+    "handoff_rule": "call image_gen.imagegen serially, then import the selected local output; use image2ppt image generate/edit only when the built-in tool fallback policy applies",
+    "fallback_order": [
+      "codex-oauth",
+      "openai-compatible-api"
+    ],
+    "fallback_selection_policy": "auto uses codex-oauth only for GPT Image model ids with compatible auth; all other model ids use openai-compatible-api",
+    "required_parameters": {
+      "generate": [
+        "prompt"
+      ],
+      "edit": [
+        "prompt",
+        "referenced_image_paths"
+      ]
+    },
+    "fallback_policy": {
+      "on": [
+        "tool-unavailable",
+        "tool-error",
+        "input-unreadable",
+        "no-valid-local-output"
+      ],
+      "missing_optional_parameters": false
+    }
+  }
+}

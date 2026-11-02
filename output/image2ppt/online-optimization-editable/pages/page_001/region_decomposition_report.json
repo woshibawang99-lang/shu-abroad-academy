@@ -1,0 +1,78 @@
+{
+  "schema_version": "image2ppt-region-decomposition-report-v1",
+  "passed": true,
+  "pages": [
+    {
+      "manifest": "D:\\AAA-SZ\\留学学科教育\\output\\image2ppt\\online-optimization-editable\\pages\\page_001\\manifest.json",
+      "passed": true,
+      "page_complexity": "structured",
+      "region_count": 5,
+      "regions": [
+        {
+          "id": "masthead",
+          "strategy": "mixed-reconstruction",
+          "risk_level": "medium",
+          "manifest_object_count": 101,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "abstract",
+          "strategy": "mixed-reconstruction",
+          "risk_level": "medium",
+          "manifest_object_count": 222,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "left-body",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 268,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "right-body",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 277,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        },
+        {
+          "id": "footer",
+          "strategy": "native-text-layout",
+          "risk_level": "medium",
+          "manifest_object_count": 22,
+          "protected_anchor_count": 0,
+          "compound_diagram": false,
+          "passed": true,
+          "errors": []
+        }
+      ],
+      "summary": {
+        "manifest_objects": 890,
+        "assigned_objects": 890,
+        "protected_anchors": 0,
+        "compound_regions": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "summary": {
+    "pages": 1,
+    "regions": 5,
+    "compound_regions": 0
+  },
+  "errors": []
+}

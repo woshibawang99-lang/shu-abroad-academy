@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "desktop": {
+    "math": 103,
+    "displays": 14,
+    "errors": 0,
+    "horizontalOverflow": false,
+    "placeholders": false,
+    "rawMathDelimiters": false,
+    "fontStatus": "loaded",
+    "reviewReports": 3
+  },
+  "mobile_page_overflow": false,
+  "offline_remote_requests": [],
+  "script_errors": [],
+  "controls_verified": [
+    "font-size",
+    "expand-review"
+  ]
+}

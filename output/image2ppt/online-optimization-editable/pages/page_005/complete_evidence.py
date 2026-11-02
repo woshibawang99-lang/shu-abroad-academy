@@ -1,0 +1,8 @@
+import pathlib,json
+p=pathlib.Path(r'D:/AAA-SZ/留学学科教育/output/image2ppt/online-optimization-editable/pages/page_005');e=json.loads((p/'visual-review-evidence.template.json').read_text(encoding='utf-8'));q=e['pages'][0];q['reviewed']=True
+q['checks']={
+'composition_layout':'Source and actual PowerPoint render preserve the two proof columns, epsilon definition at upper left, section 4.1 and Lemma 3 in left column, Lemma 4 in upper right and beginning of Lemma 5 in lower right. Header and bottom page number 5 align with source margins.',
+ 'text_content':'Original explanatory prose, italic lemma assumptions, bold Proof labels and cyan cross references remain editable and follow the same line breaks. The source statements and even their original mathematical notation are retained verbatim, with no editorial correction or summarization.',
+ 'object_completeness':'Inspected equations 11 through 19 in enlarged actual render against source. Fraction bars, square roots, summation limits, norm bars, transpose signs, gradient symbols, subscript indices and continued inequality brackets are present at the original locations. All 454 mathematical glyphs and 24 source line drawings remain independent native vector objects.',
+ 'render_integrity':'The reviewed image comes from powerpoint-com export. No full-page bitmap, duplicated source text, missing mathematical glyph or clipped last-line continuation appears. Right-column Lemma 5 intentionally continues below this page exactly as in the PDF; black equations, blue links and white background retain source appearance.'}
+(p/'visual-review-evidence.json').write_text(json.dumps(e,ensure_ascii=False,indent=2),encoding='utf-8')

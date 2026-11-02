@@ -34,7 +34,7 @@ async function loadSupabaseLearningContent() {
 
     const { data: courses, error: courseError } = await window.supabaseClient
         .from('courses')
-        .select('*')
+        .select('id, title, description, code, teacher_id')
         .eq('is_published', true)
         .order('title');
 
@@ -42,31 +42,57 @@ async function loadSupabaseLearningContent() {
     if (!courses?.length) return false;
 
     const courseIds = courses.map(course => course.id);
-    const [weeksResult, slidesResult, vocabularyResult] = await Promise.all([
-        window.supabaseClient.from('course_weeks').select('*').in('course_id', courseIds).order('week_number'),
-        window.supabaseClient.from('slides').select('*').order('slide_number'),
-        window.supabaseClient.from('vocabulary').select('*').order('sort_order')
-    ]);
+    const weeksResult = await window.supabaseClient
+        .from('course_weeks')
+        .select('id, course_id, week_number, title, is_published')
+        .in('course_id', courseIds)
+        .order('week_number');
 
     if (weeksResult.error) throw weeksResult.error;
-    if (slidesResult.error) throw slidesResult.error;
-    if (vocabularyResult.error) throw vocabularyResult.error;
 
     const weekIds = (weeksResult.data || []).map(week => week.id);
+    let slidesResult = { data: [], error: null };
+    let vocabularyResult = { data: [], error: null };
     let assessments = [];
     let questions = [];
     let questionKeys = [];
     if (weekIds.length) {
-        const assessmentResult = await window.supabaseClient.from('assessments').select('*').in('week_id', weekIds);
+        const [loadedSlides, loadedVocabulary, assessmentResult] = await Promise.all([
+            window.supabaseClient
+                .from('slides')
+                .select('week_id, slide_number, content_html')
+                .in('week_id', weekIds)
+                .order('slide_number'),
+            window.supabaseClient
+                .from('vocabulary')
+                .select('week_id, sort_order, term, definition')
+                .in('week_id', weekIds)
+                .order('sort_order'),
+            window.supabaseClient
+                .from('assessments')
+                .select('id, week_id, kind, title, duration_minutes, is_open, opens_at, closes_at')
+                .in('week_id', weekIds)
+        ]);
+        slidesResult = loadedSlides;
+        vocabularyResult = loadedVocabulary;
+        if (slidesResult.error) throw slidesResult.error;
+        if (vocabularyResult.error) throw vocabularyResult.error;
         if (assessmentResult.error) throw assessmentResult.error;
         assessments = assessmentResult.data || [];
         const assessmentIds = assessments.map(item => item.id);
         if (assessmentIds.length) {
-            const questionResult = await window.supabaseClient.from('questions').select('*').in('assessment_id', assessmentIds).order('question_number');
+            const questionResult = await window.supabaseClient
+                .from('questions')
+                .select('id, assessment_id, question_number, kind, question_text, image_path, options, points')
+                .in('assessment_id', assessmentIds)
+                .order('question_number');
             if (questionResult.error) throw questionResult.error;
             questions = questionResult.data || [];
             if (currentUser?.role === 'teacher' && questions.length) {
-                const keyResult = await window.supabaseClient.from('question_keys').select('*').in('question_id', questions.map(item => item.id));
+                const keyResult = await window.supabaseClient
+                    .from('question_keys')
+                    .select('question_id, correct_answer, explanation')
+                    .in('question_id', questions.map(item => item.id));
                 if (keyResult.error) throw keyResult.error;
                 questionKeys = keyResult.data || [];
             }
